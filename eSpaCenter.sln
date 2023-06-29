@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSpaCenter", "eSpaCenter\eSpaCenter.csproj", "{ADB0591E-CF0D-48C1-AEE6-B0336907EADA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSpaCenter.Models", "eSpaCenter.Models\eSpaCenter.Models.csproj", "{9BB1E44E-DA9A-4F90-817D-0A7EFC7DDBB5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eSpaCenter.Services", "eSpaCenter.Services\eSpaCenter.Services.csproj", "{E87C7459-0DAD-4DEC-A3F1-270F39F1C7FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{594B8051-9B24-4756-A5F8-CA1D8FEF23F2}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ADB0591E-CF0D-48C1-AEE6-B0336907EADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB0591E-CF0D-48C1-AEE6-B0336907EADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB0591E-CF0D-48C1-AEE6-B0336907EADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB0591E-CF0D-48C1-AEE6-B0336907EADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BB1E44E-DA9A-4F90-817D-0A7EFC7DDBB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BB1E44E-DA9A-4F90-817D-0A7EFC7DDBB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BB1E44E-DA9A-4F90-817D-0A7EFC7DDBB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BB1E44E-DA9A-4F90-817D-0A7EFC7DDBB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E87C7459-0DAD-4DEC-A3F1-270F39F1C7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E87C7459-0DAD-4DEC-A3F1-270F39F1C7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E87C7459-0DAD-4DEC-A3F1-270F39F1C7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E87C7459-0DAD-4DEC-A3F1-270F39F1C7FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {65C0B963-44DC-4C06-A0FC-73C90EEB490A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,36 @@
+version: '3'
+services:
+#mssql docker
+  espacenter-sql:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=QWElkj132!
+      - MSSQL_PID=Developer
+    ports:
+      - 1401:1433
+    expose:
+      - 1433
+    networks:
+      - espacenternet
+
+  espacenter-api:
+    restart: unless-stopped
+    build:
+      context: .
+    environment:
+      - ConnectionStrings:eSpaCenterDB=Server=espacenter-sql,1433;Database=eSpaCenterDB;User=sa;Password=QWElkj132!;ConnectRetryCount=0; TrustServerCertificate=True
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - 7132:7132
+    networks:
+      - espacenternet
+    links:
+      - espacenter-sql
+    depends_on:
+      - espacenter-sql
+      
+networks:
+  espacenternet:
+    driver: bridge   
