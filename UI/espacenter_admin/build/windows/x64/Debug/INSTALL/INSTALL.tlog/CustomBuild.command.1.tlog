@@ -1,0 +1,10 @@
+^C:\USERS\KORISNIK\DESKTOP\ESPACENTER\UI\ESPACENTER_ADMIN\BUILD\WINDOWS\CMAKEFILES\EC7380A7631F87DAC8D3E0240FC3C054\INSTALL_FORCE.RULE
+setlocal
+cd .
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

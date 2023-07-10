@@ -1,0 +1,10 @@
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/CMakeFiles/INSTALL.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/CMakeFiles/ALL_BUILD.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/CMakeFiles/ZERO_CHECK.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/flutter/CMakeFiles/flutter_wrapper_plugin.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/flutter/CMakeFiles/flutter_wrapper_app.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/flutter/CMakeFiles/flutter_assemble.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/flutter/CMakeFiles/INSTALL.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/runner/CMakeFiles/espacenter_admin.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/runner/CMakeFiles/INSTALL.dir
+C:/Users/Korisnik/Desktop/eSpaCenter/UI/espacenter_admin/build/windows/runner/CMakeFiles/ALL_BUILD.dir
