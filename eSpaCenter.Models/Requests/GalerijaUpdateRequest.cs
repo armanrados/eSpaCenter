@@ -9,10 +9,8 @@ namespace eSpaCenter.Models.Requests
 {
     public class GalerijaUpdateRequest
     {
-        [Required(ErrorMessage = "Slika je obavezna!")]
+ 
         public byte[] SlikaByte { get; set; }
-
-        [Required(AllowEmptyStrings = true)]
         public string Opis { get; set; }
     }
 }

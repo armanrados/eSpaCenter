@@ -8,6 +8,7 @@ namespace eSpaCenter.Models.SearchObjects
 {
     public class NovostiSearchObject : BaseSearchObject
     {
+        public string? Naslov { get; set; }
         public int? KorisnikID { get; set; }
         public DateTime? DatumOd { get; set; }
         public DateTime? DatumDo { get; set; }

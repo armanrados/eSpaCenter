@@ -12,7 +12,6 @@ namespace eSpaCenter.Models
         public int KorisnikID { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
-        [DisplayName("Datum rodjenja")]
         public DateTime DatumRodjenja { get; set; }
         public string Email { get; set; }
         public string Telefon { get; set; }

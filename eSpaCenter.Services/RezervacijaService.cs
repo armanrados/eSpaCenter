@@ -47,16 +47,7 @@ namespace eSpaCenter.Services
         }
         public override IQueryable<Rezervacija> AddFilter(IQueryable<Rezervacija> entity, RezervacijaSearchObject search)
         {
-            if (search.DatumOd.HasValue)
-            {
-                entity = entity.Where(x => x.Termin.DatumTermina.Date >= search.DatumOd);
-            }
-
-            if (search.DatumDo.HasValue)
-            {
-                entity = entity.Where(x => x.Termin.DatumTermina.Date <= search.DatumDo);
-            }
-
+         
             if (search.KorisnikID.HasValue)
             {
                 entity = entity.Where(x => x.KorisnikID == search.KorisnikID);

@@ -19,10 +19,11 @@ namespace eSpaCenter.Controllers
         }
 
         [HttpGet()]
-        public async Task<PagedResult<T>> Get([FromBody] TSearch? search = null)
+        public async Task<PagedResult<T>> Get([FromQuery] TSearch? search = null)
         {
             return await _service.Get(search);
         }
+
 
         [HttpGet("{id}")]
         public async Task<T> GetById(int id)

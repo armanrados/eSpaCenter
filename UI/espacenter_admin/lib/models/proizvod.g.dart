@@ -7,20 +7,20 @@ part of 'proizvod.dart';
 // **************************************************************************
 
 Proizvod _$ProizvodFromJson(Map<String, dynamic> json) => Proizvod(
-      json['proizvodId'] as int?,
+      json['proizvodID'] as int?,
       json['naziv'] as String?,
       json['sifra'] as String?,
       (json['cijena'] as num?)?.toDouble(),
       json['slika'] as String?,
-      json['vrstaproizvodaId'] as int?,
+      json['vrstaProizvodaID'] as int?,
     )..opis = json['opis'] as String?;
 
 Map<String, dynamic> _$ProizvodToJson(Proizvod instance) => <String, dynamic>{
-      'proizvodId': instance.proizvodId,
+      'proizvodID': instance.proizvodID,
       'naziv': instance.naziv,
       'sifra': instance.sifra,
       'cijena': instance.cijena,
       'slika': instance.slika,
       'opis': instance.opis,
-      'vrstaproizvodaId': instance.vrstaproizvodaId,
+      'vrstaProizvodaID': instance.vrstaProizvodaID,
     };

@@ -79,6 +79,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
       throw Exception("Unknown error");
     }
   }
+   
 
   T fromJson(data) {
     throw Exception("Method not implemented");
@@ -93,6 +94,7 @@ abstract class BaseProvider<T> with ChangeNotifier {
     } 
     else if (response.statusCode == 400)
     {
+      
       throw Exception("${response.body}");
     }
     else {

@@ -32,16 +32,11 @@ namespace eSpaCenter.Services
             {
                 entity = entity.Where(x => x.KorisnikID == obj.KorisnikID.Value);
             }
-
-            if (obj.DatumOd.HasValue)
+            if (!string.IsNullOrWhiteSpace(obj.Naslov))
             {
-                entity = entity.Where(x => x.DatumKreiranja.Date >= obj.DatumOd.Value);
+                entity = entity.Where(x => x.Naslov.ToLower().Contains(obj.Naslov.ToLower()));
             }
 
-            if (obj.DatumDo.HasValue)
-            {
-                entity = entity.Where(x => x.DatumKreiranja.Date <= obj.DatumDo.Value);
-            }
 
             return entity;
         }

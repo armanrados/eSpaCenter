@@ -27,17 +27,14 @@ namespace eSpaCenter.Services
 
         public override IQueryable<Proizvod> AddFilter(IQueryable<Proizvod> entity, ProizvodSearchObject? search = null)
         {
-            if (search.VrstaProizvodaID.HasValue)
+            var filterQuery = base.AddFilter(entity, search);
+
+            if (!string.IsNullOrWhiteSpace(search?.Naziv))
             {
-                entity = entity.Where(x => x.VrstaProizvodaID == search.VrstaProizvodaID);
+                filterQuery = filterQuery.Where(x => x.Naziv.ToLower().Contains(search.Naziv.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(search.Naziv))
-            {
-                entity = entity.Where(x => x.Naziv.ToLower().Contains(search.Naziv.ToLower()));
-            }
-
-            return entity;
+            return filterQuery;
         }
 
         public override async Task BeforeInsert(Proizvod entity, ProizvodInsertRequest insert)

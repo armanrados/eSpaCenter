@@ -36,25 +36,7 @@ namespace eSpaCenter.Services
                 entity = entity.Where(x => x.KorisnikID == search.KorisnikID);
             }
 
-            if (search.Datum.HasValue)
-            {
-                entity = entity.Where(x => x.DatumTermina.Date == search.Datum.Value);
-            }
-
-            if (search.DatumOd.HasValue)
-            {
-                entity = entity.Where(x => x.DatumTermina.Date >= search.DatumOd.Value);
-            }
-
-            if (search.DatumDo.HasValue)
-            {
-                entity = entity.Where(x => x.DatumTermina.Date <= search.DatumDo.Value);
-            }
-
-            if (search.IsBooked.HasValue)
-            {
-                entity = entity.Where(x => x.IsBooked == search.IsBooked);
-            }
+           
 
             return entity;
         }

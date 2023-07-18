@@ -1,13 +1,34 @@
+import 'package:espacenter_admin/models/rezervacija.dart';
+import 'package:espacenter_admin/providers/galerija_provider.dart';
+import 'package:espacenter_admin/providers/narudzba_provider.dart';
+import 'package:espacenter_admin/providers/novost_provider.dart';
 import 'package:espacenter_admin/providers/proizvod_provider.dart';
-import 'package:espacenter_admin/utils/util.dart';
-import 'package:flutter/material.dart';
+import 'package:espacenter_admin/providers/rezervacija_provider.dart';
+import 'package:espacenter_admin/providers/termin_provider.dart';
 import 'package:espacenter_admin/screens/proizvod_screen.dart';
+import 'package:espacenter_admin/providers/vrsta_proizvoda_provider.dart';
+import 'package:espacenter_admin/screens/termini_sceen.dart';
+import 'package:espacenter_admin/utils/util.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider(create: (_) => ProizvodProvider())],
-    child: const MyApp(),
+    providers: [
+      ChangeNotifierProvider(create: (_) => ProizvodProvider()),
+      ChangeNotifierProvider(create: (_) => VrstaProizvodaProvider()),
+      ChangeNotifierProvider(create: (_) => TerminProvider()),
+      ChangeNotifierProvider(create: (_) => NarudzbaProvider()),
+      ChangeNotifierProvider(create: (_) => GalerijaProvider()),
+      ChangeNotifierProvider(create: (_) => NovostProvider()),
+      ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
+
+
+
+
+
+    ],
+    child: const MyMaterialApp(),
   ));
 }
 
@@ -20,8 +41,42 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eSpaCenter',
       theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      //Counter(),
+    );
+  }
+}
+
+class MyAppBar extends StatelessWidget {
+  String? title;
+  MyAppBar({Key? key, required this.title}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(title!);
+  }
+}
+
+
+
+class MyMaterialApp extends StatelessWidget {
+  const MyMaterialApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'eSpaCenter',
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: LoginPage(),
     );
   }
@@ -32,12 +87,12 @@ class LoginPage extends StatelessWidget {
 
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  late ProizvodProvider _productProvider;
+  late ProizvodProvider _proizvodProvider;
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    _productProvider = context.read<ProizvodProvider>();
+    _proizvodProvider = context.read<ProizvodProvider>();
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -46,53 +101,63 @@ class LoginPage extends StatelessWidget {
         child: Container(
           constraints: BoxConstraints(maxWidth: 400, maxHeight: 400),
           child: Card(
-            child: Column(
-              children: [
-                Text("eSpaCenter"),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(children: [
+                
+               
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Username",
-                      prefixIcon: Icon(Icons.verified_user_rounded)),
+                      labelText: "Username", prefixIcon: Icon(Icons.supervised_user_circle)),
                   controller: _usernameController,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 8,
                 ),
                 TextField(
                   decoration: InputDecoration(
                       labelText: "Password", prefixIcon: Icon(Icons.password)),
                   controller: _passwordController,
+                  obscureText: true,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 8,
                 ),
                 ElevatedButton(
                     onPressed: () async {
                       var username = _usernameController.text;
                       var password = _passwordController.text;
-                      print("$username $password");
+                      _passwordController.text = username;
+
+                      print("login proceed $username $password");
 
                       Authorization.username = username;
                       Authorization.password = password;
 
                       try {
-                        await _productProvider.get();
+                        await _proizvodProvider.get();
 
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ProizvodScreen(),
-                        ));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const TerminiScreen(),
+                          ),
+                        );
                       } on Exception catch (e) {
-                        showDialog(context: context, builder: (BuildContext context) => AlertDialog(
-                          title: Text("Error"),
-                          content: Text(e.toString()),
-                          actions: [
-                            TextButton(onPressed: ()=> Navigator.pop(context), child: Text("Ok!"))
-                          ],
-                        ));
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                                  title: Text("Error"),
+                                  content: Text(e.toString()),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text("OK"))
+                                  ],
+                                ));
                       }
                     },
                     child: Text("Login"))
-              ],
+              ]),
             ),
           ),
         ),

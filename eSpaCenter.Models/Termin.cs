@@ -12,7 +12,7 @@ namespace eSpaCenter.Models
         [Browsable(false)]
         public int TerminID { get; set; }
         [DisplayName("Termin kod")]
-        public string TerminZaposelnik => $"{Korisnik?.Ime} {Korisnik?.Prezime}";
+        public string TerminZaposlenik => $"{Korisnik?.Ime} {Korisnik?.Prezime}";
         [DisplayName("Datum termina")]
         public DateTime DatumTermina { get; set; }
         [DisplayName("Datum kreiranja")]
