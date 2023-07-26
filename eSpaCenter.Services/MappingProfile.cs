@@ -50,6 +50,9 @@ namespace eSpaCenter.Services
             CreateMap<NarudzbaInsertRequest, Database.Narudzba>();
             CreateMap<NarudzbaUpdateRequest, Database.Narudzba>();
 
+            CreateMap<Database.NarudzbaProizvodi, Models.NarudzbaProizvodi>();
+
+
             CreateMap<Database.Uplata, Models.Uplata>();
             CreateMap<UplataInsertUpdateRequest, Database.Uplata>();
 

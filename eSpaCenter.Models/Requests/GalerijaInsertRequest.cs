@@ -10,8 +10,8 @@ namespace eSpaCenter.Models.Requests
     public class GalerijaInsertRequest
     {
   
-        public byte[]? SlikaByte { get; set; }
-        public string? Opis { get; set; }
+        public byte[] SlikaByte { get; set; }
+        public string Opis { get; set; }
         public int KorisnikID { get; set; }
     }
 }

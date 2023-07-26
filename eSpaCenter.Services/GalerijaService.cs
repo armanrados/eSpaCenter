@@ -26,11 +26,14 @@ namespace eSpaCenter.Services
 
         public override IQueryable<Galerija> AddFilter(IQueryable<Galerija> entity, GalerijaSearchObject? search = null)
         {
-            if(search.KorisnikID.HasValue) 
+            var filterQuery = base.AddFilter(entity, search);
+
+            if (!string.IsNullOrWhiteSpace(search?.Opis))
             {
-                entity = entity.Where(x => x.KorisnikID == search.KorisnikID.Value);
+                filterQuery = filterQuery.Where(x => x.Opis.ToLower().Contains(search.Opis.ToLower()));
             }
-            return entity;
+
+            return filterQuery;
         }
     }
 }

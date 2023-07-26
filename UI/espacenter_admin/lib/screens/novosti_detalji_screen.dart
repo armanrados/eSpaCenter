@@ -38,9 +38,11 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
     // TODO: implement initState
     super.initState();
     _initialValue = {
-      'slika': widget.novost?.slika,
+      'novostID' : widget.novost?.novostID,
       'naslov': widget.novost?.naslov,
       'sadrzaj': widget.novost?.sadrzaj,
+
+      'korisnikID': widget.novost?.korisnikID.toString()
     };
 
     _novostProvider = context.read<NovostProvider>();
@@ -52,11 +54,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    // if (widget.product != null) {
-    //   setState(() {
-    //     _formKey.currentState?.patchValue({'sifra': widget.product?.sifra});
-    //   });
-    // }
+  
   }
   Future initForm() async {
    
@@ -89,7 +87,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
 
                       request['slika'] = _base64Image;
 
-                      print(request['slika']);
+                   
 
                       try {
                         if (widget.novost == null) {
@@ -118,7 +116,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
           )
         ],
       ),
-      title: this.widget.novost?.naslov ?? "Detalji novosti",
+      title: "Detalji novosti",
     );
   }
 
@@ -150,7 +148,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
             ))
           ],
         ),
-           Row(
+            Row(
           children: [
            
             Expanded(
@@ -159,15 +157,18 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                 name: "naslov",
               ),
             ),
-          ],
-        ),
-            Row(
-          children: [
-           
+            SizedBox(width: 10,),
+             Expanded(
+              child: FormBuilderTextField(
+                decoration: InputDecoration(labelText: "Sadrzaj"),
+                name: "sadrzaj",
+              ),
+            ),
+            SizedBox(width: 10,),
             Expanded(
               child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Sadržaj"),
-                name: "sadrzaj",
+                decoration: InputDecoration(labelText: "Korisnik"),
+                name: "korisnikID",
               ),
             ),
           ],

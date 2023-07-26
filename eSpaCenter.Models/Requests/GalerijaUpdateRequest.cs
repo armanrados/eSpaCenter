@@ -12,5 +12,6 @@ namespace eSpaCenter.Models.Requests
  
         public byte[] SlikaByte { get; set; }
         public string Opis { get; set; }
+        public int KorisnikID { get; set; }
     }
 }

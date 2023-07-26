@@ -25,6 +25,6 @@ namespace eSpaCenter.Models.Requests
         [Required(ErrorMessage = "Lozinka je obavezna!")]
         [MinLength(4, ErrorMessage = "Lozinka ne moze imati manje od 4 karaktera")]
         public string Lozinka { get; set; }
-        public List<int> UlogeID { get; set; }
+        public int UlogeID { get; set; }
     }
 }

@@ -57,12 +57,13 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _proizvodProvider.get(filter: {
                   'naziv': _nazivController.text,
+                  'includeVrstaProizvoda' : true
                  
                 });
 
@@ -72,7 +73,8 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
           SizedBox(
             width: 8,
           ),
@@ -147,8 +149,8 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
               ],
               rows: result?.result
                       .map((Proizvod e) => DataRow(
-                              onSelectChanged: (selected) => {
-                                    if (selected == true)
+                              onLongPress: ()  => {
+                                    
                                       {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(

@@ -14,14 +14,14 @@ import 'package:provider/provider.dart';
 import '../models/proizvod.dart';
 import '../utils/util.dart';
 
-class NovostiScreen extends StatefulWidget {
-  const NovostiScreen({Key? key}) : super(key: key);
+class NovostScreen extends StatefulWidget {
+  const NovostScreen({Key? key}) : super(key: key);
 
   @override
-  State<NovostiScreen> createState() => _NovostiScreenState();
+  State<NovostScreen> createState() => _NovostScreenState();
 }
 
-class _NovostiScreenState extends State<NovostiScreen> {
+class _NovostScreenState extends State<NovostScreen> {
   late NovostProvider _novostProvider;
   SearchResult<Novost>? result;
   TextEditingController _naslovController = new TextEditingController();
@@ -58,12 +58,13 @@ class _NovostiScreenState extends State<NovostiScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _novostProvider.get(filter: {
                   'naslov': _naslovController.text,
+                  'includeKorisnik' : true
                  
                 });
 
@@ -73,7 +74,8 @@ class _NovostiScreenState extends State<NovostiScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
           SizedBox(
             width: 8,
           ),
@@ -111,28 +113,28 @@ class _NovostiScreenState extends State<NovostiScreen> {
                     ),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Naslov',
-                      style: TextStyle(fontStyle: FontStyle.normal),
-                    ),
-                  ),
-                ),
                  const DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Sadržaj',
+                      'Naslov',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                 ),
-             
+                const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Sadrzaj',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
               ],
+              dataRowHeight: 150,
               rows: result?.result
                       .map((Novost e) => DataRow(
-                              onSelectChanged: (selected) => {
-                                    if (selected == true)
+                              onLongPress: ()  => {
+                                   
                                       {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -148,10 +150,10 @@ class _NovostiScreenState extends State<NovostiScreen> {
                                 
                                 
 
-                                DataCell(e.slika!= ""
+                                DataCell(e.slika != ""
                                     ? Container(
-                                        width: 100,
-                                        height: 1500,
+                                        width: 200,
+                                        height: 145,
                                         child: imageFromBase64String(e.slika!),
                                       )
                                     : Text("")),

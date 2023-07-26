@@ -57,12 +57,15 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _narudzbaProvider.get(filter: {
                   'brojNarudzbe': _brojNarudzbeController.text,
+                  'includeKorisnik' : true,
+                  'includeNarudzbaProizvodi' : true,
+                  'includeUplata' : true,
                  
                 });
 
@@ -72,7 +75,8 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
       
               
         ],
@@ -91,7 +95,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
                 const DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Broj narudzbe',
+                      'Broj narudžbe',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -99,7 +103,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
                 const DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Datum naruzbe',
+                      'Datum narudžbe',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),

@@ -56,13 +56,16 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _rezervacijaProvider.get(filter: {
                   'korisnikID': _korisnikIDController.text,
-                 
+                  'includeTermin' : true,
+                  'includeKorisnik' : true,
+                  'includeUsluga' : true,
+                  'isCompleted' : false
                 });
 
                 setState(() {
@@ -71,7 +74,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
          
               
         ],
@@ -86,7 +90,14 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
           width: double.infinity,
           child :DataTable(
               columns: [
-             
+             const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'ID',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
                 const DataColumn(
                   label: Expanded(
                     child: Text(
@@ -117,8 +128,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                       .map((Rezervacija e) => DataRow(
                             
                               cells: [
-                                
-                                DataCell( Text(e.termin?.korisnik?.ime ?? "")),
+                                DataCell( Text(e.korisnikID.toString())),
+                                DataCell( Text(e.terminRezervisao ?? "")),
                                 DataCell(Text(e.datumRezervacije.toString())),
                                 DataCell(Text(e.termin?.vrijemeTermina ?? ""))
                                

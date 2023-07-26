@@ -49,7 +49,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
         children: [
           Expanded(
             child: TextField(
-              decoration: InputDecoration(labelText: "ID"),
+              decoration: InputDecoration(labelText: "ID Zaposlenika"),
               controller: _korisnikIDController,
             ),
           ),
@@ -57,12 +57,13 @@ class _TerminiScreenState extends State<TerminiScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _terminProvider.get(filter: {
                   'korisnikID': _korisnikIDController.text,
+                  'includeKorisnik' : true
                  
                 });
 
@@ -72,7 +73,8 @@ class _TerminiScreenState extends State<TerminiScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
           SizedBox(
             width: 8,
           ),
@@ -103,7 +105,14 @@ class _TerminiScreenState extends State<TerminiScreen> {
           width: double.infinity,
           child :DataTable(
               columns: [
-             
+             const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'ID',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
                 const DataColumn(
                   label: Expanded(
                     child: Text(
@@ -146,8 +155,9 @@ class _TerminiScreenState extends State<TerminiScreen> {
                                       }
                                   },
                               cells: [
+                                DataCell( Text(e.korisnikID.toString())),
                                 
-                                DataCell( Text(e.korisnik?.ime ?? "d")),
+                                DataCell( Text(e.korisnik?.ime ?? "")),
                                 DataCell(Text(e.datumTermina.toString())),
                                 DataCell(Text(e.vrijemeTermina ?? ""))
                                

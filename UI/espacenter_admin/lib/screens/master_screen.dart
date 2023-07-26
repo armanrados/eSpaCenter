@@ -5,6 +5,7 @@ import 'package:espacenter_admin/screens/novosti_screen.dart';
 import 'package:espacenter_admin/screens/proizvod_screen.dart';
 import 'package:espacenter_admin/screens/rezervacije_screen.dart';
 import 'package:espacenter_admin/screens/termini_sceen.dart';
+import 'package:espacenter_admin/screens/zaposlenici_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -16,12 +17,13 @@ class MasterScreen extends StatefulWidget {
   Widget? child;
   String? title;
   MasterScreen({this.child, this.title,  Key? key}) : super(key: key);
-
   @override
   State<MasterScreen> createState() => _MasterScreenState();
 }
 
 class _MasterScreenState extends State<MasterScreen> {
+ final bool _isVisible = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,12 +97,12 @@ class _MasterScreenState extends State<MasterScreen> {
 
             onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const NovostiScreen(),
+                builder: (context) => const NovostScreen(),
               ));
             },
           ),
-          ListTile(
-            
+           
+        ListTile(
             title: Text("Historija"),
             leading: Icon(Icons.history),
 
@@ -109,8 +111,27 @@ class _MasterScreenState extends State<MasterScreen> {
                 builder: (context) => const HistorijaScreen(),
               ));
             },
+          ),
+           if(Authorization.username == "admin")
+          
+           Visibility(
+
+            visible: _isVisible,
+            child :ListTile(
+            
+            title: Text("Zaposlenici"),
+            leading: Icon(Icons.people_rounded),
+
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ZaposleniciScreen(),
+              ));
+            },)
+           
        
           ),
+          
+     
           
           
           const SizedBox(height: 50,width: 20,),

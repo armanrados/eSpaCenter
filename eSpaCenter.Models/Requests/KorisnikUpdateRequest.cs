@@ -19,5 +19,6 @@ namespace eSpaCenter.Models.Requests
         public string Email { get; set; }
         public string Telefon { get; set; }
         public string Uloga { get; set; }
+        public int UlogeID { get; set; }
     }
 }

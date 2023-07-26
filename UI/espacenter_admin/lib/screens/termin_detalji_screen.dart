@@ -39,8 +39,9 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
     super.initState();
     _initialValue = {
       'korisnikID': widget.termin?.korisnikID.toString(),
-      'datumTermina': widget.termin?.datumTermina,
-      'vrijemeTermina': widget.termin?.vrijemeTermina
+      'datumTermina': widget.termin?.datumTermina.toString(),
+      'vrijemeTermina': widget.termin?.vrijemeTermina,
+
     };
         _terminProvider = context.read<TerminProvider>();
 
@@ -53,11 +54,6 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    // if (widget.product != null) {
-    //   setState(() {
-    //     _formKey.currentState?.patchValue({'sifra': widget.product?.sifra});
-    //   });
-    // }
   }
 
     Future initForm() async {

@@ -38,8 +38,9 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
     // TODO: implement initState
     super.initState();
     _initialValue = {
-      'slikaByte': widget.galerija?.slikaByte,
+      'galerijaID' : widget.galerija?.galerijaID,
       'opis': widget.galerija?.opis,
+      'korisnikID': widget.galerija?.korisnikID.toString()
     };
 
     _galerijaProvider = context.read<GalerijaProvider>();
@@ -82,9 +83,9 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
 
                       var request = Map.from(_formKey.currentState!.value);
 
-                      request['slika'] = _base64Image;
+                      request['slikaByte'] = _base64Image;
 
-                      print(request['slika']);
+                   
 
                       try {
                         if (widget.galerija == null) {
@@ -152,6 +153,13 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
               child: FormBuilderTextField(
                 decoration: InputDecoration(labelText: "Opis"),
                 name: "opis",
+              ),
+            ),
+            SizedBox(width: 10,),
+            Expanded(
+              child: FormBuilderTextField(
+                decoration: InputDecoration(labelText: "Korisnik"),
+                name: "korisnikID",
               ),
             ),
           ],

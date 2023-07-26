@@ -13,6 +13,7 @@ namespace eSpaCenter.Models.SearchObjects
         public DateTime? Datum { get; set; }
         public DateTime? DatumOd { get; set; }
         public DateTime? DatumDo { get; set; }
+
         public bool? IncludeKorisnik { get; set; }
     }
 }

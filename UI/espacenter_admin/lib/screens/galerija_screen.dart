@@ -58,12 +58,13 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
             width: 8,
           ),
         
-          ElevatedButton(
+          ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _galerijaProvider.get(filter: {
                   'opis': _opisController.text,
+                  'includeKorisnik' : true
                  
                 });
 
@@ -73,7 +74,8 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
 
                 
               },
-              child: Text("Pretraga")),
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
           SizedBox(
             width: 8,
           ),
@@ -121,10 +123,11 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
                 ),
              
               ],
+              dataRowHeight: 150,
               rows: result?.result
                       .map((Galerija e) => DataRow(
-                              onSelectChanged: (selected) => {
-                                    if (selected == true)
+                              onLongPress: ()  => {
+                                   
                                       {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
@@ -140,10 +143,10 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
                                 
                                 
 
-                                DataCell(e.slikaByte!= ""
+                                DataCell(e.slikaByte != ""
                                     ? Container(
-                                        width: 100,
-                                        height: 1500,
+                                        width: 200,
+                                        height: 145,
                                         child: imageFromBase64String(e.slikaByte!),
                                       )
                                     : Text("")),

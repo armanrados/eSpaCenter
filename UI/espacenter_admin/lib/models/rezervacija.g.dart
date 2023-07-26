@@ -21,6 +21,8 @@ Rezervacija _$RezervacijaFromJson(Map<String, dynamic> json) => Rezervacija(
       json['termin'] == null
           ? null
           : Termin.fromJson(json['termin'] as Map<String, dynamic>),
+      json['isCanceled'] as bool?,
+      json['isCompleted'] as bool?,
     );
 
 Map<String, dynamic> _$RezervacijaToJson(Rezervacija instance) =>
@@ -33,4 +35,6 @@ Map<String, dynamic> _$RezervacijaToJson(Rezervacija instance) =>
       'terminRezervisao': instance.terminRezervisao,
       'korisnik': instance.korisnik,
       'termin': instance.termin,
+      'isCanceled': instance.isCanceled,
+      'isCompleted': instance.isCompleted,
     };

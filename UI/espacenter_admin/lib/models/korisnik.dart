@@ -1,3 +1,4 @@
+import 'package:espacenter_admin/models/uloga.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `User` class to access private members in
@@ -14,10 +15,9 @@ class Korisnik {
   String? email;
   String? telefon;
   String? korisnickoIme;
-
-
+  String? lozinka;
   int? ulogaID;
-  Korisnik(this.korisnikID, this.ime, this.prezime, this.datumRodjenja, this.email, this.telefon, this.korisnickoIme, this.ulogaID);
+  Korisnik(this.korisnikID, this.ime, this.prezime, this.datumRodjenja, this.email, this.telefon, this.korisnickoIme, this.ulogaID, this.lozinka);
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

@@ -18,24 +18,7 @@ namespace eSpaCenter.Services
     {
         public KorisnikService(eSpaCenterContext db, IMapper mapper) : base(db, mapper) { }
 
-        public override async Task<Models.Korisnik> Insert(KorisnikInsertRequest request)
-        {
-            var entity = await base.Insert(request);
-
-            foreach (var uloga in request.UlogeID)
-            {
-                Database.KorisnikUloga Uloga = new Database.KorisnikUloga();
-                Uloga.UlogaID = uloga;
-                Uloga.KorisnikID = entity.KorisnikID;
-                Uloga.DatumIzmjene = DateTime.Now;
-
-                await _db.KorisnikUlogas.AddAsync(Uloga);
-            }
-
-           await _db.SaveChangesAsync();
-
-            return entity;
-        }
+        
         public override IQueryable<Database.Korisnik> AddInclude(IQueryable<Database.Korisnik> entity, KorisnikSearchObject obj)
         {
             if (obj.IncludeUloge == true)

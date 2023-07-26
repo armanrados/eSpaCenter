@@ -1,10 +1,12 @@
 import 'package:espacenter_admin/models/rezervacija.dart';
 import 'package:espacenter_admin/providers/galerija_provider.dart';
+import 'package:espacenter_admin/providers/korisnik_provider.dart';
 import 'package:espacenter_admin/providers/narudzba_provider.dart';
 import 'package:espacenter_admin/providers/novost_provider.dart';
 import 'package:espacenter_admin/providers/proizvod_provider.dart';
 import 'package:espacenter_admin/providers/rezervacija_provider.dart';
 import 'package:espacenter_admin/providers/termin_provider.dart';
+import 'package:espacenter_admin/providers/uloga_provider.dart';
 import 'package:espacenter_admin/screens/proizvod_screen.dart';
 import 'package:espacenter_admin/providers/vrsta_proizvoda_provider.dart';
 import 'package:espacenter_admin/screens/termini_sceen.dart';
@@ -22,6 +24,10 @@ void main() {
       ChangeNotifierProvider(create: (_) => GalerijaProvider()),
       ChangeNotifierProvider(create: (_) => NovostProvider()),
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
+      ChangeNotifierProvider(create: (_) => KorisnikProvider()),
+      ChangeNotifierProvider(create: (_) => UlogaProvider()),
+
+
 
 
 
@@ -108,7 +114,7 @@ class LoginPage extends StatelessWidget {
                
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Username", prefixIcon: Icon(Icons.supervised_user_circle)),
+                      labelText: "Username", prefixIcon: Icon(Icons.people_alt)),
                   controller: _usernameController,
                 ),
                 SizedBox(

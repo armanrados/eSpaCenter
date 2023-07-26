@@ -9,13 +9,12 @@ namespace eSpaCenter.Models.Requests
 {
     public class NovostiUpdateRequest
     {
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Naslov je obavezan!")]
         public string Naslov { get; set; }
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Sadrzaj je obavezan!")]
         public string Sadrzaj { get; set; }
-        [Required(ErrorMessage = "Slika je obavezna!")]
         public byte[] Slika { get; set; }
-        [Required]
-        public DateTime DatumKreiranja { get; set; }
+        public int KorisnikID { get; set; }
+
+
+
     }
 }

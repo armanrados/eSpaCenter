@@ -17,11 +17,13 @@ class Rezervacija {
   String? terminRezervisao;
   Korisnik? korisnik;
   Termin? termin;
+   bool? isCanceled;
+  bool? isCompleted;
 
 
 
 
-  Rezervacija(this.rezervacijaID,this.terminID, this.korisnikID, this.terminVrijeme,this.datumRezervacije,this.terminRezervisao,this.korisnik,this.termin);
+  Rezervacija(this.rezervacijaID,this.terminID, this.korisnikID, this.terminVrijeme,this.datumRezervacije,this.terminRezervisao,this.korisnik,this.termin,this.isCanceled,this.isCompleted);
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

@@ -28,10 +28,7 @@ namespace eSpaCenter.Services
         }
         public override IQueryable<Database.Novosti> AddFilter(IQueryable<Database.Novosti> entity, NovostiSearchObject obj)
         {
-            if (obj.KorisnikID.HasValue)
-            {
-                entity = entity.Where(x => x.KorisnikID == obj.KorisnikID.Value);
-            }
+        
             if (!string.IsNullOrWhiteSpace(obj.Naslov))
             {
                 entity = entity.Where(x => x.Naslov.ToLower().Contains(obj.Naslov.ToLower()));

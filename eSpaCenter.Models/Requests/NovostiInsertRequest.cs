@@ -15,8 +15,10 @@ namespace eSpaCenter.Models.Requests
         public string Sadrzaj { get; set; }
         [Required(ErrorMessage = "Slika je obavezna!")]
         public byte[] Slika { get; set; }
-        public DateTime DatumKreiranja { get; set; }
-        [Required]
         public int KorisnikID { get; set; }
+
+
+
+
     }
 }
