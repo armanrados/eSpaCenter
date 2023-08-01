@@ -10,8 +10,6 @@ namespace eSpaCenter.Models.SearchObjects
     {
         public string? Naslov { get; set; }
         public int? KorisnikID { get; set; }
-        public DateTime? DatumOd { get; set; }
-        public DateTime? DatumDo { get; set; }
         public bool? IncludeKorisnik { get; set; }
     }
 }

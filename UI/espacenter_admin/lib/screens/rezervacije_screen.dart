@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../models/rezervacija.dart';
 import '../utils/util.dart';
 
@@ -130,7 +130,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                               cells: [
                                 DataCell( Text(e.korisnikID.toString())),
                                 DataCell( Text(e.terminRezervisao ?? "")),
-                                DataCell(Text(e.datumRezervacije.toString())),
+                                DataCell(Text(e.datumRezervacije != null ? DateFormat('yyyy-MM-dd').format(e.datumRezervacije!) : 'N/A')),
                                 DataCell(Text(e.termin?.vrijemeTermina ?? ""))
                                
 

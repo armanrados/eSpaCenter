@@ -14,6 +14,7 @@ Galerija _$GalerijaFromJson(Map<String, dynamic> json) => Galerija(
       json['korisnik'] == null
           ? null
           : Korisnik.fromJson(json['korisnik'] as Map<String, dynamic>),
+      isVisible: json['isVisible'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$GalerijaToJson(Galerija instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$GalerijaToJson(Galerija instance) => <String, dynamic>{
       'opis': instance.opis,
       'korisnikID': instance.korisnikID,
       'korisnik': instance.korisnik,
+      'isVisible': instance.isVisible,
     };

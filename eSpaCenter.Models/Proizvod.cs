@@ -20,7 +20,6 @@ namespace eSpaCenter.Models
         public int VrstaProizvodaID { get; set; }
        
         public virtual VrstaProizvoda VrstaProizvoda { get; set; }
-        [DisplayName("Vrsta proizvoda")]
-        public string VrstaProizvodaNaziv => VrstaProizvoda?.Naziv;
+        
     }
 }

@@ -6,13 +6,16 @@ import 'dart:io';
 import 'package:espacenter_admin/models/termin.dart';
 import 'package:espacenter_admin/providers/termin_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
+import 'package:espacenter_admin/screens/termini_sceen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../models/search_result.dart';
 
@@ -30,7 +33,6 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
 
   late TerminProvider _terminProvider;
 
-
   bool isLoading = true;
 
   @override
@@ -39,31 +41,25 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
     super.initState();
     _initialValue = {
       'korisnikID': widget.termin?.korisnikID.toString(),
-      'datumTermina': widget.termin?.datumTermina.toString(),
+      'datumTermina':widget.termin?.datumTermina?.toIso8601String(),
       'vrijemeTermina': widget.termin?.vrijemeTermina,
-
     };
-        _terminProvider = context.read<TerminProvider>();
+    _terminProvider = context.read<TerminProvider>();
 
-  initForm();
-   
+    initForm();
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-
   }
 
-    Future initForm() async {
-   
-
+  Future initForm() async {
     setState(() {
       isLoading = false;
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +77,8 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
 
-                   
                       var request = Map.from(_formKey.currentState!.value);
 
-                      
-
-                
                       try {
                         if (widget.termin == null) {
                           await _terminProvider.insert(request);
@@ -94,6 +86,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                           await _terminProvider.update(
                               widget.termin!.terminID!, request);
                         }
+                        
                       } on Exception catch (e) {
                         showDialog(
                             context: context,
@@ -107,6 +100,9 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                                   ],
                                 ));
                       }
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const TerminiScreen(),
+                      ));
                     },
                     child: Text("Sačuvaj")),
               )
@@ -114,45 +110,45 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
           )
         ],
       ),
-      title:  "Detalji termina",
+      title: "Detalji termina",
     );
   }
 
   FormBuilder _buildForm() {
     return FormBuilder(
-      key: _formKey,
-      initialValue: _initialValue,
-      child: Column(children: [
-        Row(
-          children: [
-          
-            Expanded(
-              child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Zaposlenik"),
-                name: "korisnikID",
+        key: _formKey,
+        initialValue: _initialValue,
+        child: Column(children: [
+          Row(
+            children: [
+              Expanded(
+                child: FormBuilderTextField(
+                  decoration: InputDecoration(labelText: "Zaposlenik"),
+                  name: "korisnikID",
+                ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-              child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Datum termina"),
-                name: "datumTermina",
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: FormBuilderTextField(
+                  decoration: InputDecoration(labelText: "Datum Termina"),
+                  name: "datumTermina",
+                ),
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Vrijeme Termina"),
-                name: "vrijemeTermina",
+              SizedBox(
+                width: 10,
               ),
-            ),
-          ],
-        )]));
-      
+              Expanded(
+                child: FormBuilderTextField(
+                  decoration: InputDecoration(labelText: "Vrijeme Termina"),
+                  name: "vrijemeTermina",
+                ),
+              ),
+            ],
+          )
+        ]));
+  }
 }
-}
+

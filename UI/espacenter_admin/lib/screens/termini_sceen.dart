@@ -9,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-
+import 'package:intl/intl.dart';
 import '../models/termin.dart';
 import '../utils/util.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 class TerminiScreen extends StatefulWidget {
   const TerminiScreen({Key? key}) : super(key: key);
 
@@ -24,24 +24,64 @@ class _TerminiScreenState extends State<TerminiScreen> {
   late TerminProvider _terminProvider;
   SearchResult<Termin>? result;
   TextEditingController _korisnikIDController = new TextEditingController();
-
+  Map<int, bool> _rowVisibilityMap = {};
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _terminProvider = context.read<TerminProvider>();
+    _fetchData();
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return MasterScreen(
-      title: "Termini",
-      child: Container(
-        child: Column(children: [_buildSearch(), _buildDataListView()]),
-      ),
+Future<void> _fetchData() async {
+  if (_korisnikIDController.text.isEmpty) {
+    // No search filter, fetch all data
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = await _terminProvider.get(
+      filter: {
+        'includeKorisnik': true,
+      },
     );
-  }
 
+    setState(() {
+      result = data;
+      _loadVisibilityState(prefs); // Load visibility state from SharedPreferences
+    });
+  } else {
+    // Apply search filter
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var data = await _terminProvider.get(
+      filter: {
+        'korisnikID': _korisnikIDController.text,
+        'includeKorisnik': true,
+      },
+    );
+
+    setState(() {
+      result = data;
+      _loadVisibilityState(prefs); // Load visibility state from SharedPreferences
+    });
+  }
+}
+ void _loadVisibilityState(SharedPreferences prefs) {
+    for (var termin in result!.result) {
+      bool isVisible = prefs.getBool('termin_${termin.terminID}') ?? true;
+      termin.isVisible = isVisible;
+      _rowVisibilityMap[termin.terminID!] = isVisible;
+    }
+  }
+ void _toggleRowVisibility(int index) async {
+    if (index >= 0 && index < (result?.result.length ?? 0)) {
+      Termin termin = result!.result[index];
+      setState(() {
+        termin.isVisible = !termin.isVisible;
+        _rowVisibilityMap[termin.terminID!] = termin.isVisible; // Update the visibility state in the map
+      });
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('termin_${termin.terminID}', termin.isVisible);
+    }
+  }
+ 
   Widget _buildSearch() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -53,50 +93,34 @@ class _TerminiScreenState extends State<TerminiScreen> {
               controller: _korisnikIDController,
             ),
           ),
-          SizedBox(
-            width: 8,
-          ),
-        
+          SizedBox(width: 8),
           ElevatedButton.icon(
-              onPressed: () async {
-                // Navigator.of(context).pop();
+            onPressed: () async {
+              await _fetchData();
 
-                var data = await _terminProvider.get(filter: {
-                  'korisnikID': _korisnikIDController.text,
-                  'includeKorisnik' : true
-                 
-                });
-
-                setState(() {
-                  result = data;
-                });
-
-                
-              },
-               icon: Icon(Icons.search),  //icon data for elevated button
-                 label: Text("Pretraga")),
-          SizedBox(
-            width: 8,
+            },
+            icon: Icon(Icons.search),
+            label: Text("Pretraga"),
           ),
+          SizedBox(width: 8),
           ElevatedButton.icon(
-              onPressed: () async {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => TerminDetaljiScreen(
-                      termin: null,
-                    ),
+            onPressed: () async {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TerminDetaljiScreen(
+                    termin: null,
                   ),
-                );
-                
-              },
-              icon: Icon(Icons.add),
-              label: Text("Novi Termin")
-          )
-              
+                ),
+              );
+            },
+            icon: Icon(Icons.add),
+            label: Text("Novi Termin"),
+          ),
         ],
       ),
     );
   }
+  
 
   Widget _buildDataListView() {
     return Expanded(
@@ -137,36 +161,59 @@ class _TerminiScreenState extends State<TerminiScreen> {
                     ),
                   ),
                 ),
+                  const DataColumn(
+                  label: Expanded(
+                    child: Text(
+                      'Izbriši',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ),
                 
               ],
-              rows: result?.result
-                      .map((Termin e) => DataRow(
-                              onSelectChanged: (selected) => {
-                                    if (selected == true)
-                                      {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TerminDetaljiScreen(
-                                              termin: e,
-                                            ),
-                                          ),
-                                        )
-                                      }
-                                  },
-                              cells: [
-                                DataCell( Text(e.korisnikID.toString())),
-                                
-                                DataCell( Text(e.korisnik?.ime ?? "")),
-                                DataCell(Text(e.datumTermina.toString())),
-                                DataCell(Text(e.vrijemeTermina ?? ""))
-                               
+              rows: result?.result != null
+                ? [
+                    for (int i = 0; i < result!.result.length; i++)
+                      if (!_rowVisibilityMap.containsKey(result!.result[i].terminID) || _rowVisibilityMap[result!.result[i].terminID]!)
+                        DataRow(
+                          onLongPress: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TerminDetaljiScreen(
+                                termin: result!.result[i],
+                              ),
+                            ),
+                          ),
+                          cells: [
+                            DataCell(Text(result!.result[i].korisnikID.toString())),
+                            DataCell(Text(result!.result[i].korisnik?.ime ?? "")),
 
-                              ]))
-                      .toList() ??
-                  []),
-        
+                            DataCell(Text(result!.result[i].datumTermina != null ? DateFormat('yyyy-MM-dd').format(result!.result[i].datumTermina!) : 'N/A')),
+                            DataCell(Text(result!.result[i].vrijemeTermina ?? "")),
+                            DataCell(
+                              IconButton(
+                                onPressed: () => _toggleRowVisibility(i),
+                                icon: Icon(Icons.delete),
+                                
+                              ),
+                            ),
+                          ],
+                        ),
+                  ]
+                : [],
+          ),
+        ),
       ),
-    ));
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+    
+    return MasterScreen(
+      title: "Termini",
+      child: Container(
+        child: Column(children: [_buildSearch(), _buildDataListView()]),
+      ),
+    );
   }
 }
+

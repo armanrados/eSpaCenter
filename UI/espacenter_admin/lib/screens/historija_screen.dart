@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../models/termin.dart';
 import '../utils/util.dart';
@@ -49,7 +50,7 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
         children: [
           Expanded(
             child: TextField(
-              decoration: InputDecoration(labelText: "Broj narudzbe"),
+              decoration: InputDecoration(labelText: "Broj narudžbe"),
               controller: _brojNarudzbeController,
             ),
           ),
@@ -126,7 +127,7 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                 const DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Broj narudzbe',
+                      'Broj narudžbe',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -134,7 +135,7 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                 const DataColumn(
                   label: Expanded(
                     child: Text(
-                      'Datum naruzbe',
+                      'Datum narudžbe',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -155,7 +156,7 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                               cells: [
                                 DataCell( Text(e.narudzbaID.toString())),
                                 DataCell( Text(e.brojNarudzbe.toString())),
-                                DataCell(Text(e.datumNarudzbe.toString())),
+                                  DataCell(Text(e.datumNarudzbe != null ? DateFormat('yyyy-MM-dd').format(e.datumNarudzbe!) : 'N/A')),
                                 DataCell(Text(formatNumber(e.ukupnaCijena)))
                                
 

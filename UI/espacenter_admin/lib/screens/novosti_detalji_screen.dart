@@ -3,9 +3,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:espacenter_admin/models/novost.dart';
+import 'package:espacenter_admin/models/novosti.dart';
 import 'package:espacenter_admin/providers/novost_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
+import 'package:espacenter_admin/screens/novosti_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +18,8 @@ import 'package:provider/provider.dart';
 import '../models/search_result.dart';
 
 class NovostiDetaljiScreen extends StatefulWidget {
-  Novost? novost;
-  NovostiDetaljiScreen({Key? key, this.novost}) : super(key: key);
+  Novosti? novosti;
+  NovostiDetaljiScreen({Key? key, this.novosti}) : super(key: key);
 
   @override
   State<NovostiDetaljiScreen> createState() => _NovostiDetaljiScreenState();
@@ -38,11 +39,11 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
     // TODO: implement initState
     super.initState();
     _initialValue = {
-      'novostID' : widget.novost?.novostID,
-      'naslov': widget.novost?.naslov,
-      'sadrzaj': widget.novost?.sadrzaj,
+      'novostiID' : widget.novosti?.novostiID,
+      'naslov': widget.novosti?.naslov,
+      'sadrzaj': widget.novosti?.sadrzaj,
 
-      'korisnikID': widget.novost?.korisnikID.toString()
+      'korisnikID': widget.novosti?.korisnikID.toString()
     };
 
     _novostProvider = context.read<NovostProvider>();
@@ -90,11 +91,11 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                    
 
                       try {
-                        if (widget.novost == null) {
+                        if (widget.novosti == null) {
                           await _novostProvider.insert(request);
                         } else {
                           await _novostProvider.update(
-                              widget.novost!.novostID!, request);
+                              widget.novosti!.novostiID!, request);
                         }
                       } on Exception catch (e) {
                         showDialog(
@@ -109,6 +110,9 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                                   ],
                                 ));
                       }
+                       Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const NovostScreen(),
+                      ));
                     },
                     child: Text("Sačuvaj")),
               )

@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'korisnik.dart';
@@ -13,10 +14,12 @@ class Termin {
   DateTime? datumTermina;
   String? vrijemeTermina;
   Korisnik? korisnik;
+  bool isVisible;
 
 
 
-  Termin(this.terminID, this.korisnikID, this.datumTermina,this.vrijemeTermina,this.korisnik);
+  Termin(this.terminID, this.korisnikID, this.datumTermina,this.vrijemeTermina,this.korisnik,
+  {this.isVisible = true});
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

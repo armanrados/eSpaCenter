@@ -23,7 +23,6 @@ class ZaposleniciScreen extends StatefulWidget {
 
 class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
   late KorisnikProvider _korisnikProvider;
-  late UlogaProvider _ulogaProvider;
   SearchResult<Korisnik>? result;
   TextEditingController _imeController = new TextEditingController();
 
@@ -32,7 +31,6 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _korisnikProvider = context.read<KorisnikProvider>();
-    _ulogaProvider = context.read<UlogaProvider>();
   }
 
   @override

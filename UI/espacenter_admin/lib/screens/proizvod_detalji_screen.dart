@@ -8,6 +8,7 @@ import 'package:espacenter_admin/models/vrsta_proizvoda.dart';
 import 'package:espacenter_admin/providers/proizvod_provider.dart';
 import 'package:espacenter_admin/providers/vrsta_proizvoda_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
+import 'package:espacenter_admin/screens/proizvod_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -91,15 +92,9 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                 child: ElevatedButton(
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
-
-                      print(_formKey.currentState?.value);
-                      print(_formKey.currentState?.value['naziv']);
-
                       var request = Map.from(_formKey.currentState!.value);
 
                       request['slika'] = _base64Image;
-
-                      print(request['slika']);
 
                       try {
                         if (widget.proizvod == null) {
@@ -121,6 +116,9 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                                   ],
                                 ));
                       }
+                       Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ProizvodScreen(),
+                      ));
                     },
                     child: Text("Sačuvaj")),
               )

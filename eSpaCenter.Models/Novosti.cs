@@ -10,9 +10,7 @@ namespace eSpaCenter.Models
     public class Novosti
     {
         [Browsable(false)]
-        public int NovostID { get; set; }
-        [DisplayName("Dodao zaposlenik")]
-        public string ZaposlenikIme => $"{Korisnik?.Ime} {Korisnik?.Prezime}";
+        public int NovostiID { get; set; }
         public string Naslov { get; set; }
         public string Sadrzaj { get; set; }
         [DisplayName("Slika")]

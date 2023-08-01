@@ -15,7 +15,8 @@ class Galerija {
   String? opis;
   int? korisnikID;
   Korisnik? korisnik;
-  Galerija(this.galerijaID, this.slikaByte, this.opis,this.korisnikID,this.korisnik);
+  bool isVisible;
+  Galerija(this.galerijaID, this.slikaByte, this.opis,this.korisnikID,this.korisnik,{this.isVisible = true});
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

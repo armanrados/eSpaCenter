@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'package:espacenter_admin/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:espacenter_admin/models/novost.dart';
+import 'package:espacenter_admin/models/novosti.dart';
 
 import 'package:http/http.dart' as http;
 
 import 'base_provider.dart';
 
-class NovostProvider extends BaseProvider<Novost> {
+class NovostProvider extends BaseProvider<Novosti> {
     NovostProvider(): super("Novosti");
 
    @override
-   Novost fromJson(data) {
+   Novosti fromJson(data) {
     // TODO: implement fromJson
-    return Novost.fromJson(data);
+    return Novosti.fromJson(data);
   }
 }

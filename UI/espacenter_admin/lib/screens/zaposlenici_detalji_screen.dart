@@ -8,6 +8,7 @@ import 'package:espacenter_admin/models/uloga.dart';
 import 'package:espacenter_admin/providers/korisnik_provider.dart';
 import 'package:espacenter_admin/providers/uloga_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
+import 'package:espacenter_admin/screens/zaposlenici_screen.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +118,9 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
                                   ],
                                 ));
                       }
+                       Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ZaposleniciScreen(),
+                      ));
                     },
                     child: Text("Sačuvaj")),
               )

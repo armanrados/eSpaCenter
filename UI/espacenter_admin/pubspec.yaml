@@ -42,7 +42,7 @@ dependencies:
   flutter_form_builder: ^8.0.0
   file_picker: ^5.3.1
   easy_sidemenu: ^0.4.2
-
+  shared_preferences: ^2.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

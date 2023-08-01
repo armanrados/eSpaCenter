@@ -13,9 +13,10 @@ class Proizvod {
   double? cijena;
   String? slika;
   String? opis;
+  bool isVisible;
 
   int? vrstaProizvodaID;
-  Proizvod(this.proizvodID, this.naziv, this.sifra, this.cijena, this.slika, this.vrstaProizvodaID);
+  Proizvod(this.proizvodID, this.naziv, this.sifra, this.cijena, this.slika, this.vrstaProizvodaID,{this.isVisible = true});
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

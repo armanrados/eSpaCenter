@@ -16,6 +16,7 @@ Termin _$TerminFromJson(Map<String, dynamic> json) => Termin(
       json['korisnik'] == null
           ? null
           : Korisnik.fromJson(json['korisnik'] as Map<String, dynamic>),
+      isVisible: json['isVisible'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$TerminToJson(Termin instance) => <String, dynamic>{
@@ -24,4 +25,5 @@ Map<String, dynamic> _$TerminToJson(Termin instance) => <String, dynamic>{
       'datumTermina': instance.datumTermina?.toIso8601String(),
       'vrijemeTermina': instance.vrijemeTermina,
       'korisnik': instance.korisnik,
+      'isVisible': instance.isVisible,
     };

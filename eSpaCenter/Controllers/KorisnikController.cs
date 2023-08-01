@@ -29,7 +29,9 @@ namespace eSpaCenter.Controllers
         {
             return ((IKorisnikService)_service).DeleteUloga(id, request);
         }
+
       
       
     }
 }
+ 
