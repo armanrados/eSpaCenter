@@ -152,6 +152,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{92768943-8663-310D-9B33-EE19D191E6E6}</Project>
       <Name>flutter_wrapper_plugin</Name>
     </ProjectReference>
+    <ProjectReference Include="C:\Users\Korisnik\Desktop\eSpaCenter\UI\espacenter_admin\build\windows\plugins\url_launcher_windows\url_launcher_windows_plugin.vcxproj">
+      <Project>{87739F5E-2173-323F-8AD2-E88D37E888D4}</Project>
+      <Name>url_launcher_windows_plugin</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

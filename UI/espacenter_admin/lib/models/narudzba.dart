@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'korisnik.dart';
+import 'narudzba_proizvodi.dart';
 
 /// This allows the `User` class to access private members in
 /// the generated file. The value for this is *.g.dart, where
@@ -20,7 +21,8 @@ class Narudzba {
   bool? isCanceled;
   bool? isShipped;
   String? narudzbaProizvodi;
-  Narudzba(this.narudzbaID,this.brojNarudzbe, this.datumNarudzbe, this.ukupnaCijena,this.korisnikID,this.isCanceled,this.isShipped,this.narudzbaProizvodi);
+  List<NarudzbaProizvodi>? narudzbaProizvodis;
+  Narudzba(this.narudzbaID,this.brojNarudzbe, this.datumNarudzbe, this.ukupnaCijena,this.korisnikID,this.isCanceled,this.isShipped,this.narudzbaProizvodi,this.narudzbaProizvodis);
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

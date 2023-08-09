@@ -15,5 +15,8 @@ namespace eSpaCenter.Models.Requests
         public string VrijemeTermina { get; set; }
         [Required]
         public int KorisnikID { get; set; }
+        public bool isDeleted { get; set; }
+
+
     }
 }

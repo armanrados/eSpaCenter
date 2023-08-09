@@ -17,6 +17,9 @@ Narudzba _$NarudzbaFromJson(Map<String, dynamic> json) => Narudzba(
       json['isCanceled'] as bool?,
       json['isShipped'] as bool?,
       json['narudzbaProizvodi'] as String?,
+      (json['narudzbaProizvodis'] as List<dynamic>?)
+          ?.map((e) => NarudzbaProizvodi.fromJson(e as Map<String, dynamic>))
+          .toList(),
     )..korisnik = json['korisnik'] == null
         ? null
         : Korisnik.fromJson(json['korisnik'] as Map<String, dynamic>);
@@ -31,4 +34,5 @@ Map<String, dynamic> _$NarudzbaToJson(Narudzba instance) => <String, dynamic>{
       'isCanceled': instance.isCanceled,
       'isShipped': instance.isShipped,
       'narudzbaProizvodi': instance.narudzbaProizvodi,
+      'narudzbaProizvodis': instance.narudzbaProizvodis,
     };

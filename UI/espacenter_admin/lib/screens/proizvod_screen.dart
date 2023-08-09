@@ -1,18 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:espacenter_admin/models/search_result.dart';
 import 'package:espacenter_admin/providers/proizvod_provider.dart';
 import 'package:espacenter_admin/screens/proizvod_detalji_screen.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 
 import '../models/proizvod.dart';
 import '../utils/util.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProizvodScreen extends StatefulWidget {
   const ProizvodScreen({Key? key}) : super(key: key);
@@ -24,68 +19,25 @@ class ProizvodScreen extends StatefulWidget {
 class _ProizvodScreenState extends State<ProizvodScreen> {
   late ProizvodProvider _proizvodProvider;
   SearchResult<Proizvod>? result;
-  TextEditingController _nazivController = new TextEditingController();
-  Map<int, bool> _rowVisibilityMap = {};
+  TextEditingController _nazivController = TextEditingController();
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _proizvodProvider = context.read<ProizvodProvider>();
-    _fetchData();
-
-  }
- Future<void> _fetchData() async {
-    if (_nazivController.text.isEmpty) {
-      // No search filter, fetch all data
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var data = await _proizvodProvider.get(
-        filter: {
-          'includeVrstaProizvoda': true,
-        },
-      );
-
-      setState(() {
-        result = data;
-        _loadVisibilityState(prefs); // Load visibility state from SharedPreferences
-      });
-    } else {
-      // Apply search filter
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var data = await _proizvodProvider.get(
-        filter: {
-          'naziv': _nazivController.text,
-          'includeVrstaProizvoda': true,
-        },
-      );
-
-      setState(() {
-        result = data;
-        _loadVisibilityState(prefs); // Load visibility state from SharedPreferences
-      });
-    }
-  }
- void _loadVisibilityState(SharedPreferences prefs) {
-    for (var proizvod in result!.result) {
-      bool isVisible = prefs.getBool('proizvod_${proizvod.proizvodID}') ?? true;
-      proizvod.isVisible = isVisible;
-      _rowVisibilityMap[proizvod.proizvodID!] = isVisible;
-    }
-  }
-  void _toggleRowVisibility(int index) async {
-    if (index >= 0 && index < (result?.result.length ?? 0)) {
-      Proizvod proizvod = result!.result[index];
-      setState(() {
-        proizvod.isVisible = !proizvod.isVisible;
-        _rowVisibilityMap[proizvod.proizvodID!] = proizvod.isVisible; // Update the visibility state in the map
-      });
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('proizvod_${proizvod.proizvodID}', proizvod.isVisible);
-    }
+    _loadData();
   }
 
+  Future<void> _loadData() async {
+    var data = await _proizvodProvider.get(filter: {
+      'naziv': _nazivController.text,
+      'isDeleted': false,
+    });
 
+    setState(() {
+      result = data;
+    });
+  }
 
   Widget _buildSearch() {
     return Padding(
@@ -98,17 +50,27 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
               controller: _nazivController,
             ),
           ),
-          SizedBox(width: 8,),
-        
-          ElevatedButton.icon(
-            onPressed: () async {
-              await _fetchData();
-
-            },
-            icon: Icon(Icons.search),
-            label: Text("Pretraga"),
+          SizedBox(
+            width: 8,
           ),
-          SizedBox(width: 8,),
+          ElevatedButton.icon(
+              onPressed: () async {
+                // Navigator.of(context).pop();
+
+                var data = await _proizvodProvider.get(filter: {
+                  'naziv': _nazivController.text,
+                  'isDeleted': false,
+                });
+
+                setState(() {
+                  result = data;
+                });
+              },
+              icon: Icon(Icons.search), //icon data for elevated button
+              label: Text("Pretraga")),
+          SizedBox(
+            width: 8,
+          ),
           ElevatedButton.icon(
               onPressed: () async {
                 Navigator.of(context).push(
@@ -118,118 +80,128 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                     ),
                   ),
                 );
-                
               },
               icon: Icon(Icons.add),
-              label: Text("Novi proizvod")
-          )
-              
+              label: Text("Novi proizvod"))
         ],
       ),
     );
   }
 
   Widget _buildDataListView() {
-    List<Proizvod> visibleProizvodi = result?.result != null
-        ? result!.result.where((proizvod) {
-            return _rowVisibilityMap.containsKey(proizvod.proizvodID)
-                ? _rowVisibilityMap[proizvod.proizvodID]!
-                : true;
-          }).toList()
-        : [];
     return Expanded(
-        child: SingleChildScrollView(
-      child: Container(
+      child: SingleChildScrollView(
+        child: Container(
           width: double.infinity,
-          child :DataTable(
-              columns: [
-             
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Šifra',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+          child: DataTable(
+            columns: [
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Šifra',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Naziv',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Naziv',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Cijena',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Cijena',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                 const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Opis',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Opis',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Slika',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Slika',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Izbriši',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Izbriši',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-              ],
-              rows: visibleProizvodi.map((proizvod) {
-              int index = result!.result.indexOf(proizvod);
-              return DataRow(
-                onLongPress: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ProizvodDetaljiScreen(
-                      proizvod: result!.result[index],
-                    ),
-                  ),
-                ),
-                cells: [
-                  DataCell(Text(proizvod.sifra ?? "")),
-                  DataCell(Text(proizvod.naziv ?? "")),
-                  DataCell(Text(proizvod.cijena.toString())),
-                  DataCell(Text(proizvod.opis ?? "")),
-                  DataCell((proizvod.slika != ""
-                      ? Container(
-                          width: 60,
-                          height: 145,
-                          child: imageFromBase64String(proizvod.slika!),
-                        )
-                      : Text(""))),
-                  DataCell(
-                    IconButton(
-                      onPressed: () => _toggleRowVisibility(index),
-                      icon: Icon(Icons.delete),
-                    ),
-                  ),
-                ],
-              );
-            }).toList(),
+              ),
+            ],
+            rows: result?.result
+                    .map(
+                      (Proizvod e) => DataRow(
+                         onLongPress: () => {
+                                
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProizvodDetaljiScreen(
+                                          proizvod: e,
+                                        ),
+                                      ),
+                                    )
+                                  
+                              },
+                        cells: [
+                          DataCell(Text(e.sifra ?? "")),
+                          DataCell(Text(e.naziv ?? "")),
+                          DataCell(Text(formatNumber(e.cijena))),
+                          DataCell(Text(e.opis ?? "")),
+                          DataCell((e.slika != ""
+                              ? Container(
+                                  width: 60,
+                                  height: 145,
+                                  child: imageFromBase64String(e.slika!),
+                                )
+                              : Text(""))),
+                          
+                          DataCell(
+                            IconButton(
+                              onPressed: () async {
+                                // Set the isDeleted property to true
+                                e.isDeleted = true;
+
+                                // Update the 'e' object in your provider to mark it as deleted
+                                await _proizvodProvider.update(
+                                    e.proizvodID!, e);
+                                _loadData();
+
+                                setState(() {
+                                  // No need to refresh the state here, row will be hidden
+                                });
+                              },
+                              icon: Icon(Icons.delete),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    .toList() ??
+                [],
           ),
         ),
       ),
     );
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return MasterScreen(
       title: "Proizvodi",

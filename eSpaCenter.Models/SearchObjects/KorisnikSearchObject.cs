@@ -12,5 +12,7 @@ namespace eSpaCenter.Models.SearchObjects
         public string? Prezime { get; set; }
         public string? KorisnickoIme { get; set; }
         public bool? IncludeUloge { get; set; }
+        public bool? isDeleted { get; set; }
+
     }
 }

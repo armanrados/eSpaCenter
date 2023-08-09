@@ -19,6 +19,9 @@ namespace eSpaCenter.Models
         public DateTime DatumKreiranja { get; set; }
         [Browsable(false)]
         public int KorisnikID { get; set; }
+        public bool isDeleted { get; set; }
+
+
         [Browsable(false)]
         public Korisnik Korisnik { get; set; }
     }

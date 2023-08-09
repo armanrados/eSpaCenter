@@ -31,14 +31,19 @@ namespace eSpaCenter.Services
         }
         public override IQueryable<Termin> AddFilter(IQueryable<Termin> entity, TerminSearchObject search)
         {
+            var filterQuery = base.AddFilter(entity, search);
             if (search.KorisnikID.HasValue)
             {
-                entity = entity.Where(x => x.KorisnikID == search.KorisnikID);
+                filterQuery = filterQuery.Where(x => x.KorisnikID == search.KorisnikID);
+            }
+            if (search.isDeleted.HasValue)
+            {
+                filterQuery = filterQuery.Where(x => x.isDeleted == search.isDeleted);
             }
 
-           
 
-            return entity;
+
+            return filterQuery;
         }
 
     }

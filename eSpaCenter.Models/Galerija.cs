@@ -12,6 +12,9 @@ namespace eSpaCenter.Models
         public int GalerijaID { get; set; }
         public byte[] SlikaByte { get; set; }
         public string Opis { get; set; }
+        public bool isDeleted { get; set; }
+
+
         public int KorisnikID { get; set; }
         public Korisnik Korisnik { get; set; }
     }

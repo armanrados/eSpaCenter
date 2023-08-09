@@ -18,8 +18,9 @@ class Novosti {
   int? korisnikID;
   Korisnik? korisnik;
   DateTime? datumKreiranja;
-  bool isVisible;
-  Novosti(this.novostiID, this.slika, this.sadrzaj,this.naslov,this.korisnikID,this.korisnik,this.datumKreiranja, {this.isVisible = true} );
+  bool? isDeleted;
+
+  Novosti(this.novostiID, this.slika, this.sadrzaj,this.naslov,this.korisnikID,this.korisnik,this.datumKreiranja, this.isDeleted );
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

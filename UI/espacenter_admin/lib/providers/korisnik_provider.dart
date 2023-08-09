@@ -16,4 +16,20 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
     // TODO: implement fromJson
     return Korisnik.fromJson(data);
   }
+   Future <Korisnik> Authenticate() async
+  {
+    var url = "$fullUrl/Authenticate";
+    var uri = Uri.parse(url);
+
+    var headers = createHeaders();
+    var response = await http.get(uri , headers: headers);
+    if(isValidResponse(response)){
+      var data = jsonDecode(response.body);
+      Korisnik user = fromJson(data) as Korisnik;
+      return user;
+    }
+    else{
+      throw Exception("Wrong username or password");
+    }
+  }
 }

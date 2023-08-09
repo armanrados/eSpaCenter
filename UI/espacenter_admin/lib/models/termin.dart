@@ -14,12 +14,13 @@ class Termin {
   DateTime? datumTermina;
   String? vrijemeTermina;
   Korisnik? korisnik;
-  bool isVisible;
+  bool? isDeleted;
+
 
 
 
   Termin(this.terminID, this.korisnikID, this.datumTermina,this.vrijemeTermina,this.korisnik,
-  {this.isVisible = true});
+  this.isDeleted);
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

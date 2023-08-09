@@ -25,65 +25,28 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
   late GalerijaProvider _galerijaProvider;
   SearchResult<Galerija>? result;
   TextEditingController _opisController = new TextEditingController();
-  Map<int, bool> _rowVisibilityMap = {};
+
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _galerijaProvider = context.read<GalerijaProvider>();
-    _fetchData();
+   _loadData();
   }
 
-  Future<void> _fetchData() async {
-    if (_opisController.text.isEmpty) {
-      // No search filter, fetch all data
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var data = await _galerijaProvider.get(
-        filter: {'includeKorisnik': true},
-      );
+ Future<void> _loadData() async {
+    var data = await _galerijaProvider.get(filter: {
+      'opis': _opisController.text,
+      'isDeleted': false,
+      'includeKorisnik': true
+    });
 
-      setState(() {
-        result = data;
-        _loadVisibilityState(
-            prefs); // Load visibility state from SharedPreferences
-      });
-    } else {
-      // Apply search filter
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var data = await _galerijaProvider.get(
-        filter: {'opis': _opisController.text, 'includeKorisnik': true},
-      );
-
-      setState(() {
-        result = data;
-        _loadVisibilityState(
-            prefs); // Load visibility state from SharedPreferences
-      });
-    }
+    setState(() {
+      result = data;
+    });
   }
 
-  void _loadVisibilityState(SharedPreferences prefs) {
-    for (var galerija in result!.result) {
-      bool isVisible = prefs.getBool('galerija_${galerija.galerijaID}') ?? true;
-      galerija.isVisible = isVisible;
-      _rowVisibilityMap[galerija.galerijaID!] = isVisible;
-    }
-  }
-
-  void _toggleRowVisibility(int index) async {
-    if (index >= 0 && index < (result?.result.length ?? 0)) {
-      Galerija galerija = result!.result[index];
-      setState(() {
-        galerija.isVisible = !galerija.isVisible;
-        _rowVisibilityMap[galerija.galerijaID!] =
-            galerija.isVisible; // Update the visibility state in the map
-      });
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('galerija_${galerija.galerijaID}', galerija.isVisible);
-    }
-  }
 
   Widget _buildSearch() {
     return Padding(
@@ -99,13 +62,25 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
           SizedBox(
             width: 8,
           ),
-          ElevatedButton.icon(
-            onPressed: () async {
-              await _fetchData();
-            },
-            icon: Icon(Icons.search),
-            label: Text("Pretraga"),
-          ),
+           ElevatedButton.icon(
+              onPressed: () async {
+                // Navigator.of(context).pop();
+
+                var data = await _galerijaProvider.get(filter: {
+                  'opis': _opisController.text,
+                  'isDeleted' : false,
+                  'includeKorisnik' : true
+                 
+                });
+
+                setState(() {
+                  result = data;
+                });
+
+                
+              },
+               icon: Icon(Icons.search),  //icon data for elevated button
+                 label: Text("Pretraga")),
           SizedBox(
             width: 8,
           ),
@@ -127,13 +102,7 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
   }
 
   Widget _buildDataListView() {
-    List<Galerija> visibleGalerija = result?.result != null
-        ? result!.result.where((galerija) {
-            return _rowVisibilityMap.containsKey(galerija.galerijaID)
-                ? _rowVisibilityMap[galerija.galerijaID]!
-                : true;
-          }).toList()
-        : [];
+    
     return Expanded(
         child: SingleChildScrollView(
       child: Container(
@@ -166,37 +135,57 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
             ),
           ],
           dataRowHeight: 150,
-          rows: visibleGalerija.map((galerija) {
-            int index = result!.result.indexOf(galerija);
-            return DataRow(
-              onLongPress: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => GalerijaDetaljiScreen(
-                    galerija: result!.result[index],
-                  ),
+          rows: result?.result
+                      .map((Galerija e) => DataRow(
+                         onLongPress: () => {
+                                
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            GalerijaDetaljiScreen(
+                                          galerija: e,
+                                        ),
+                                      ),
+                                    )
+                                  
+                              },
+                              
+                              cells: [
+                                
+                                 DataCell((e.slikaByte != ""
+                      ? Container(
+                          width: 200,
+                          height: 145,
+                          child: imageFromBase64String(e.slikaByte!),
+                        )
+                      : Text(""))),
+                                 DataCell(Text(e.opis ?? "")),
+                              DataCell(
+                      IconButton(
+                        onPressed: () async {
+                          // Set the isDeleted property to true
+                          e.isDeleted = true;
+
+                          // Update the 'e' object in your provider to mark it as deleted
+                          await _galerijaProvider.update(e.galerijaID!, e);
+                         _loadData();
+
+                          setState(() {
+                            // No need to refresh the state here, row will be hidden
+                          });
+                        },
+                        icon: Icon(Icons.delete),
+                       
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              cells: [
-                DataCell((galerija.slikaByte != ""
-                    ? Container(
-                        width: 200,
-                        height: 145,
-                        child: imageFromBase64String(galerija.slikaByte!),
-                      )
-                    : Text(""))),
-                DataCell(Text(galerija.opis ?? "")),
-                DataCell(
-                  IconButton(
-                    onPressed: () => _toggleRowVisibility(index),
-                    icon: Icon(Icons.delete),
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
+              )
+              .toList() ??
+              [],),
         ),
       ),
-    ));
+    );
   }
 
   @override

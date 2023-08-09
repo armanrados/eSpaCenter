@@ -19,6 +19,9 @@ namespace eSpaCenter.Models
         public DateTime DatumKreiranja { get; set; }
         [DisplayName("Vrijeme")]
         public string VrijemeTermina { get; set; }
+        public bool isDeleted { get; set; }
+
+
         [Browsable(false)]
         public bool IsBooked { get; set; }
         [Browsable(false)]

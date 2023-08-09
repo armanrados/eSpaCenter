@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:espacenter_admin/models/proizvod.dart';
 import 'package:espacenter_admin/models/vrsta_proizvoda.dart';
 import 'package:espacenter_admin/providers/proizvod_provider.dart';
@@ -10,10 +8,7 @@ import 'package:espacenter_admin/providers/vrsta_proizvoda_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:espacenter_admin/screens/proizvod_screen.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +34,6 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialValue = {
       'sifra': widget.proizvod?.sifra,
@@ -57,14 +51,9 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
-    // if (widget.product != null) {
-    //   setState(() {
-    //     _formKey.currentState?.patchValue({'sifra': widget.product?.sifra});
-    //   });
-    // }
+  
   }
 
   Future initForm() async {

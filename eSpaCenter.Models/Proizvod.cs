@@ -16,7 +16,9 @@ namespace eSpaCenter.Models
         public decimal Cijena { get; set; }
         public string Opis { get; set; }
         public byte[] Slika { get; set; }
-       
+        public bool isDeleted { get; set; }
+
+
         public int VrstaProizvodaID { get; set; }
        
         public virtual VrstaProizvoda VrstaProizvoda { get; set; }

@@ -10,6 +10,8 @@ namespace eSpaCenter.Models.SearchObjects
     {
         public int? VrstaProizvodaID { get; set; }
         public string? Naziv { get; set; }
+        public bool? isDeleted { get; set; }
+
         public bool? IncludeVrstaProizvoda { get; set; }
     }
 }

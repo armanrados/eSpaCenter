@@ -28,31 +28,53 @@ namespace eSpaCenter.Services
 
             return entity;
         }
-        public override IQueryable<Database.Korisnik> AddFilter(IQueryable<Database.Korisnik> entity, KorisnikSearchObject obj)
+        public override IQueryable<Database.Korisnik> AddFilter(IQueryable<Database.Korisnik> entity, KorisnikSearchObject search)
         {
-            if (!string.IsNullOrWhiteSpace(obj.Ime))
+            var filterQuery = base.AddFilter(entity, search);
+
+            if (!string.IsNullOrWhiteSpace(search.Ime))
             {
-                entity = entity.Where(x => x.Ime.ToLower().StartsWith(obj.Ime.ToLower()));
+                filterQuery = filterQuery.Where(x => x.Ime.ToLower().StartsWith(search.Ime.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(obj.Prezime))
+            if (!string.IsNullOrWhiteSpace(search.Prezime))
             {
-                entity = entity.Where(x => x.Prezime.ToLower().StartsWith(obj.Prezime.ToLower()));
+                filterQuery = filterQuery.Where(x => x.Prezime.ToLower().StartsWith(search.Prezime.ToLower()));
             }
 
-            if (!string.IsNullOrWhiteSpace(obj.KorisnickoIme))
+            if (!string.IsNullOrWhiteSpace(search.KorisnickoIme))
             {
-                entity = entity.Where(x => x.KorisnickoIme.StartsWith(obj.KorisnickoIme));
+                filterQuery = filterQuery.Where(x => x.KorisnickoIme.StartsWith(search.KorisnickoIme));
+            }
+            if (search.isDeleted.HasValue)
+            {
+                filterQuery = filterQuery.Where(x => x.isDeleted == search.isDeleted);
             }
 
-            return entity;
+            return filterQuery;
         }
         public override async Task BeforeInsert(Database.Korisnik entity ,KorisnikInsertRequest insert)
         {
+
             var salt = GenerateSalt();
             var hash = GenerateHash(salt, insert.Lozinka);
             entity.LozinkaSalt = salt;
             entity.LozinkaHash = hash;
+            
+           
+
+        }
+
+        public override async Task<Models.Korisnik> Insert(KorisnikInsertRequest insert)
+        {
+           var entity = await base.Insert(insert);
+            Database.KorisnikUloga korisnikUloga = new Database.KorisnikUloga();
+            korisnikUloga.UlogaID = insert.UlogeID;
+            korisnikUloga.KorisnikID = entity.KorisnikID;
+            korisnikUloga.DatumIzmjene = DateTime.Now;
+            await _db.KorisnikUlogas.AddAsync(korisnikUloga);
+            await _db.SaveChangesAsync();
+            return entity;
         }
         public static string GenerateSalt()
         {

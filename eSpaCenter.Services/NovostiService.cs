@@ -26,16 +26,22 @@ namespace eSpaCenter.Services
 
             return entity;
         }
-        public override IQueryable<Database.Novosti> AddFilter(IQueryable<Database.Novosti> entity, NovostiSearchObject obj)
+        public override IQueryable<Database.Novosti> AddFilter(IQueryable<Database.Novosti> entity, NovostiSearchObject search)
         {
-        
-            if (!string.IsNullOrWhiteSpace(obj.Naslov))
+            var filterQuery = base.AddFilter(entity, search);
+
+            if (!string.IsNullOrWhiteSpace(search.Naslov))
             {
-                entity = entity.Where(x => x.Naslov.ToLower().Contains(obj.Naslov.ToLower()));
+                filterQuery = filterQuery.Where(x => x.Naslov.ToLower().Contains(search.Naslov.ToLower()));
+            }
+            if (search.isDeleted.HasValue)
+            {
+                filterQuery = filterQuery.Where(x => x.isDeleted == search.isDeleted);
             }
 
 
-            return entity;
+
+            return filterQuery;
         }
     }
 }

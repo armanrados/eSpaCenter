@@ -15,6 +15,8 @@ namespace eSpaCenter.Services.Database
         public byte[]? Slika { get; set; }
         public DateTime DatumKreiranja { get; set; }
         public int KorisnikID { get; set; }
+        public bool isDeleted { get; set; }
+
 
         public virtual Korisnik Korisnik { get; set; } = null!;
     }

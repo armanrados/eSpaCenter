@@ -14,6 +14,8 @@ namespace eSpaCenter.Services.Database
         public string VrijemeTermina { get; set; } = null!;
         public bool IsBooked { get; set; }
         public int KorisnikID { get; set; }
+        public bool isDeleted { get; set; }
+
 
         public virtual Korisnik Korisnik { get; set; } = null!;
     }

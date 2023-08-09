@@ -15,6 +15,8 @@ namespace eSpaCenter.Services.Database
         public byte[]? Slika { get; set; }
         public string? Opis { get; set; }
         public int VrstaProizvodaID { get; set; }
+        public bool isDeleted { get; set; }
+
 
         public virtual VrstaProizvoda VrstaProizvoda { get; set; } = null!;
         public virtual ICollection<NarudzbaProizvodi> NarudzbaProizvodis { get; set; }

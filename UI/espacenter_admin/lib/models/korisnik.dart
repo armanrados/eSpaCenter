@@ -17,7 +17,10 @@ class Korisnik {
   String? korisnickoIme;
   String? lozinka;
   int? ulogaID;
-  Korisnik(this.korisnikID, this.ime, this.prezime, this.datumRodjenja, this.email, this.telefon, this.korisnickoIme, this.ulogaID, this.lozinka);
+  String? roleNames;
+  bool? isDeleted;
+
+  Korisnik(this.korisnikID, this.ime, this.prezime, this.datumRodjenja, this.email, this.telefon, this.korisnickoIme, this.ulogaID, this.lozinka,this.roleNames,this.isDeleted);
 
     /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.

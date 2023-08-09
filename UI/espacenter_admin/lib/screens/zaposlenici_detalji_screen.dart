@@ -1,19 +1,11 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:espacenter_admin/models/korisnik.dart';
 import 'package:espacenter_admin/models/uloga.dart';
 import 'package:espacenter_admin/providers/korisnik_provider.dart';
 import 'package:espacenter_admin/providers/uloga_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:espacenter_admin/screens/zaposlenici_screen.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 

@@ -17,6 +17,8 @@ namespace eSpaCenter.Services.Database
         public string KorisnickoIme { get; set; } = null!;
         public string LozinkaHash { get; set; } = null!;
         public string LozinkaSalt { get; set; } = null!;
+        public bool isDeleted { get; set; }
+
 
         public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; set; }
     }

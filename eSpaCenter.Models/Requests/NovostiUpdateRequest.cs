@@ -12,6 +12,9 @@ namespace eSpaCenter.Models.Requests
         public string Naslov { get; set; }
         public string Sadrzaj { get; set; }
         public byte[] Slika { get; set; }
+        public bool isDeleted { get; set; }
+
+
         public int KorisnikID { get; set; }
 
 

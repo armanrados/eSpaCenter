@@ -8,10 +8,7 @@ import 'package:espacenter_admin/providers/galerija_provider.dart';
 import 'package:espacenter_admin/screens/galerija_screen.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +33,6 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialValue = {
       'galerijaID' : widget.galerija?.galerijaID,
@@ -50,7 +46,6 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
   

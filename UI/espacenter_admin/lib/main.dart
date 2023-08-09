@@ -1,4 +1,3 @@
-import 'package:espacenter_admin/models/rezervacija.dart';
 import 'package:espacenter_admin/providers/galerija_provider.dart';
 import 'package:espacenter_admin/providers/korisnik_provider.dart';
 import 'package:espacenter_admin/providers/narudzba_provider.dart';
@@ -7,7 +6,6 @@ import 'package:espacenter_admin/providers/proizvod_provider.dart';
 import 'package:espacenter_admin/providers/rezervacija_provider.dart';
 import 'package:espacenter_admin/providers/termin_provider.dart';
 import 'package:espacenter_admin/providers/uloga_provider.dart';
-import 'package:espacenter_admin/screens/proizvod_screen.dart';
 import 'package:espacenter_admin/providers/vrsta_proizvoda_provider.dart';
 import 'package:espacenter_admin/screens/termini_sceen.dart';
 import 'package:espacenter_admin/utils/util.dart';
@@ -26,13 +24,6 @@ void main() {
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ChangeNotifierProvider(create: (_) => KorisnikProvider()),
       ChangeNotifierProvider(create: (_) => UlogaProvider()),
-
-
-
-
-
-
-
     ],
     child: const MyMaterialApp(),
   ));
@@ -73,8 +64,6 @@ class MyAppBar extends StatelessWidget {
   }
 }
 
-
-
 class MyMaterialApp extends StatelessWidget {
   const MyMaterialApp({Key? key}) : super(key: key);
 
@@ -94,11 +83,12 @@ class LoginPage extends StatelessWidget {
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   late ProizvodProvider _proizvodProvider;
+  late KorisnikProvider _korisnikProvider;
 
   @override
   Widget build(BuildContext context) {
     _proizvodProvider = context.read<ProizvodProvider>();
-
+    _korisnikProvider = context.read<KorisnikProvider>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Login"),
@@ -110,11 +100,15 @@ class LoginPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(children: [
-                
-               
+                 Image.asset(
+                  "assets/images/logo.png",
+                  height: 150,
+                  width: 180,
+                ),
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Username", prefixIcon: Icon(Icons.people_alt)),
+                      labelText: "Username",
+                      prefixIcon: Icon(Icons.people_alt)),
                   controller: _usernameController,
                 ),
                 SizedBox(
@@ -127,7 +121,7 @@ class LoginPage extends StatelessWidget {
                   obscureText: true,
                 ),
                 SizedBox(
-                  height: 8,
+                  height: 35,
                 ),
                 ElevatedButton(
                     onPressed: () async {
@@ -140,6 +134,8 @@ class LoginPage extends StatelessWidget {
                       Authorization.username = username;
                       Authorization.password = password;
 
+                      Authorization.korisnik =
+                          await _korisnikProvider.Authenticate();
                       try {
                         await _proizvodProvider.get();
 
@@ -148,6 +144,7 @@ class LoginPage extends StatelessWidget {
                             builder: (context) => const TerminiScreen(),
                           ),
                         );
+                       
                       } on Exception catch (e) {
                         showDialog(
                             context: context,

@@ -15,6 +15,9 @@ namespace eSpaCenter.Models.Requests
         public string Sadrzaj { get; set; }
         [Required(ErrorMessage = "Slika je obavezna!")]
         public byte[] Slika { get; set; }
+        public bool isDeleted { get; set; }
+
+
         public int KorisnikID { get; set; }
 
 

@@ -30,8 +30,22 @@ namespace eSpaCenter.Controllers
             return ((IKorisnikService)_service).DeleteUloga(id, request);
         }
 
-      
-      
+        [HttpGet("Authenticate")]
+        [AllowAnonymous]
+        public async Task<Korisnik> Authenticate()
+        {
+            string authorization = HttpContext.Request.Headers["Authorization"];
+
+            string encodedHeader = authorization["Basic ".Length..].Trim();
+
+            Encoding encoding = Encoding.GetEncoding("iso-8859-1");
+            string usernamePassword = encoding.GetString(Convert.FromBase64String(encodedHeader));
+
+            int seperatorIndex = usernamePassword.IndexOf(':');
+
+            return await ((IKorisnikService)_service).Login(usernamePassword.Substring(0, seperatorIndex), usernamePassword[(seperatorIndex + 1)..]);
+        }
+
     }
 }
  

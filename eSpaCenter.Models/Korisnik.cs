@@ -16,7 +16,10 @@ namespace eSpaCenter.Models
         public string Email { get; set; }
         public string Telefon { get; set; }
         public string KorisnickoIme { get; set; }
-    
+        public bool isDeleted { get; set; }
+
+
+        public string RoleNames => string.Join(", ", KorisnikUlogas?.Select(x => x.Uloga?.Naziv)?.ToList());
         public virtual ICollection<KorisnikUloga> KorisnikUlogas { get; set; }
 
     }

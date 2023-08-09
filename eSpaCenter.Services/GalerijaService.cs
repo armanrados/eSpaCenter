@@ -33,6 +33,11 @@ namespace eSpaCenter.Services
                 filterQuery = filterQuery.Where(x => x.Opis.ToLower().Contains(search.Opis.ToLower()));
             }
 
+            if(search.isDeleted.HasValue)
+            {
+                filterQuery = filterQuery.Where(x => x.isDeleted == search.isDeleted);
+            }    
+
             return filterQuery;
         }
     }

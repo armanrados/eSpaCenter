@@ -1,115 +1,222 @@
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
+import 'package:espacenter_mobile/providers/cart_provider.dart';
+import 'package:espacenter_mobile/providers/korisnik_provider.dart';
+import 'package:espacenter_mobile/providers/narudzba_provider.dart';
+import 'package:espacenter_mobile/providers/novosti_provider.dart';
+import 'package:espacenter_mobile/providers/proizvod_provider.dart';
+import 'package:espacenter_mobile/providers/recenzija_provider.dart';
+import 'package:espacenter_mobile/providers/rezervacija_provider.dart';
+import 'package:espacenter_mobile/providers/galerija_provider.dart';
+import 'package:espacenter_mobile/providers/termin_provider.dart';
+import 'package:espacenter_mobile/providers/uplata_provider.dart';
+import 'package:espacenter_mobile/providers/usluga_provider.dart';
+import 'package:espacenter_mobile/screens/cart_screen.dart';
+import 'package:espacenter_mobile/screens/home_screen.dart';
+import 'package:espacenter_mobile/screens/narudzbe_screen.dart';
+import 'package:espacenter_mobile/screens/novosti_detalji_screen.dart';
+import 'package:espacenter_mobile/screens/novosti_list_screen.dart';
+import 'package:espacenter_mobile/screens/proizvod_detalji_screen.dart';
+import 'package:espacenter_mobile/screens/profile_modify_screen.dart';
+import 'package:espacenter_mobile/screens/recenzija_detalji_screen.dart';
+import 'package:espacenter_mobile/screens/recenzija_dodaj_screen.dart';
+import 'package:espacenter_mobile/screens/recenzija_screen.dart';
+import 'package:espacenter_mobile/screens/rezervacija_screen.dart';
+import 'package:espacenter_mobile/screens/galerija_list_screen.dart';
+import 'package:espacenter_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+   
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => NovostiProvider()),
+      ChangeNotifierProvider(create: (_) => KorisnikProvider()),
+      ChangeNotifierProvider(create: (_) => ProizvodProvider()),
+      ChangeNotifierProvider(create: (_) => RecenzijaProvider()),
+      ChangeNotifierProvider(create: (_) => TerminProvider()),
+      ChangeNotifierProvider(create: (_) => UslugaProvider()),
+      ChangeNotifierProvider(create: (_) => GalerijaProvider()),
+      ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
+      ChangeNotifierProvider(create: (_) => CartProvider()),
+      ChangeNotifierProvider(create: (_) => UplataProvider()),
+      ChangeNotifierProvider(create: (_) => NarudzbaProvider())
+    ],
+    child: MaterialApp(
+      theme: ThemeData(primaryColor: Color.fromARGB(255, 255, 253, 253)),
+      debugShowCheckedModeBanner: true,
+      home: MyApp(),
+      onGenerateRoute: (settings) {
+        if (settings.name == NovostiListScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => NovostiListScreen()));
+        }
+        if (settings.name == GalerijaListScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => GalerijaListScreen()));
+        }
+        if (settings.name == HomeScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => HomeScreen()));
+        }
+        if (settings.name == RezervacijaScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => RezervacijaScreen()));
+        }
+        if (settings.name == RecenzijaScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => RecenzijaScreen()));
+        }
+        if (settings.name == RecenzijaDodajScreen.routeName) {
+          return MaterialPageRoute(
+              builder: ((context) => RecenzijaDodajScreen()));
+        }
+        if (settings.name == CartScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => CartScreen()));
+        }
+        if (settings.name == NarudzbeScreen.routeName) {
+          return MaterialPageRoute(builder: ((context) => NarudzbeScreen()));
+        }
+
+        var uri = Uri.parse(settings.name!);
+        if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == ProizvodDetaljiScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+              builder: (context) => ProizvodDetaljiScreen(id));
+        } else if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == NovostiDetaljiScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+              builder: (context) => NovostiDetaljiScreen(id));
+        } else if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == ProfileModifyScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+              builder: (context) => ProfileModifyScreen(id));
+        } else if (uri.pathSegments.length == 2 &&
+            "/${uri.pathSegments.first}" == RecenzijaDetaljiScreen.routeName) {
+          var id = uri.pathSegments[1];
+          return MaterialPageRoute(
+              builder: (context) => RecenzijaDetaljiScreen(id));
+        }
+      },
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  TextEditingController _username = TextEditingController();
+  TextEditingController _password = TextEditingController();
+  late KorisnikProvider _korisnikProvider;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    _korisnikProvider = Provider.of<KorisnikProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+        body: SafeArea(
+            child: SingleChildScrollView(
+      child: Container(
+        
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/logo.png"),
+                fit: BoxFit.scaleDown)),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            SizedBox(
+              height: 380,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            Padding(
+              padding: EdgeInsets.all(40),
+              child: Form(
+                key: _formKey,
+                child: Column(children: [
+                  Container(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Username ne moze biti prazno polje";
+                        } else if (value.length < 3) {
+                          return "Username ne moze da sadrzi manje od 3 karaktera";
+                        }
+                        return null;
+                      },
+                      style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+                      controller: _username,
+                      decoration: InputDecoration(
+                          fillColor: Color.fromARGB(255, 177, 173, 173).withOpacity(0.3),
+                          filled: true,
+                          border: InputBorder.none,
+                          hintText: "Username",
+                          hintStyle: TextStyle(color: Color.fromARGB(255, 11, 9, 0))),
+                    ),
+                    padding: EdgeInsets.all(8),
+                  ),
+                  Container(
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Password ne moze biti prazno polje";
+                        } else if (value.length < 4) {
+                          return "Passoword ne moze da sadrzi manje od 4 karaktera";
+                        }
+                        return null;
+                      },
+                      obscureText: true,
+                      style: TextStyle(color: Color.fromARGB(255, 1, 1, 0)),
+                      controller: _password,
+                      decoration: InputDecoration(
+                          fillColor: Color.fromARGB(255, 177, 173, 173).withOpacity(0.3),
+                          border: InputBorder.none,
+                          hintText: "Password",
+                          filled: true,
+                          hintStyle: TextStyle(color: Color.fromARGB(255, 4, 3, 0))),
+                    ),
+                    padding: EdgeInsets.all(8),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          Authorization.username = _username.text;
+                          Authorization.password = _password.text;
+
+                         Authorization.korisnik =
+                              await _korisnikProvider.Authenticate();
+
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              HomeScreen.routeName, (route) => false);
+                        } catch (e) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text(e.toString()),
+                                    actions: [
+                                      TextButton(
+                                        child: Text("Ok"),
+                                        onPressed: () => Navigator.pop(context),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color.fromARGB(255, 46, 92, 232)),
+                      child: Center(
+                          child: const Text(
+                        'Login',
+                        style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 14.0),
+                      )),
+                    ),
+                  ),
+                ]),
+              ),
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+    )));
   }
 }

@@ -1,17 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
-
 import 'package:espacenter_admin/models/narudzba.dart';
 import 'package:espacenter_admin/models/search_result.dart';
 import 'package:espacenter_admin/providers/narudzba_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-
-import '../models/termin.dart';
 import '../utils/util.dart';
 
 class NarudzbeScreen extends StatefulWidget {
@@ -25,12 +18,25 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
   late NarudzbaProvider _narudzbaProvider;
   SearchResult<Narudzba>? result;
   TextEditingController _brojNarudzbeController = new TextEditingController();
-
+  
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _narudzbaProvider = context.read<NarudzbaProvider>();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    var data = await _narudzbaProvider.get(filter: {
+      'brojNarudzbe': _brojNarudzbeController.text,
+      'includeKorisnik': true,
+      'includeNarudzbaProizvodi': true,
+      'includeUplata': true,
+    });
+
+    setState(() {
+      result = data;
+    });
   }
 
   @override
@@ -57,29 +63,23 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
           SizedBox(
             width: 8,
           ),
-        
           ElevatedButton.icon(
               onPressed: () async {
                 // Navigator.of(context).pop();
 
                 var data = await _narudzbaProvider.get(filter: {
                   'brojNarudzbe': _brojNarudzbeController.text,
-                  'includeKorisnik' : true,
-                  'includeNarudzbaProizvodi' : true,
-                  'includeUplata' : true,
-                 
+                  'includeKorisnik': true,
+                  'includeNarudzbaProizvodi': true,
+                  'includeUplata': true,
                 });
 
                 setState(() {
                   result = data;
                 });
-
-                
               },
-               icon: Icon(Icons.search),  //icon data for elevated button
-                 label: Text("Pretraga")),
-      
-              
+              icon: Icon(Icons.search), //icon data for elevated button
+              label: Text("Pretraga")),
         ],
       ),
     );
@@ -89,50 +89,43 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
     return Expanded(
         child: SingleChildScrollView(
       child: Container(
-          width: double.infinity,
-          child :DataTable(
-              columns: [
-             
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Broj narudžbe',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+        width: double.infinity,
+        child: DataTable(
+            columns: [
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Broj narudžbe',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Datum narudžbe',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Datum narudžbe',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Ukupna cijena',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
+              ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Ukupna cijena',
+                    style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                
-              ],
-                rows: result?.result
-                      .map((Narudzba e) => DataRow(
-                              
-                              cells: [
-                                
-                                DataCell( Text(e.brojNarudzbe.toString())),
-                                 DataCell(Text(e.datumNarudzbe != null ? DateFormat('yyyy-MM-dd').format(e.datumNarudzbe!) : 'N/A')),
-                                DataCell(Text(formatNumber(e.ukupnaCijena)))
-                               
-
-                              ]))
-                      .toList() ??
-                  []),
-        
+              ),
+            ],
+            rows: result?.result
+                    .map((Narudzba e) => DataRow(cells: [
+                          DataCell(Text(e.brojNarudzbe.toString())),
+                          DataCell(Text(
+                              formatDate(e.datumNarudzbe ?? DateTime.now()))),
+                          DataCell(Text(formatNumber(e.ukupnaCijena)))
+                        ]))
+                    .toList() ??
+                []),
       ),
     ));
   }

@@ -18,6 +18,8 @@ namespace eSpaCenter.Models.Requests
         [Required]
         public string Email { get; set; }
         public string Telefon { get; set; }
+        public bool isDeleted { get; set; }
+
         public string Uloga { get; set; }
         public int UlogeID { get; set; }
     }

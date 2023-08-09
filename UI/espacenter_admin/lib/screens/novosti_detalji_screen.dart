@@ -1,21 +1,15 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:espacenter_admin/models/novosti.dart';
 import 'package:espacenter_admin/providers/novost_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:espacenter_admin/screens/novosti_screen.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../models/search_result.dart';
 
 class NovostiDetaljiScreen extends StatefulWidget {
   Novosti? novosti;
@@ -36,13 +30,11 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialValue = {
       'novostiID' : widget.novosti?.novostiID,
       'naslov': widget.novosti?.naslov,
       'sadrzaj': widget.novosti?.sadrzaj,
-
       'korisnikID': widget.novosti?.korisnikID.toString()
     };
 
@@ -52,7 +44,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
 
   
@@ -168,6 +159,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                 name: "sadrzaj",
               ),
             ),
+         
             SizedBox(width: 10,),
             Expanded(
               child: FormBuilderTextField(

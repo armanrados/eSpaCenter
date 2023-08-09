@@ -1,23 +1,12 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:espacenter_admin/models/termin.dart';
 import 'package:espacenter_admin/providers/termin_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:espacenter_admin/screens/termini_sceen.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
-import '../models/search_result.dart';
 
 class TerminDetaljiScreen extends StatefulWidget {
   Termin? termin;
@@ -51,7 +40,6 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 

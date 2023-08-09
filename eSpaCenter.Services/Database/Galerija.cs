@@ -12,7 +12,7 @@ namespace eSpaCenter.Services.Database
         public byte[]? SlikaByte { get; set; }
         public string? Opis { get; set; }
         public int KorisnikID { get; set; }
-
+        public bool isDeleted { get; set; }
         public virtual Korisnik Korisnik { get; set; } = null!;
     }
 }

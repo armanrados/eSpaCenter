@@ -10,6 +10,8 @@ namespace eSpaCenter.Models.SearchObjects
     {
         public string? Naslov { get; set; }
         public int? KorisnikID { get; set; }
+        public bool? isDeleted { get; set; }
+
         public bool? IncludeKorisnik { get; set; }
     }
 }

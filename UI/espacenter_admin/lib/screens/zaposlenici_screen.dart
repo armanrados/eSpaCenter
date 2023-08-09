@@ -3,16 +3,11 @@
 import 'package:espacenter_admin/models/korisnik.dart';
 import 'package:espacenter_admin/models/search_result.dart';
 import 'package:espacenter_admin/providers/korisnik_provider.dart';
-import 'package:espacenter_admin/providers/uloga_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
 import 'package:espacenter_admin/screens/zaposlenici_detalji_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/util.dart';
 
 class ZaposleniciScreen extends StatefulWidget {
   const ZaposleniciScreen({Key? key}) : super(key: key);
@@ -31,6 +26,18 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _korisnikProvider = context.read<KorisnikProvider>();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    var data = await _korisnikProvider.get(filter: {
+      'korisnickoIme': _imeController.text,
+      'includeUloge': true,
+    });
+
+    setState(() {
+      result = data;
+    });
   }
 
   @override
@@ -114,16 +121,7 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
                   ),
                   
                 ),
-                 const DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Uloga',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  
-                ),
-            
+                 
              
               ],
               rows: result?.result
@@ -142,9 +140,8 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
                                       }
                                   },
                               cells: [
-                                DataCell(Text(e.korisnickoIme ?? "")),
-                                DataCell(Text(e.ulogaID.toString())),
-
+                                DataCell(Text(e.korisnickoIme ?? ""))
+                                
 
                               ]))
                       .toList() ??

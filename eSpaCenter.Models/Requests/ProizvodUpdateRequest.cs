@@ -17,6 +17,9 @@ namespace eSpaCenter.Models.Requests
         public byte[] Slika { get; set; }
         [Required]
         public string Opis { get; set; }
+        public bool isDeleted { get; set; }
+
+
         [Required]
         public int VrstaProizvodaID { get; set; }
     }
