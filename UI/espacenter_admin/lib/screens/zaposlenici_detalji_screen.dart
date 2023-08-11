@@ -91,12 +91,14 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
 
                 
                       try {
+                        Korisnik updatedEmployee;
                         if (widget.korisnik == null) {
-                          await _korisnikProvider.insert(request);
+                         updatedEmployee =  await _korisnikProvider.insert(request);
                         } else {
-                          await _korisnikProvider.update(
+                          updatedEmployee =  await _korisnikProvider.update(
                               widget.korisnik!.korisnikID!, request);
                         }
+                         Navigator.pop(context, updatedEmployee);
                       } on Exception catch (e) {
                         showDialog(
                             context: context,
@@ -110,9 +112,7 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
                                   ],
                                 ));
                       }
-                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ZaposleniciScreen(),
-                      ));
+                     
                     },
                     child: Text("Sačuvaj")),
               )

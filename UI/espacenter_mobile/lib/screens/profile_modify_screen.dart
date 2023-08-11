@@ -85,7 +85,7 @@ class _ProfileModifyScreenState extends State<ProfileModifyScreen> {
                             Navigator.pop(context, true);
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Profil uspjesno uredjen")));
+                                    content: Text("Profil uspješno uređen")));
                           }
                         },
                         child: Text("Spasi promjene",

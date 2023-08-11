@@ -98,7 +98,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
       title: Text("${item.brojNarudzbe}", style: TextStyle(fontSize: 14),),
       subtitle: Text(
           "Proizvodi: ${item.narudzbaProizvodi}"),
-      trailing: Text("${formatNumber(item.ukupnaCijena)} KM"),
+      trailing: Text("${item.ukupnaCijena} KM"),
     );
   }
 }

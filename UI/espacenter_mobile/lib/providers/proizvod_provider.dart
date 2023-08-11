@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:espacenter_mobile/models/proizvod.dart';
-import 'package:http/http.dart' as http;
+
 import '../utils/util.dart';
 import 'base_provider.dart';
 
@@ -14,11 +14,11 @@ class ProizvodProvider extends BaseProvider<Proizvod> {
   }
   Future<List<Proizvod>> Recommend() async{
 
-    var uri = Uri.parse("$fullUrl/${Authorization.korisnik!.korisnikID}/recommended");
+    var uri = Uri.parse("$fullUrl/${Authorization.korisnik!.korisnikID}/Recommended");
 
     Map<String , String> headers = createHeaders();
 
-    var response = await http.get(uri , headers: headers);
+    var response = await http!.get(uri , headers: headers);
 
     if(isValidResponse(response)){
       var data = jsonDecode(response.body);

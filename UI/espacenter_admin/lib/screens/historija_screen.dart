@@ -204,7 +204,7 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                           DataCell(Text(e.brojNarudzbe.toString())),
                           DataCell(Text(
                               formatDate(e.datumNarudzbe ?? DateTime.now()))),
-                          DataCell(Text(formatNumber(e.ukupnaCijena)))
+                          DataCell(Text(e.ukupnaCijena.toString()))
                         ]))
                     .toList() ??
                 []),

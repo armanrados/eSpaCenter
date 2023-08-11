@@ -16,6 +16,7 @@ namespace eSpaCenter.Models.Requests
         [Required]
         public int KorisnikID { get; set; }
         public bool isDeleted { get; set; }
+        public bool isBooked { get; set; }
 
 
     }

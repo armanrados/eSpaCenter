@@ -20,7 +20,7 @@ namespace eSpaCenter.Models.Requests
         public string Telefon { get; set; }
         public bool isDeleted { get; set; }
 
-        public string Uloga { get; set; }
-        public int UlogeID { get; set; }
+        public string? Uloga { get; set; }
+        public int? UlogeID { get; set; }
     }
 }

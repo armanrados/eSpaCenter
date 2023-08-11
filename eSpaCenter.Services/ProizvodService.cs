@@ -83,7 +83,7 @@ namespace eSpaCenter.Services
 
             if (products.Distinct().Count() >= 2)
             {
-                var list = products.Distinct();
+                var list = products.Distinct().ToList();
                 Random rand = new Random();
                 int r = rand.Next(list.Count() - 1);
                 id = products.ElementAt(r);

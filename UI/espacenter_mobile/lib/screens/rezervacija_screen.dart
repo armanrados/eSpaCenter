@@ -1,3 +1,4 @@
+import 'package:espacenter_mobile/providers/termin_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -18,12 +19,13 @@ class RezervacijaScreen extends StatefulWidget {
 class _RezervacijaScreenState extends State<RezervacijaScreen> {
   RezervacijaProvider? _rezervacijaProvider;
   List<Rezervacija> list = [];
-
+  TerminProvider? _terminProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _rezervacijaProvider = context.read<RezervacijaProvider>();
+    _terminProvider = context.read<TerminProvider>();
     loadData();
   }
 
@@ -84,10 +86,14 @@ class _RezervacijaScreenState extends State<RezervacijaScreen> {
             "terminID": item.terminID,
             "uslugaID": item.uslugaID,
             "isCanceled": true,
-            "isArchived": false
+            "isArchived": false,
+            'isBooked' : false
           };
-
+          Map terminUpdate = {
+          "isBooked": false,  // Reset isBooked to false
+        };
           await _rezervacijaProvider!.update(item.rezervacijaID!, update);
+          await _terminProvider!.update(item.terminID!, terminUpdate); 
           loadData();
           ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text("Rezervacija otkazana")));

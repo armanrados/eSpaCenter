@@ -13,7 +13,7 @@ import '../utils/util.dart';
 import 'cart_screen.dart';
 
 class ProizvodScreen extends StatefulWidget {
-  const ProizvodScreen({Key? key}): super(key: key);
+  const ProizvodScreen({Key? key}) : super(key: key);
   static const String routeName = "/proizvod";
 
   @override
@@ -21,7 +21,7 @@ class ProizvodScreen extends StatefulWidget {
 }
 
 class _ProizvodScreenState extends State<ProizvodScreen> {
- TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
   ProizvodProvider? _proizvodProvider;
   CartProvider? _cartProvider;
   NarudzbaProvider? _narudzbaProvider;
@@ -40,32 +40,29 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
 
   Future loadData() async {
     var narudzbe = await _narudzbaProvider!.get({
-      'includeKorisnik':true,
-      'includeNarudzbaProizvodi':true,
-      'includeUplata':true
+      'includeKorisnik': true,
+      'includeNarudzbaProizvodi': true,
+      'includeUplata': true
     });
     var korisnikNarudzbe = await _narudzbaProvider!.get({
-      'korisnikID':Authorization.korisnik!.korisnikID,
-      'includeKorisnik':true,
-      'includeNarudzbaProizvodi':true,
-      'includeUplata':true});
+      'korisnikID': Authorization.korisnik!.korisnikID,
+      'includeKorisnik': true,
+      'includeNarudzbaProizvodi': true,
+      'includeUplata': true
+    });
     List<Proizvod> tmpData = [];
-    if(korisnikNarudzbe.length >= 1 && narudzbe.length >= 2)
-    {
+    if (korisnikNarudzbe.length >= 1 && narudzbe.length >= 2) {
       tmpData = await _proizvodProvider!.Recommend();
+    } else {
+      tmpData = await _proizvodProvider!
+          .get({'includeVrstaProizvoda': true, 'isDeleted': false});
     }
-    else{
-      tmpData = await _proizvodProvider!.get({'includeVrstaProizvoda':true, 'isDeleted': false});
-    }
-    setState((){
-      if(korisnikNarudzbe.length >= 1 && narudzbe.length >= 2)
-      {
+    setState(() {
+      if (korisnikNarudzbe.length >= 1 && narudzbe.length >= 2) {
         recommendedData = tmpData;
-      }
-      else{
+      } else {
         proizvodData = tmpData;
       }
-
     });
   }
 
@@ -73,27 +70,20 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: Text("Proizvodi"),
-        backgroundColor: Color.fromARGB(255, 23, 121, 251),
-      ),
+          title: Text("Proizvodi"),
+          backgroundColor: Color.fromARGB(255, 23, 121, 251),
+        ),
         body: SafeArea(
+          child: SingleChildScrollView(
+              child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
             child: Container(
-          height: MediaQuery.of(context).size.height - 100,
-          child: Column(children: [
-            _buildProductSearch(),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 4,
-                crossAxisSpacing: 4,
-                children: 
-                _buildProducts(),
-          ),
-            ))
-          ]),
-        )),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [_buildProductSearch(), ..._buildProducts()]),
+            ),
+          )),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(context, CartScreen.routeName);
@@ -103,9 +93,7 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
         ));
   }
 
- 
-
-   Widget _buildProductSearch() {
+  Widget _buildProductSearch() {
     return Row(
       children: [
         Expanded(
@@ -116,42 +104,44 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
               decoration: InputDecoration(
                   hintText: "Pretraži",
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 33, 103, 243)),
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusedBorder:OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 33, 103, 243)),
-                    borderRadius: BorderRadius.circular(10)) ,
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 33, 103, 243)),
+                      borderRadius: BorderRadius.circular(10)),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Color.fromARGB(255, 33, 103, 243)),
+                      borderRadius: BorderRadius.circular(10)),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: Color.fromARGB(255, 33, 103, 243)))),
+                      borderSide: BorderSide(
+                          color: Color.fromARGB(255, 33, 103, 243)))),
             ),
           ),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: IconButton(
-            icon: Icon(Icons.search_rounded, color: Color.fromARGB(255, 33, 103, 243),),
+            icon: Icon(
+              Icons.search_rounded,
+              color: Color.fromARGB(255, 33, 103, 243),
+            ),
             onPressed: () async {
-                var tmpData = await _proizvodProvider?.get({'naziv': _searchController.text});
-                var tmpNarudzbe = await _narudzbaProvider?.get({
-                  'includeKorisnik':true,
-                  'includeNarudzbaProizvodi':true,
-                  'includeUplata':true
-                });
-                setState(() {
-                  if(_searchController.text != "")
-                  {
-                    proizvodData = tmpData!;
-                  }
-                  else if(tmpNarudzbe!.length < 2)
-                  {
-                    proizvodData = tmpData!;
-                  }
-                  else{
-                    proizvodData = [];
-                  }
-                });
+              var tmpData = await _proizvodProvider
+                  ?.get({'naziv': _searchController.text});
+              var tmpNarudzbe = await _narudzbaProvider?.get({
+                'includeKorisnik': true,
+                'includeNarudzbaProizvodi': true,
+                'includeUplata': true
+              });
+              setState(() {
+                if (_searchController.text != "") {
+                  proizvodData = tmpData!;
+                } else if (tmpNarudzbe!.length < 2) {
+                  proizvodData = tmpData!;
+                } else {
+                  proizvodData = [];
+                }
+              });
             },
           ),
         )
@@ -162,122 +152,171 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
   List<Widget> _buildProducts() {
     List<Widget> list = [];
 
-    if(proizvodData.isEmpty && recommendedData.isEmpty)
-    {
+    if (proizvodData.isEmpty && recommendedData.isEmpty) {
       return [Text("Proizvodi se učitavaju...")];
     }
-    if(proizvodData.isEmpty && _searchController.text == "")
-    {
+    if (proizvodData.isEmpty && _searchController.text == "") {
       list = recommendedData
-        .map((e) => Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Preporucen proizvod"),
-                    SizedBox(height: 5,),
-                    Expanded(
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context,
-                                "${ProizvodDetaljiScreen.routeName}/${e.proizvodID}");
-                          },
-                          child: Container(
-                            child: imageFromBase64String(e.slika!),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      e.naziv!,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(height: 5,),
-                    Text(
-                      '${formatNumber(e.cijena)} KM',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 33, 103, 243)
-                        ),
-                        onPressed: () {
-                          _cartProvider?.addToCart(e);
-                        },
-                        icon: Icon(
-                          // <-- Icon
-                          Icons.shopping_cart,
-                          size: 24.0,
-                        ),
-                        label: Text('Dodaj u korpu'), // <-- Text
+          .map((e) => Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context,
+                          "${ProizvodDetaljiScreen.routeName}/${e.proizvodID}");
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              child: Text("Preporučen proizvod"),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Container(
+                              height: 200,
+                              width: double.infinity,
+                              child: imageFromBase64String(e.slika!),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.naziv!,
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Color.fromARGB(
+                                          255,
+                                          0,
+                                          0,
+                                          0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      '${formatNumber(e.cijena)} KM',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ]),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 103, 243)),
+                                  onPressed: () {
+                                    _cartProvider?.addToCart(e);
+                                  },
+                                  icon: Icon(
+                                    // <-- Icon
+                                    Icons.shopping_cart,
+                                    size: 24.0,
+                                  ),
+                                  label: Text('Dodaj u korpu'),
+                                ))
+                          ]),
                     ),
-                  ],
-                ),
-              ),
-            ))
-        .cast<Widget>()
-        .toList();
-    }
-    else{
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              ))
+          .cast<Widget>()
+          .toList();
+    } else {
       list = proizvodData
-        .map((e) => Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(4),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context,
-                                "${ProizvodDetaljiScreen.routeName}/${e.proizvodID}");
-                          },
-                          child: Container(
-                            child: imageFromBase64String(e.slika!),
-                          )),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      e.naziv!,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    SizedBox(height: 5,),
-                    Text(
-                      '${formatNumber(e.cijena)} KM',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 33, 103, 243)
-                        ),
-                        onPressed: () {
-                          _cartProvider?.addToCart(e);
-                        },
-                        icon: Icon(
-                          // <-- Icon
-                          Icons.shopping_cart,
-                          size: 24.0,
-                        ),
-                        label: Text('Dodaj u korpu'), // <-- Text
+          .map((e) =>  Column(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context,
+                          "${ProizvodDetaljiScreen.routeName}/${e.proizvodID}");
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                          
+                            Container(
+                              height: 200,
+                              width: double.infinity,
+                              child: imageFromBase64String(e.slika!),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      e.naziv!,
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Color.fromARGB(
+                                          255,
+                                          0,
+                                          0,
+                                          0,
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 20,
+                                    ),
+                                    Text(
+                                      '${formatNumber(e.cijena)} KM',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall,
+                                    ),
+                                  ]),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: ElevatedButton.icon(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 33, 103, 243)),
+                                  onPressed: () {
+                                    _cartProvider?.addToCart(e);
+                                  },
+                                  icon: Icon(
+                                    // <-- Icon
+                                    Icons.shopping_cart,
+                                    size: 24.0,
+                                  ),
+                                  label: Text('Dodaj u korpu'),
+                                ))
+                          ]),
                     ),
-                  ],
-                ),
-              ),
-            ))
-        .cast<Widget>()
-        .toList();
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              ))
+          .cast<Widget>()
+          .toList();
     }
 
     return list;

@@ -100,7 +100,7 @@ class LoginPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(children: [
-                 Image.asset(
+                Image.asset(
                   "assets/images/logo.png",
                   height: 150,
                   width: 180,
@@ -138,13 +138,30 @@ class LoginPage extends StatelessWidget {
                           await _korisnikProvider.Authenticate();
                       try {
                         await _proizvodProvider.get();
-
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const TerminiScreen(),
-                          ),
-                        );
-                       
+                        if (Authorization.korisnik?.isDeleted == false) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const TerminiScreen(),
+                            ),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              title: Text('Upozorenje'),
+                              content: Text("Ovaj korisnik ne postoji!"),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the alert
+                                  },
+                                  child: Text('OK'),
+                                )
+                              ],
+                            ),
+                          );
+                        }
                       } on Exception catch (e) {
                         showDialog(
                             context: context,

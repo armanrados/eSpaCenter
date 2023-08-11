@@ -16,7 +16,7 @@ namespace eSpaCenter.Models.Requests
         [Required]
         public int UslugaID { get; set; }
         [Required]
-        public DateTime DatumRezervacije { get; set; }
+        public DateTime DatumRezervacije { get; set; } = DateTime.Now;
         public bool IsCanceled { get; set; }
         public bool IsCompleted { get; set; }
     }

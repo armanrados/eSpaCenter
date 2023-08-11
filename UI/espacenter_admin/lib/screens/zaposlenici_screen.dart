@@ -33,6 +33,7 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
     var data = await _korisnikProvider.get(filter: {
       'korisnickoIme': _imeController.text,
       'includeUloge': true,
+      'isDeleted': false
     });
 
     setState(() {
@@ -71,8 +72,8 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
 
                 var data = await _korisnikProvider.get(filter: {
                   'korisnickoIme': _imeController.text,
-                  'includeUloge' : true
-                 
+                  'includeUloge' : true,
+                  'isDeleted' : false
                 });
 
                 setState(() {
@@ -121,26 +122,37 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
                   ),
                   
                 ),
+                 const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Izbriši',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
                  
              
               ],
               rows: result?.result
                       .map((Korisnik e) => DataRow(
-                              onLongPress: ()  => {
-                                   
-                                      {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ZaposleniciDetaljiScreen(
-                                              korisnik: e,
-                                            ),
-                                          ),
-                                        )
-                                      }
-                                  },
+                              
                               cells: [
-                                DataCell(Text(e.korisnickoIme ?? ""))
+                                DataCell(Text(e.korisnickoIme ?? "")),
+                                 DataCell(
+                            IconButton(
+                              onPressed: () async {
+                                e.isDeleted = true;
+
+                                await _korisnikProvider.update(
+                                    e.korisnikID!, e);
+                                await _loadData();
+                              
+                                setState(() {
+                                });
+                              },
+                              icon: Icon(Icons.delete),
+                            ),
+                          ),
                                 
 
                               ]))

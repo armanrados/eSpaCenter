@@ -19,7 +19,7 @@ Image imageFromBase64String(String base64Image) {
 String formatDate(DateTime date) => new DateFormat("dd/MM/yyyy").format(date);
 
 String formatNumber(dynamic) {
-  var f = NumberFormat('###,00');
+  var f = NumberFormat('####,00');
 
   if (dynamic == null) {
     return "";
