@@ -8,4 +8,5 @@ class RezervacijaProvider extends BaseProvider<Rezervacija> {
    Rezervacija fromJson(data) {
     return Rezervacija.fromJson(data);
   }
+  
 }

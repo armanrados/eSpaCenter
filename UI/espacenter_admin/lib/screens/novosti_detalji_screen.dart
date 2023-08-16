@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-
 class NovostiDetaljiScreen extends StatefulWidget {
   Novosti? novosti;
   NovostiDetaljiScreen({Key? key, this.novosti}) : super(key: key);
@@ -25,14 +24,14 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
 
   late NovostProvider _novostProvider;
 
-
   bool isLoading = true;
+  bool _imageSelected = false;
 
   @override
   void initState() {
     super.initState();
     _initialValue = {
-      'novostiID' : widget.novosti?.novostiID,
+      'novostiID': widget.novosti?.novostiID,
       'naslov': widget.novosti?.naslov,
       'sadrzaj': widget.novosti?.sadrzaj,
       'korisnikID': widget.novosti?.korisnikID.toString()
@@ -45,19 +44,14 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-  
   }
-  Future initForm() async {
-   
 
+  Future initForm() async {
     setState(() {
       isLoading = false;
     });
   }
 
-
- 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
@@ -74,12 +68,26 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
 
-
+                      if (!_imageSelected) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text("Upozorenje"),
+                            content:
+                                Text("Slika je obavezna!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("OK"),
+                              )
+                            ],
+                          ),
+                        );
+                        return; 
+                      }
                       var request = Map.from(_formKey.currentState!.value);
 
                       request['slika'] = _base64Image;
-
-                   
 
                       try {
                         if (widget.novosti == null) {
@@ -101,7 +109,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                                   ],
                                 ));
                       }
-                       Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const NovostScreen(),
                       ));
                     },
@@ -120,8 +128,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
       key: _formKey,
       initialValue: _initialValue,
       child: Column(children: [
-     
-    
         Row(
           children: [
             Expanded(
@@ -130,8 +136,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
               builder: ((field) {
                 return InputDecorator(
                   decoration: InputDecoration(
-                      label: Text('Slika'),
-                      errorText: field.errorText),
+                      label: Text('Slika'), errorText: field.errorText),
                   child: ListTile(
                     leading: Icon(Icons.photo),
                     title: Text("Odaberite sliku"),
@@ -143,33 +148,38 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
             ))
           ],
         ),
-            Row(
+        Row(
           children: [
-           
             Expanded(
               child: FormBuilderTextField(
                 decoration: InputDecoration(labelText: "Naslov"),
                 name: "naslov",
               ),
             ),
-            SizedBox(width: 10,),
-             Expanded(
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
               child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Sadrzaj"),
+                decoration: InputDecoration(labelText: "Sadržaj"),
                 name: "sadrzaj",
               ),
             ),
-         
-            SizedBox(width: 10,),
+          ],
+        ),
+        Row(
+          children: [
             Expanded(
               child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Korisnik"),
+                decoration: InputDecoration(
+                    labelText: "ID Zaposlenika",
+                    hintText: "Unesite ID u stilu: 1"),
                 name: "korisnikID",
               ),
             ),
           ],
         ),
-     
       ]),
     );
   }
@@ -183,6 +193,9 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
     if (result != null && result.files.single.path != null) {
       _image = File(result.files.single.path!);
       _base64Image = base64Encode(_image!.readAsBytesSync());
+      _imageSelected = true;
+      setState(() {});
+
     }
   }
 }

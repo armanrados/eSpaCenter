@@ -20,7 +20,7 @@ namespace eSpaCenter.Models.Requests
         public bool isDeleted { get; set; }
 
 
-        [Required]
+        [Required(ErrorMessage = "Odabir vrste je obavezan!")]
         public int VrstaProizvodaID { get; set; }
     }
 }

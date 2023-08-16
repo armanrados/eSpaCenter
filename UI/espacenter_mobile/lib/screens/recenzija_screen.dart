@@ -45,21 +45,24 @@ RecenzijaProvider? _recenzijaProvider ;
         backgroundColor: Color.fromARGB(255, 23, 121, 251)
       ),
       body: SafeArea(
-            child: Container(
-          height: MediaQuery.of(context).size.height - 100,
-          child: Column(children: [
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                children: _buildRecenzije(),
-              ),
-            ))
-          ]),
-        )),
+            child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: _buildRecenzije(),
+                      ),
+                    ),
+                  )
+                ]),
+          ),
+        ),
+      ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             var refresh = await Navigator.pushNamed(context, RecenzijaDodajScreen.routeName);
@@ -83,14 +86,37 @@ RecenzijaProvider? _recenzijaProvider ;
           },
           child: 
         Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
-                    Text("${e.korisnik!.ime} ${e.korisnik!.prezime}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),),
-                    RatingBar(
+                     Container(
+                            padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              Text(
+                                "${e.korisnik!.ime} ${e.korisnik!.prezime}",
+                                style: TextStyle(
+                                  fontSize: 21,
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                ),
+                              ),
+                              Container(
+                                height: 20,
+                              ),
+                              Text(
+                                "${e.sadrzajRecenzije}" , overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 14, color: Color.fromARGB(255, 0, 0, 0)),)])),
+                              Container(
+                                height: 20,
+                              ),
+                              Container(child: RatingBar(
                       ignoreGestures: true,
                       itemSize:24,
                       maxRating: 5,
@@ -102,13 +128,12 @@ RecenzijaProvider? _recenzijaProvider ;
                       empty:Icon(Icons.star,color: Colors.grey))
                     , onRatingUpdate: (rate){
                       rating = rate.toInt();
-                    }),
-                    SizedBox(height: 15,),
-                    Expanded(child:Text("${e.sadrzajRecenzije}" , overflow: TextOverflow.ellipsis,) ,)
+                    })),
+                
                   ],
                 ),
               ),
-            )),)
+            ))
         .cast<Widget>()
         .toList();
 

@@ -98,7 +98,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
               const DataColumn(
                 label: Expanded(
                   child: Text(
-                    'ID',
+                    'ID Zaposlenika',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),

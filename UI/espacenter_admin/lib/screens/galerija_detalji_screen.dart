@@ -27,7 +27,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
   Map<String, dynamic> _initialValue = {};
 
   late GalerijaProvider _galerijaProvider;
-
+  bool _imageSelected = false;
 
   bool isLoading = true;
 
@@ -35,7 +35,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
   void initState() {
     super.initState();
     _initialValue = {
-      'galerijaID' : widget.galerija?.galerijaID,
+      'galerijaID': widget.galerija?.galerijaID,
       'opis': widget.galerija?.opis,
       'korisnikID': widget.galerija?.korisnikID.toString()
     };
@@ -47,19 +47,14 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-  
   }
-  Future initForm() async {
-   
 
+  Future initForm() async {
     setState(() {
       isLoading = false;
     });
   }
 
-
- 
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
@@ -76,12 +71,26 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
 
+                      if (!_imageSelected) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text("Upozorenje"),
+                            content: Text("Slika je obavezna!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("OK"),
+                              )
+                            ],
+                          ),
+                        );
+                        return;
+                      }
 
                       var request = Map.from(_formKey.currentState!.value);
 
                       request['slikaByte'] = _base64Image;
-
-                   
 
                       try {
                         if (widget.galerija == null) {
@@ -103,7 +112,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                                   ],
                                 ));
                       }
-                       Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const GalerijaScreen(),
                       ));
                     },
@@ -122,8 +131,6 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
       key: _formKey,
       initialValue: _initialValue,
       child: Column(children: [
-     
-    
         Row(
           children: [
             Expanded(
@@ -132,8 +139,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
               builder: ((field) {
                 return InputDecorator(
                   decoration: InputDecoration(
-                      label: Text('Slika'),
-                      errorText: field.errorText),
+                      label: Text('Slika'), errorText: field.errorText),
                   child: ListTile(
                     leading: Icon(Icons.photo),
                     title: Text("Odaberite sliku"),
@@ -145,25 +151,28 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
             ))
           ],
         ),
-            Row(
+        Row(
           children: [
-           
             Expanded(
               child: FormBuilderTextField(
                 decoration: InputDecoration(labelText: "Opis"),
                 name: "opis",
               ),
             ),
-            SizedBox(width: 10,),
+          ],
+        ),
+        Row(
+          children: [
             Expanded(
               child: FormBuilderTextField(
-                decoration: InputDecoration(labelText: "Korisnik"),
+                decoration: InputDecoration(
+                    labelText: "ID Zaposlenika",
+                    hintText: "Unesite ID u stilu: 1 "),
                 name: "korisnikID",
               ),
             ),
           ],
-        ),
-     
+        )
       ]),
     );
   }
@@ -177,6 +186,8 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
     if (result != null && result.files.single.path != null) {
       _image = File(result.files.single.path!);
       _base64Image = base64Encode(_image!.readAsBytesSync());
+      _imageSelected = true;
+      setState(() {});
     }
   }
 }

@@ -32,7 +32,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
       'includeTermin': true,
       'includeKorisnik': true,
       'includeUsluga': true,
-      'isCompleted': false
+      'isCompleted': false,
+      'isCanceled': false
     });
 
     setState(() {
@@ -73,7 +74,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
                   'includeTermin': true,
                   'includeKorisnik': true,
                   'includeUsluga': true,
-                  'isCompleted': false
+                  'isCompleted': false,
+                  'isCanceled': false
                 });
 
                 setState(() {
@@ -87,57 +89,65 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
     );
   }
 
-  Widget _buildDataListView() {
-    return Expanded(
-        child: SingleChildScrollView(
+ Widget _buildDataListView() {
+   List<Rezervacija> filteredReservations = result?.result
+      .where((reservation) =>
+          !reservation.isCanceled! && !reservation.termin!.isDeleted!)
+      .toList() ?? [];
+
+  return Expanded(
+    child: SingleChildScrollView(
       child: Container(
         width: double.infinity,
         child: DataTable(
-            columns: [
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'ID',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
+          columns: [
+            const DataColumn(
+              label: Expanded(
+                child: Text(
+                  'ID',
+                  style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Klijent',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
+            ),
+            const DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Klijent',
+                  style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Datum rezervacije',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
+            ),
+            const DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Datum rezervacije',
+                  style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Vrijeme termina',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
+            ),
+            const DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Vrijeme termina',
+                  style: TextStyle(fontStyle: FontStyle.italic),
                 ),
               ),
-            ],
-            rows: result?.result
-                    .map((Rezervacija e) => DataRow(cells: [
-                          DataCell(Text(e.korisnikID.toString())),
-                          DataCell(Text(e.terminRezervisao ?? "")),
-                          DataCell(Text(formatDate(
-                              e.datumRezervacije ?? DateTime.now()))),
-                          DataCell(Text(e.termin?.vrijemeTermina ?? ""))
-                        ]))
-                    .toList() ??
-                []),
+            ),
+          ],
+          rows: filteredReservations
+              .map(
+                (Rezervacija e) => DataRow(cells: [
+                  DataCell(Text(e.korisnikID.toString())),
+                  DataCell(Text(e.terminRezervisao ?? "")),
+                  DataCell(Text(formatDate(e.datumRezervacije ?? DateTime.now()))),
+                  DataCell(Text(e.termin?.vrijemeTermina ?? ""))
+                ]),
+              )
+              .toList(),
+        ),
       ),
-    ));
-  }
+    ),
+  );
+}
+
 }

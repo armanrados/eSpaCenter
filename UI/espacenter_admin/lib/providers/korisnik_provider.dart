@@ -29,7 +29,7 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
       return user;
     }
     else{
-      throw Exception("Wrong username or password");
+      throw Exception("Pogrešno korisničko ime ili lozinka");
     }
   }
 }

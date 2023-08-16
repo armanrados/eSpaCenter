@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-
 class TerminDetaljiScreen extends StatefulWidget {
   Termin? termin;
   TerminDetaljiScreen({Key? key, this.termin}) : super(key: key);
@@ -30,7 +29,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
     super.initState();
     _initialValue = {
       'korisnikID': widget.termin?.korisnikID.toString(),
-      'datumTermina':widget.termin?.datumTermina?.toIso8601String(),
+      'datumTermina': widget.termin?.datumTermina?.toIso8601String(),
       'vrijemeTermina': widget.termin?.vrijemeTermina,
     };
     _terminProvider = context.read<TerminProvider>();
@@ -66,7 +65,15 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                       _formKey.currentState?.saveAndValidate();
 
                       var request = Map.from(_formKey.currentState!.value);
+                      if (!_validateDateFormat(request['datumTermina'])) {
+                        _showDateFormatWarning();
+                        return;
+                      }
 
+                      if (!_validateTimeFormat(request['vrijemeTermina'])) {
+                        _showTimeFormatWarning();
+                        return;
+                      }
                       try {
                         if (widget.termin == null) {
                           await _terminProvider.insert(request);
@@ -74,7 +81,6 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                           await _terminProvider.update(
                               widget.termin!.terminID!, request);
                         }
-                        
                       } on Exception catch (e) {
                         showDialog(
                             context: context,
@@ -111,7 +117,9 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  decoration: InputDecoration(labelText: "Zaposlenik"),
+                  decoration: InputDecoration(
+                      labelText: "ID Zaposlenika",
+                      hintText: "Unesite ID u stilu: 1"),
                   name: "korisnikID",
                 ),
               ),
@@ -121,16 +129,24 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
             children: [
               Expanded(
                 child: FormBuilderTextField(
-                  decoration: InputDecoration(labelText: "Datum Termina"),
+                  decoration: InputDecoration(
+                      labelText: "Datum termina",
+                      hintText: "Unesite datum u stilu: YYYY-MM-DD"),
                   name: "datumTermina",
+                  initialValue: _initialValue['datumTermina'] != null
+                      ? _formatDateString(_initialValue['datumTermina'])
+                      : null,
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
+            ],
+          ),
+          Row(
+            children: [
               Expanded(
                 child: FormBuilderTextField(
-                  decoration: InputDecoration(labelText: "Vrijeme Termina"),
+                  decoration: InputDecoration(
+                      labelText: "Vrijeme Termina",
+                      hintText: "Unesite vrijeme termina u stilu: 10:00"),
                   name: "vrijemeTermina",
                 ),
               ),
@@ -138,5 +154,51 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
           )
         ]));
   }
+  bool _validateDateFormat(String? date) {
+    final datePattern = r'^\d{4}-\d{2}-\d{2}$';
+    return RegExp(datePattern).hasMatch(date ?? '');
+  }
+
+  bool _validateTimeFormat(String? time) {
+    final timePattern = r'^\d{2}:\d{2}$';
+    return RegExp(timePattern).hasMatch(time ?? '');
+  }
+
+  void _showDateFormatWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Unesite validan datum u ovom stilu: YYYY-MM-DD."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTimeFormatWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Unesite validno vrijeme u ovom stilu: HH:MM."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+    String _formatDateString(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
+  }
+
 }
 

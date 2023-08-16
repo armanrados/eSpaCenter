@@ -27,7 +27,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-   
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => NovostiProvider()),
@@ -51,7 +50,8 @@ void main() {
           return MaterialPageRoute(builder: ((context) => NovostiListScreen()));
         }
         if (settings.name == GalerijaListScreen.routeName) {
-          return MaterialPageRoute(builder: ((context) => GalerijaListScreen()));
+          return MaterialPageRoute(
+              builder: ((context) => GalerijaListScreen()));
         }
         if (settings.name == HomeScreen.routeName) {
           return MaterialPageRoute(builder: ((context) => HomeScreen()));
@@ -113,7 +113,6 @@ class MyApp extends StatelessWidget {
         body: SafeArea(
             child: SingleChildScrollView(
       child: Container(
-        
         decoration: BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("assets/images/logo.png"),
@@ -141,11 +140,13 @@ class MyApp extends StatelessWidget {
                       style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
                       controller: _username,
                       decoration: InputDecoration(
-                          fillColor: Color.fromARGB(255, 177, 173, 173).withOpacity(0.3),
+                          fillColor: Color.fromARGB(255, 177, 173, 173)
+                              .withOpacity(0.3),
                           filled: true,
                           border: InputBorder.none,
                           hintText: "Username",
-                          hintStyle: TextStyle(color: Color.fromARGB(255, 11, 9, 0))),
+                          hintStyle:
+                              TextStyle(color: Color.fromARGB(255, 11, 9, 0))),
                     ),
                     padding: EdgeInsets.all(8),
                   ),
@@ -163,11 +164,13 @@ class MyApp extends StatelessWidget {
                       style: TextStyle(color: Color.fromARGB(255, 1, 1, 0)),
                       controller: _password,
                       decoration: InputDecoration(
-                          fillColor: Color.fromARGB(255, 177, 173, 173).withOpacity(0.3),
+                          fillColor: Color.fromARGB(255, 177, 173, 173)
+                              .withOpacity(0.3),
                           border: InputBorder.none,
                           hintText: "Password",
                           filled: true,
-                          hintStyle: TextStyle(color: Color.fromARGB(255, 4, 3, 0))),
+                          hintStyle:
+                              TextStyle(color: Color.fromARGB(255, 4, 3, 0))),
                     ),
                     padding: EdgeInsets.all(8),
                   ),
@@ -178,17 +181,43 @@ class MyApp extends StatelessWidget {
                           Authorization.username = _username.text;
                           Authorization.password = _password.text;
 
-                         Authorization.korisnik =
+                          Authorization.korisnik =
                               await _korisnikProvider.Authenticate();
-
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              HomeScreen.routeName, (route) => false);
+                          if (Authorization.korisnik?.isDeleted == true &&
+                                  Authorization.korisnik?.roleNames
+                                          ?.contains("Administrator") ==
+                                      true ||
+                              Authorization.korisnik?.roleNames
+                                      ?.contains("Zaposlenik") ==
+                                  true) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text('Upozorenje'),
+                                content: Text(
+                                    "Neispravno korisničko ime ili lozinka!"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the alert
+                                    },
+                                    child: Text('OK'),
+                                  )
+                                ],
+                              ),
+                            );
+                          } else {
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                HomeScreen.routeName, (route) => false);
+                          }
                         } catch (e) {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text(e.toString()),
+                                    title: Text("Upozorenje"),
+                                    content: Text(
+                                        "Neispravno korisničko ime ili lozinka!"),
                                     actions: [
                                       TextButton(
                                         child: Text("Ok"),
@@ -207,7 +236,9 @@ class MyApp extends StatelessWidget {
                       child: Center(
                           child: const Text(
                         'Login',
-                        style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontSize: 14.0),
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 14.0),
                       )),
                     ),
                   ),

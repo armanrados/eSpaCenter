@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
 
 import '../models/rezervacija.dart';
+import '../models/termin.dart';
 import '../providers/rezervacija_provider.dart';
 import '../utils/util.dart';
 
 class RezervacijaScreen extends StatefulWidget {
-  const RezervacijaScreen({Key? key}): super(key: key);
+  Termin? termin;
+
+  RezervacijaScreen({Key? key, this.termin}) : super(key: key);
   static const String routeName = "/rezervacija";
 
   @override
@@ -33,17 +37,91 @@ class _RezervacijaScreenState extends State<RezervacijaScreen> {
     var tmpData = await _rezervacijaProvider!.get({
       'korisnikID': Authorization.korisnik!.korisnikID,
       'isCanceled': false,
-      'isArchived':false,
-      'includeTermin':true,
-      'includeKorisnik':true,
-      'includeUsluga':true
+      'isCompleted': false,
+      'includeTermin': true,
+      'includeKorisnik': true,
+      'includeUsluga': true
     });
+     for (var rezervacija in tmpData) {
+    if (rezervacija.termin!.isDeleted!) {
+      Map updateRezervacija = {
+        "korisnikID": rezervacija.korisnikID,
+        "terminID": rezervacija.terminID,
+        "uslugaID": rezervacija.uslugaID,
+        "isCanceled": true,
+        "isCompleted": false,
+      };
+      await _rezervacijaProvider!.update(rezervacija.rezervacijaID!, updateRezervacija);
+    }
+  }
+    
     setState(() {
       list = tmpData;
     });
   }
+  
 
-  @override
+  Future<void> updateTerminIsBooked(Termin item) async {
+    String formattedDate = DateFormat('yyyy-MM-ddTHH:mm:ss').format(item.datumTermina!);
+    Map update = {
+      "korisnikID": item.korisnikID,
+      "isBooked": false,
+      "vrijemeTermina": item.vrijemeTermina,
+      "datumTermina" : formattedDate
+    };
+
+    await _terminProvider!.update(item.terminID!, update);
+  }
+
+ 
+
+  Widget _buildRezervacijeCard(Rezervacija item) {
+  return ListTile(
+    leading: IconButton(
+      onPressed: () async {
+        
+          Map updateTermin = {
+            "korisnikID": item.termin!.korisnikID,
+            "isBooked": false,
+            "vrijemeTermina": item.termin!.vrijemeTermina,
+            "datumTermina": DateFormat('yyyy-MM-ddTHH:mm:ss').format(item.termin!.datumTermina!)
+          };
+  
+          await _terminProvider!.update(item.termin!.terminID!, updateTermin);
+        
+       
+          Map updateRezervacija = {
+            "korisnikID": item.korisnikID,
+            "terminID": item.terminID,
+            "uslugaID": item.uslugaID,
+            "isCanceled": true,
+            "isCompleted": false,
+          };
+  
+          await _rezervacijaProvider!.update(item.rezervacijaID!, updateRezervacija);
+  
+       if (item.termin!.isDeleted!) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text("Termin je otkazan")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text("Rezervacija je otkazana")));
+        }
+          loadData();
+
+      },
+      icon: Icon(Icons.delete),
+      iconSize: 40,
+      color: Colors.red,
+    ),
+    title: Text("${formatDate(item.termin!.datumTermina!)}"),
+    subtitle: Text(
+        "Termin kod ${item.termin!.korisnik!.ime} ${item.termin!.korisnik!.prezime}"),
+    trailing: Text("${item.termin!.vrijemeTermina}"),
+  );
+}
+
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -74,38 +152,6 @@ class _RezervacijaScreenState extends State<RezervacijaScreen> {
           return _buildRezervacijeCard(list[index]);
         },
       ),
-    );
-  }
-
-  Widget _buildRezervacijeCard(Rezervacija item) {
-    return ListTile(
-      leading: IconButton(
-        onPressed: () async {
-          Map update = {
-            "korisnikID": item.korisnikID,
-            "terminID": item.terminID,
-            "uslugaID": item.uslugaID,
-            "isCanceled": true,
-            "isArchived": false,
-            'isBooked' : false
-          };
-          Map terminUpdate = {
-          "isBooked": false,  // Reset isBooked to false
-        };
-          await _rezervacijaProvider!.update(item.rezervacijaID!, update);
-          await _terminProvider!.update(item.terminID!, terminUpdate); 
-          loadData();
-          ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Rezervacija otkazana")));
-        },
-        icon: Icon(Icons.delete),
-        iconSize: 40,
-        color: Colors.red,
-      ),
-      title: Text("${formatDate(item.termin!.datumTermina!)}"),
-      subtitle: Text(
-          "Termin kod ${item.termin!.korisnik!.ime} ${item.termin!.korisnik!.prezime}"),
-      trailing: Text("${item.termin!.vrijemeTermina}"),
     );
   }
 }

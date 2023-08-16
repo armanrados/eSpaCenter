@@ -119,6 +119,7 @@ class _MasterScreenState extends State<MasterScreen> {
             width: 20,
           ),
           ElevatedButton(
+            
               child: const Text("Odjavi se"),
               onPressed: () {
                 Navigator.of(context).push(
@@ -128,10 +129,11 @@ class _MasterScreenState extends State<MasterScreen> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+                padding: const EdgeInsets.all(20),
               ))
         ]),
       ),
+      
       body: widget.child!,
     );
   }

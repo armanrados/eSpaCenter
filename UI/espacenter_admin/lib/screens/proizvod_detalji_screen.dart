@@ -31,7 +31,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
 
   SearchResult<VrstaProizvoda>? vrstaProizvodaResult;
   bool isLoading = true;
-
+  bool _imageSelected = false;
   @override
   void initState() {
     super.initState();
@@ -52,13 +52,11 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
-  
   }
 
   Future initForm() async {
     vrstaProizvodaResult = await _vrstaProizvodaProvider.get();
-    
+
     print(vrstaProizvodaResult);
 
     setState(() {
@@ -82,7 +80,42 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
                       var request = Map.from(_formKey.currentState!.value);
-
+                      if (!_imageSelected) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text("Upozorenje"),
+                            content:
+                                Text("Slika je obavezna!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("OK"),
+                              )
+                            ],
+                          ),
+                        );
+                        return; 
+                      }
+                      if (_formKey.currentState?.fields['vrstaproizvodaId']
+                              ?.value ==
+                          null) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text("Upozorenje"),
+                            content: Text(
+                                "Vrsta proizvoda je obaveza!"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text("OK"),
+                              )
+                            ],
+                          ),
+                        );
+                        return; 
+                      }
                       request['slika'] = _base64Image;
 
                       try {
@@ -105,7 +138,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                                   ],
                                 ));
                       }
-                       Navigator.of(context).push(MaterialPageRoute(
+                      Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const ProizvodScreen(),
                       ));
                     },
@@ -126,7 +159,6 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
       child: Column(children: [
         Row(
           children: [
-          
             Expanded(
               child: FormBuilderTextField(
                 decoration: InputDecoration(labelText: "Naziv"),
@@ -143,15 +175,36 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                 name: "cijena",
               ),
             ),
-            SizedBox(
-              width: 10,
-            ),
+          ],
+        ),
+        Row(
+          children: [
             Expanded(
               child: FormBuilderTextField(
                 decoration: InputDecoration(labelText: "Opis"),
                 name: "opis",
               ),
             ),
+          ],
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: FormBuilderField(
+              name: 'imageId',
+              builder: ((field) {
+                return InputDecorator(
+                  decoration: InputDecoration(
+                      label: Text('Slika'), errorText: field.errorText),
+                  child: ListTile(
+                    leading: Icon(Icons.photo),
+                    title: Text("Odaberite sliku"),
+                    trailing: Icon(Icons.file_upload),
+                    onTap: getImage,
+                  ),
+                );
+              }),
+            ))
           ],
         ),
         Row(
@@ -169,7 +222,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                 ),
                 hintText: 'Vrsta proizvoda',
               ),
-              items:  vrstaProizvodaResult?.result
+              items: vrstaProizvodaResult?.result
                       .map((item) => DropdownMenuItem(
                             alignment: AlignmentDirectional.center,
                             value: item.vrstaProizvodaID.toString(),
@@ -178,27 +231,6 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                       .toList() ??
                   [],
             )),
-          ],
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: FormBuilderField(
-              name: 'imageId',
-              builder: ((field) {
-                return InputDecorator(
-                  decoration: InputDecoration(
-                      label: Text('Slika'),
-                      errorText: field.errorText),
-                  child: ListTile(
-                    leading: Icon(Icons.photo),
-                    title: Text("Odaberite sliku"),
-                    trailing: Icon(Icons.file_upload),
-                    onTap: getImage,
-                  ),
-                );
-              }),
-            ))
           ],
         )
       ]),
@@ -214,6 +246,8 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
     if (result != null && result.files.single.path != null) {
       _image = File(result.files.single.path!);
       _base64Image = base64Encode(_image!.readAsBytesSync());
+      _imageSelected = true;
+      setState(() {});
     }
   }
 }

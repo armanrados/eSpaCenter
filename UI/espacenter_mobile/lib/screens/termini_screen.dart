@@ -28,9 +28,11 @@ class _TerminiScreenState extends State<TerminiScreen> {
   Usluga? _selectedItem;
   TextEditingController dateController = TextEditingController();
   DateTime date = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month; // Initial calendar format
+  CalendarFormat _calendarFormat =
+      CalendarFormat.month; // Initial calendar format
   DateTime _focusedDay = DateTime.now(); // Initial focused day
   DateTime? _selectedDay;
+  Map<int, int?> _selectedItems = {};
   @override
   void initState() {
     // TODO: implement initState
@@ -48,23 +50,13 @@ class _TerminiScreenState extends State<TerminiScreen> {
     setState(() {
       data = tmpData!;
       usluga = tmpUsluga!;
-      _selectedItem = usluga[0];
-    });
-  }
-  Future<void> loadDataForSelectedDay(DateTime selectedDay) async {
-    var tmpData = await _terminProvider?.get({
-      'isBooked': false,
-      'includeKorisnik': true,
-      'isDeleted': false,
-      'datum': selectedDay,
-    });
-    setState(() {
-      data = tmpData!;
+      _selectedItems = {for (var item in data) item.terminID!: usluga[0].uslugaID};
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Termini"),
@@ -83,22 +75,6 @@ class _TerminiScreenState extends State<TerminiScreen> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TableCalendar(
-                  calendarFormat: _calendarFormat,
-                  focusedDay: _focusedDay,
-                  firstDay: DateTime(2000),
-                  lastDay: DateTime(2101),
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay;
-                    });
-                    loadDataForSelectedDay(selectedDay);
-                  },
-                ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
                     child: TextField(
@@ -109,21 +85,30 @@ class _TerminiScreenState extends State<TerminiScreen> {
                         readOnly: true,
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: date,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(2101));
+                            context: context,
+                            initialDate: date,
+                            firstDate: DateTime.now().subtract(Duration(
+                                days: 365)), 
+                            lastDate: DateTime(2101),
+                            selectableDayPredicate: (DateTime day) {
+                              return day.isAfter(
+                                  DateTime.now().subtract(Duration(days: 1)));
+                            },
+                          );
                           var tmpData = await _terminProvider!.get({
                             'isBooked': false,
                             'includeKorisnik': true,
                             'isDeleted': false,
-                            'datum': pickedDate
+                            'datumTermina': pickedDate
                           });
                           if (pickedDate != null) {
                             setState(() {
                               date = pickedDate;
                               dateController.text = formatDate(pickedDate);
-                              data = tmpData;
+                              data = tmpData
+                                  .where((termin) =>
+                                      termin.datumTermina == pickedDate)
+                                  .toList();
                             });
                           }
                         }),
@@ -145,8 +130,6 @@ class _TerminiScreenState extends State<TerminiScreen> {
     );
   }
 
-  
-
   List<Widget> _buildTermini() {
     if (data.length == 0) {
       return [
@@ -156,14 +139,21 @@ class _TerminiScreenState extends State<TerminiScreen> {
       ];
     }
 
-     List<Widget> list = data
-        .map((e) => Column(
+  final today = DateTime.now();
+    List<Widget> list = data
+    .where((termin) =>
+          termin.datumTermina!.isAfter(today) && !termin.isDeleted!)
+        .map((e) {
+        
+          return Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
                   child: Card(
                     elevation: 6,
-                    color: e.isBooked! ? Colors.red : Colors.green,
+                    color: (e.isBooked! || (e.rezervacija?.isCanceled == true))
+                        ? Color.fromARGB(255, 251, 22, 5)
+                        : Color.fromARGB(255, 0, 246, 9),
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),
                       child: Column(
@@ -199,47 +189,50 @@ class _TerminiScreenState extends State<TerminiScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(e.vrijemeTermina!),
-                              DropdownButton<Usluga>(
-                                underline: SizedBox(),
-                                value: _selectedItem,
-                                items: usluga
-                                    .map((e) => DropdownMenuItem(
-                                          child: Text(e.naziv!),
-                                          value: e,
-                                        ))
-                                    .toList(),
-                                onChanged: (val) {
-                                  setState(() {
-                                    _selectedItem = val as Usluga;
-                                  });
-                                },
-                              ),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 23, 121, 251),
-                                ),
-                                onPressed: e.isBooked! ? null : () async {
-                                  Map item = {
-                                    "korisnikID":
-                                        Authorization.korisnik!.korisnikID,
-                                    "terminID": e.terminID,
-                                    "uslugaID": _selectedItem!.uslugaID,
-                                    "isCanceled": false,
-                                    "isArchived": false,
-                                  };
+                               DropdownButton<int>(
+                            underline: SizedBox(),
+                            value: _selectedItems[e.terminID]!,
+                            items: usluga
+                                .map((uslugaItem) => DropdownMenuItem<int>(
+                                      child: Text(uslugaItem.naziv!),
+                                      value: uslugaItem.uslugaID,
+                                    ))
+                                .toList(),
+                            onChanged: e.isBooked!
+                                ? null
+                                : (val) {
+                                    setState(() {
+                                      _selectedItems[e.terminID!] = val;
+                                    });
+                                  },
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 23, 121, 251),
+                            ),
+                                onPressed: e.isBooked!
+                                    ? null
+                                    : () async {
+                                        Map item = {
+                                          "korisnikID": Authorization.korisnik!.korisnikID,
+                                          "terminID": e.terminID,
+                                          "uslugaID": _selectedItems[e.terminID]!,
+                                          "isCanceled": false,
+                                          "isCompleted": false,
+                                        };
 
-                                  await _rezervacijaProvider!.insert(item);
-                                  loadData();
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        "Rezervacija termina uspješna",
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Text("Rezervisi"),
+                                        await _rezervacijaProvider!.insert(item);
+                                        loadData();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Rezervacija termina uspješna",
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                child: Text("Rezerviši"),
                               ),
                             ],
                           ),
@@ -250,7 +243,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
                 ),
                 SizedBox(height: 10),
               ],
-            ))
+            );})
         .cast<Widget>()
         .toList();
 

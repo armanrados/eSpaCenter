@@ -9,4 +9,5 @@ class TerminProvider extends BaseProvider<Termin> {
     
     return Termin.fromJson(data);
   }
+  
 }

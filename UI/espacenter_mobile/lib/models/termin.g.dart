@@ -18,6 +18,12 @@ Termin _$TerminFromJson(Map<String, dynamic> json) => Termin(
           : Korisnik.fromJson(json['korisnik'] as Map<String, dynamic>),
       json['isDeleted'] as bool?,
       json['isBooked'] as bool?,
+      json['rezervacija'] == null
+          ? null
+          : Rezervacija.fromJson(json['rezervacija'] as Map<String, dynamic>),
+      json['selectedUsluga'] == null
+          ? null
+          : Usluga.fromJson(json['selectedUsluga'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$TerminToJson(Termin instance) => <String, dynamic>{
@@ -28,4 +34,6 @@ Map<String, dynamic> _$TerminToJson(Termin instance) => <String, dynamic>{
       'korisnik': instance.korisnik,
       'isBooked': instance.isBooked,
       'isDeleted': instance.isDeleted,
+      'rezervacija': instance.rezervacija,
+      'selectedUsluga': instance.selectedUsluga,
     };

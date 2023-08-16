@@ -38,18 +38,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'eSpaCenter',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      //Counter(),
     );
   }
 }
@@ -129,16 +119,19 @@ class LoginPage extends StatelessWidget {
                       var password = _passwordController.text;
                       _passwordController.text = username;
 
-                      print("login proceed $username $password");
-
                       Authorization.username = username;
                       Authorization.password = password;
-
-                      Authorization.korisnik =
-                          await _korisnikProvider.Authenticate();
                       try {
-                        await _proizvodProvider.get();
-                        if (Authorization.korisnik?.isDeleted == false) {
+                        Authorization.korisnik =
+                            await _korisnikProvider.Authenticate();
+
+                        if (Authorization.korisnik?.isDeleted == false &&
+                                Authorization.korisnik?.roleNames
+                                        ?.contains("Administrator") ==
+                                    true ||
+                            Authorization.korisnik?.roleNames
+                                    ?.contains("Zaposlenik") ==
+                                true) {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const TerminiScreen(),
@@ -149,7 +142,7 @@ class LoginPage extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: Text('Upozorenje'),
-                              content: Text("Ovaj korisnik ne postoji!"),
+                              content: Text("Neispravno korisničko ime ili lozinka!"),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -166,8 +159,9 @@ class LoginPage extends StatelessWidget {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
-                                  title: Text("Error"),
-                                  content: Text(e.toString()),
+                                  title: Text("Upozorenje"),
+                                  content: Text(
+                                      "Neispravno korisničko ime ili lozinka!"),
                                   actions: [
                                     TextButton(
                                         onPressed: () => Navigator.pop(context),
