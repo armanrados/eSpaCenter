@@ -55,7 +55,6 @@ class _NovostScreenState extends State<NovostScreen> {
           ),
            ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
 
                 var data = await _novostProvider.get(filter: {
                   'naslov': _naslovController.text,
@@ -161,15 +160,12 @@ class _NovostScreenState extends State<NovostScreen> {
                               DataCell(
                       IconButton(
                         onPressed: () async {
-                          // Set the isDeleted property to true
                           e.isDeleted = true;
 
-                          // Update the 'e' object in your provider to mark it as deleted
                           await _novostProvider.update(e.novostiID!, e);
                          _loadData();
 
                           setState(() {
-                            // No need to refresh the state here, row will be hidden
                           });
                         },
                         icon: Icon(Icons.delete),

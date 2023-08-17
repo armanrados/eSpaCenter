@@ -1,4 +1,3 @@
-import 'package:espacenter_mobile/models/uloga.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 /// This allows the `User` class to access private members in

@@ -97,7 +97,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText: "Korisničko ime",
                       prefixIcon: Icon(Icons.people_alt)),
                   controller: _usernameController,
                 ),
@@ -106,7 +106,7 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextField(
                   decoration: InputDecoration(
-                      labelText: "Password", prefixIcon: Icon(Icons.password)),
+                      labelText: "Lozinka", prefixIcon: Icon(Icons.password)),
                   controller: _passwordController,
                   obscureText: true,
                 ),
@@ -170,7 +170,7 @@ class LoginPage extends StatelessWidget {
                                 ));
                       }
                     },
-                    child: Text("Login"))
+                    child: Text("Prijavi se"))
               ]),
             ),
           ),

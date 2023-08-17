@@ -1,8 +1,6 @@
 import 'package:espacenter_mobile/models/galerija.dart';
 import 'package:espacenter_mobile/providers/galerija_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/util.dart';
@@ -20,7 +18,7 @@ class _GalerijaListScreenState extends State<GalerijaListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     _galerijaProvider = context.read<GalerijaProvider>();
     loadData();

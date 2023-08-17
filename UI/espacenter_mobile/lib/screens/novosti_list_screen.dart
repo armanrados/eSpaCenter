@@ -2,8 +2,6 @@ import 'package:espacenter_mobile/models/novosti.dart';
 import 'package:espacenter_mobile/providers/novosti_provider.dart';
 import 'package:espacenter_mobile/screens/galerija_list_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/util.dart';
@@ -23,7 +21,7 @@ class _NovostiListScreenState extends State<NovostiListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _novostiProvider = context.read<NovostiProvider>();
     loadData();

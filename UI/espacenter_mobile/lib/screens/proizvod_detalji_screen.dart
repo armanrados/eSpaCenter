@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/proizvod.dart';
 import '../providers/proizvod_provider.dart';
 import '../utils/util.dart';
@@ -74,7 +71,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                     width:300
                   ),
                   SizedBox(height:15),
-                  Text("Cijena proizvoda: ${formatNumber(_proizvod?.cijena!)} KM" , style: TextStyle(fontSize: 20),),
+                  Text("Cijena: ${formatNumber(_proizvod?.cijena!)} KM" , style: TextStyle(fontSize: 20),),
                   SizedBox(height:15),
                   Row(children: [
                     Expanded(child: Container(child: Text("${_proizvod!.opis}" , style: TextStyle(fontSize: 16),)))

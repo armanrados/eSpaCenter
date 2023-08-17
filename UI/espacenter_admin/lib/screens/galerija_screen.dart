@@ -5,13 +5,8 @@ import 'package:espacenter_admin/models/search_result.dart';
 import 'package:espacenter_admin/providers/galerija_provider.dart';
 import 'package:espacenter_admin/screens/galerija_detalji_screen.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../models/proizvod.dart';
 import '../utils/util.dart';
 
 class GalerijaScreen extends StatefulWidget {
@@ -29,7 +24,6 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _galerijaProvider = context.read<GalerijaProvider>();
    _loadData();
@@ -163,15 +157,12 @@ class _GalerijaScreenState extends State<GalerijaScreen> {
                               DataCell(
                       IconButton(
                         onPressed: () async {
-                          // Set the isDeleted property to true
                           e.isDeleted = true;
 
-                          // Update the 'e' object in your provider to mark it as deleted
                           await _galerijaProvider.update(e.galerijaID!, e);
                          _loadData();
 
                           setState(() {
-                            // No need to refresh the state here, row will be hidden
                           });
                         },
                         icon: Icon(Icons.delete),

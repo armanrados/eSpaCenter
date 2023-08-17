@@ -23,7 +23,6 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _korisnikProvider = context.read<KorisnikProvider>();
     _loadData();
@@ -68,7 +67,6 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
         
           ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
 
                 var data = await _korisnikProvider.get(filter: {
                   'korisnickoIme': _imeController.text,
@@ -130,8 +128,6 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
                   ),
                 ),
               ),
-                 
-             
               ],
               rows: result?.result
                       .map((Korisnik e) => DataRow(
@@ -153,8 +149,6 @@ class _ZaposleniciScreenState extends State<ZaposleniciScreen> {
                               icon: Icon(Icons.delete),
                             ),
                           ),
-                                
-
                               ]))
                       .toList() ??
                   []),

@@ -25,8 +25,12 @@ import 'package:espacenter_mobile/screens/galerija_list_screen.dart';
 import 'package:espacenter_mobile/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
+import '.env';
 void main() {
+   WidgetsFlutterBinding.ensureInitialized();
+    Stripe.publishableKey = stripePublishableKey; 
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => NovostiProvider()),
@@ -131,9 +135,9 @@ class MyApp extends StatelessWidget {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Username ne moze biti prazno polje";
+                          return "Korisničko ime ne moze biti prazno polje";
                         } else if (value.length < 3) {
-                          return "Username ne moze da sadrzi manje od 3 karaktera";
+                          return "Korisničko ime ne moze da sadrzi manje od 3 karaktera";
                         }
                         return null;
                       },
@@ -144,7 +148,7 @@ class MyApp extends StatelessWidget {
                               .withOpacity(0.3),
                           filled: true,
                           border: InputBorder.none,
-                          hintText: "Username",
+                          hintText: "Korisničko ime",
                           hintStyle:
                               TextStyle(color: Color.fromARGB(255, 11, 9, 0))),
                     ),
@@ -154,9 +158,9 @@ class MyApp extends StatelessWidget {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Password ne moze biti prazno polje";
+                          return "Lozinka ne moze biti prazno polje";
                         } else if (value.length < 4) {
-                          return "Passoword ne moze da sadrzi manje od 4 karaktera";
+                          return "Lozinka ne moze da sadrzi manje od 4 karaktera";
                         }
                         return null;
                       },
@@ -167,7 +171,7 @@ class MyApp extends StatelessWidget {
                           fillColor: Color.fromARGB(255, 177, 173, 173)
                               .withOpacity(0.3),
                           border: InputBorder.none,
-                          hintText: "Password",
+                          hintText: "Lozinka",
                           filled: true,
                           hintStyle:
                               TextStyle(color: Color.fromARGB(255, 4, 3, 0))),
@@ -235,7 +239,7 @@ class MyApp extends StatelessWidget {
                           color: Color.fromARGB(255, 46, 92, 232)),
                       child: Center(
                           child: const Text(
-                        'Login',
+                        'Prijavi se',
                         style: TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
                             fontSize: 14.0),

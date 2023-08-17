@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/narudzba.dart';
 import '../providers/narudzba_provider.dart';
 import '../utils/util.dart';
@@ -21,7 +18,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _narudzbaProvider = context.read<NarudzbaProvider>();
     loadData();
@@ -63,7 +60,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
   {
     if (list.isEmpty) {
       return Center(
-        child: Text("Trenutno nemate aktivnih narudžbi"),
+        child: Text("Trenutno nemate aktivnih narudžbi!"),
       );
     }
 
@@ -89,7 +86,7 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
           await _narudzbaProvider!.update(item.narudzbaID!, update);
           loadData();
           ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("Narudžba otkazana")));
+          .showSnackBar(const SnackBar(content: Text("Narudžba otkazana"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
         },
         icon: Icon(Icons.delete),
         iconSize: 30,

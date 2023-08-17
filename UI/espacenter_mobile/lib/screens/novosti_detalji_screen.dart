@@ -3,8 +3,6 @@ import 'package:espacenter_mobile/models/novosti.dart';
 import 'package:espacenter_mobile/providers/korisnik_provider.dart';
 import 'package:espacenter_mobile/providers/novosti_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 
 import '../utils/util.dart';
@@ -26,7 +24,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _novostiProvider = context.read<NovostiProvider>();
     _korisnikProvider = context.read<KorisnikProvider>();
@@ -74,7 +72,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children:[
-              // Add padding around the row widget
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: Row(
@@ -91,7 +88,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(height: 20),
-                          // Add a title widget
                           Text(_novosti?.naslov ?? "N/A",
                           style: TextStyle(
                             fontSize: 25,
@@ -99,7 +95,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                           ),),
 
                           Container(height: 30),
-                          // Add a text widget to display some text
                           Text(_novosti?.sadrzaj ?? "N/A",
                           style: TextStyle(
                             fontSize: 17,

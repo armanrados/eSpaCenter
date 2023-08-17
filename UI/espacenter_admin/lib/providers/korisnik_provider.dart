@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'package:espacenter_admin/utils/util.dart';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:espacenter_admin/models/korisnik.dart';
 
 import 'package:http/http.dart' as http;
@@ -13,7 +10,6 @@ class KorisnikProvider extends BaseProvider<Korisnik> {
 
    @override
    Korisnik fromJson(data) {
-    // TODO: implement fromJson
     return Korisnik.fromJson(data);
   }
    Future <Korisnik> Authenticate() async

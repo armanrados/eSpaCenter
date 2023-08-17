@@ -27,7 +27,6 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
   int pdfCounter = 1;
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _narudzbaProvider = context.read<NarudzbaProvider>();
     _loadData();
@@ -39,7 +38,8 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
       'includeKorisnik': true,
       'includeNarudzbaProizvodi': true,
       'includeUplata': true,
-      'isShipped': true
+      'isShipped': true,
+      
     });
 
     setState(() {
@@ -126,7 +126,8 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                   'includeKorisnik': true,
                   'includeNarudzbaProizvodi': true,
                   'includeUplata': true,
-                  'isShipped': true
+                  'isShipped': true,
+                  
                 });
 
                 setState(() {

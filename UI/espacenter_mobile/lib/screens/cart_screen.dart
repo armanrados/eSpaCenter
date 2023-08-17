@@ -1,15 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/cart.dart';
 import '../models/uplata.dart';
 import '../providers/cart_provider.dart';
 import '../providers/narudzba_provider.dart';
 import '../providers/uplata_provider.dart';
 import '../utils/util.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
+import '../../.env';
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}): super(key: key);
   static const String routeName = "/cart";
@@ -24,12 +24,12 @@ class _CartScreenState extends State<CartScreen> {
   NarudzbaProvider? _narudzbaProvider;
   UplataProvider? _uplataProvider ;
   Map<String, dynamic>? paymentIntentData;
-  Uplata? uplata ;
+  Uplata? uplata;
   double iznos = 0;
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     _narudzbaProvider = context.read<NarudzbaProvider>();
     _uplataProvider = context.read<UplataProvider>();
@@ -37,7 +37,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
+   
     super.didChangeDependencies();
     _cartProvider = context.watch<CartProvider>();
   }
@@ -53,9 +53,9 @@ class _CartScreenState extends State<CartScreen> {
         children: [
           Expanded(child: _buildProductCardList()),
           if (_cartProvider.cart.items.isNotEmpty)
-            TextButton(onPressed: () async{
+            ElevatedButton(onPressed: () async{
               await makePayment(IzracunajUkupno());
-            }, child: Text("Kupi" , style: TextStyle(color: Colors.black , fontSize: 18),)),
+            }, child: Text("Naruči" , style: TextStyle(color: Colors.white , fontSize: 18),)),
         ],
       ),
     );
@@ -73,7 +73,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget _buildProductCardList() {
     if (_cartProvider.cart.items.isEmpty) {
       return Center(
-        child: Text("Korpa je trenutno prazna"),
+        child: Text("Korpa je prazna!"),
       );
     }
 
@@ -104,5 +104,104 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
   
-  makePayment(double izracunajUkupno) {}
+  Future<void> makePayment(double iznos) async {
+    try {
+      paymentIntentData =
+          await createPaymentIntent((iznos * 100).round().toString(), 'bam');
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret:
+                      paymentIntentData!['client_secret'],
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'eSpaCenter'))
+          .then((value) {}).
+          onError((error, stackTrace) {
+          
+            print('Exception/DISPLAYPAYMENTSHEET==> $error $stackTrace');
+          
+          showDialog(
+              context: context,
+              builder: (_) => const AlertDialog(
+                    content: Text("Poništena transakcija!"),
+                  ));
+          throw Exception("Payment declined");
+        });
+        
+          print("payment sheet created");
+          print(paymentIntentData!['client_secret']);
+        
+        try {
+          var tmp = await Stripe.instance.presentPaymentSheet();
+          await InsertNarudzbe();
+          ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("Uplata uspješna!"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
+
+        } catch (e) {
+          
+            print(e);
+          
+        }
+
+    } catch (e, s) {
+      print('exception:$e$s');
+    }
+  }
+  
+  
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': amount,
+        'currency': currency,
+        'payment_method_types[]': 'card'
+      };
+
+      var response = await http.post(
+          Uri.parse('https://api.stripe.com/v1/payment_intents'),
+          body: body,
+          headers: {
+            'Authorization':
+                'Bearer $stripeSecretKey',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          });
+      return jsonDecode(response.body);
+    } catch (err) {
+      print('err charging user: ${err.toString()}');
+    }
+  }
+   insertUplata(double amount, String brojTransakcije) async {
+      Map request = {
+      "iznos": amount,
+      "brojTransakcije": brojTransakcije,
+    };
+
+   uplata = await _uplataProvider!.insert(request);
+  }
+
+ 
+
+  Future<void> InsertNarudzbe() async {
+
+    await insertUplata(iznos, paymentIntentData!['id']);
+
+    List<Map> narudzbaProizvodi = [];
+    _cartProvider.cart.items.forEach((element) {
+      narudzbaProizvodi.add({
+        "proizvodID" : element.proizvod.proizvodID,
+        "kolicina" : element.count,
+      });
+    });
+    Map narudzba = {
+      "korisnikID" : Authorization.korisnik!.korisnikID,
+      "uplataID" : uplata!.uplataID,
+      "listaProizvoda": narudzbaProizvodi
+    };
+
+    await _narudzbaProvider!.insert(narudzba);
+    setState(() {
+      paymentIntentData = null;
+      _cartProvider.cart.items.clear();
+    });
+  }
 }

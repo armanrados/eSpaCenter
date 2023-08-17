@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/korisnik.dart';
 import '../providers/korisnik_provider.dart';
 import '../utils/util.dart';
@@ -30,7 +26,7 @@ class _ProfileModifyScreenState extends State<ProfileModifyScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     _korisnikProvider = context.read<KorisnikProvider>();
 
@@ -85,7 +81,7 @@ class _ProfileModifyScreenState extends State<ProfileModifyScreen> {
                             Navigator.pop(context, true);
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Profil uspješno uređen")));
+                                    content: Text("Profil uspješno uređen"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
                           }
                         },
                         child: Text("Spasi promjene",

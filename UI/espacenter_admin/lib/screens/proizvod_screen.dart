@@ -55,7 +55,6 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
           ),
           ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
 
                 var data = await _proizvodProvider.get(filter: {
                   'naziv': _nazivController.text,
@@ -175,16 +174,13 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                           DataCell(
                             IconButton(
                               onPressed: () async {
-                                // Set the isDeleted property to true
                                 e.isDeleted = true;
 
-                                // Update the 'e' object in your provider to mark it as deleted
                                 await _proizvodProvider.update(
                                     e.proizvodID!, e);
                                 _loadData();
 
                                 setState(() {
-                                  // No need to refresh the state here, row will be hidden
                                 });
                               },
                               icon: Icon(Icons.delete),

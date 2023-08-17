@@ -4,7 +4,6 @@ import 'package:espacenter_admin/models/uloga.dart';
 import 'package:espacenter_admin/providers/korisnik_provider.dart';
 import 'package:espacenter_admin/providers/uloga_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
-import 'package:espacenter_admin/screens/zaposlenici_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +31,6 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialValue = {
       'korisnickoIme': widget.korisnik?.korisnickoIme,
@@ -52,7 +50,6 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
@@ -83,13 +80,9 @@ class _ZaposleniciDetaljiScreenState extends State<ZaposleniciDetaljiScreen> {
 
                       try {
                         Korisnik updatedEmployee;
-                        if (widget.korisnik == null) {
-                          updatedEmployee =
-                              await _korisnikProvider.insert(request);
-                        } else {
-                          updatedEmployee = await _korisnikProvider.update(
-                              widget.korisnik!.korisnikID!, request);
-                        }
+                        updatedEmployee =
+                            await _korisnikProvider.insert(request);
+
                         Navigator.pop(context, updatedEmployee);
                       } on Exception catch (e) {
                         showDialog(

@@ -1,8 +1,6 @@
 import 'package:espacenter_mobile/screens/recenzija_detalji_screen.dart';
 import 'package:espacenter_mobile/screens/recenzija_dodaj_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -123,8 +121,8 @@ RecenzijaProvider? _recenzijaProvider ;
                       minRating: 1,
                       initialRating: e.ocjena!.toDouble(),
                       allowHalfRating: false,
-                      ratingWidget: RatingWidget(full: Icon(Icons.star,color: Colors.amber),
-                      half:Icon(Icons.star,color: Colors.amber) ,
+                      ratingWidget: RatingWidget(full: Icon(Icons.star,color: Color.fromARGB(255, 253, 190, 0)),
+                      half:Icon(Icons.star,color: Color.fromARGB(255, 253, 190, 0)) ,
                       empty:Icon(Icons.star,color: Colors.grey))
                     , onRatingUpdate: (rate){
                       rating = rate.toInt();

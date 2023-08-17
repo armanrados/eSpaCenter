@@ -1,8 +1,5 @@
 import 'package:espacenter_mobile/screens/rezervacija_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../models/termin.dart';
@@ -29,8 +26,8 @@ class _TerminiScreenState extends State<TerminiScreen> {
   TextEditingController dateController = TextEditingController();
   DateTime date = DateTime.now();
   CalendarFormat _calendarFormat =
-      CalendarFormat.month; // Initial calendar format
-  DateTime _focusedDay = DateTime.now(); // Initial focused day
+      CalendarFormat.month; 
+  DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   Map<int, int?> _selectedItems = {};
   @override
@@ -134,7 +131,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
     if (data.length == 0) {
       return [
         Center(
-          child: Text("Nema podataka za prikaz"),
+          child: Text("Nema podataka za prikaz!"),
         )
       ];
     }
@@ -229,6 +226,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
                                             content: Text(
                                               "Rezervacija termina uspješna",
                                             ),
+                                            backgroundColor: Color.fromARGB(255, 46, 92, 232),
                                           ),
                                         );
                                       },

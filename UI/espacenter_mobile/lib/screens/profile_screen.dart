@@ -1,9 +1,6 @@
 import 'package:espacenter_mobile/screens/profile_modify_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/korisnik.dart';
 import '../providers/korisnik_provider.dart';
 import '../utils/util.dart';
@@ -23,7 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     _korisnikProvider = context.read<KorisnikProvider>();
     loadData();

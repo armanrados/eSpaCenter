@@ -23,7 +23,6 @@ class _TerminiScreenState extends State<TerminiScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     _terminProvider = context.read<TerminProvider>();
     _loadData();
@@ -55,8 +54,6 @@ class _TerminiScreenState extends State<TerminiScreen> {
           SizedBox(width: 8),
           ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
-
                 var data = await _terminProvider.get(filter: {
                   'korisnikID': _korisnikIDController.text,
                   'isDeleted': false,
@@ -159,16 +156,13 @@ class _TerminiScreenState extends State<TerminiScreen> {
                           DataCell(
                             IconButton(
                               onPressed: () async {
-                                // Set the isDeleted property to true
                                 e.isDeleted = true;
 
-                                // Update the 'e' object in your provider to mark it as deleted
                                 await _terminProvider.update(
                                     e.terminID!, e);
                                 _loadData();
 
                                 setState(() {
-                                  // No need to refresh the state here, row will be hidden
                                 });
                               },
                               icon: Icon(Icons.delete),

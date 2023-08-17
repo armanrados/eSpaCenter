@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:espacenter_admin/models/galerija.dart';
 import 'package:espacenter_admin/providers/galerija_provider.dart';
 import 'package:espacenter_admin/screens/galerija_screen.dart';
@@ -12,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-import '../models/search_result.dart';
 
 class GalerijaDetaljiScreen extends StatefulWidget {
   Galerija? galerija;

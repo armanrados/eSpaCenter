@@ -67,7 +67,6 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
           ),
           ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
 
                 var data = await _rezervacijaProvider.get(filter: {
                   'korisnikID': _korisnikIDController.text,

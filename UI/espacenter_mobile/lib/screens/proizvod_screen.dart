@@ -1,10 +1,6 @@
 import 'package:espacenter_mobile/screens/proizvod_detalji_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
-
 import '../models/proizvod.dart';
 import '../providers/cart_provider.dart';
 import '../providers/narudzba_provider.dart';
@@ -30,7 +26,6 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _proizvodProvider = context.read<ProizvodProvider>();
     _cartProvider = context.read<CartProvider>();
@@ -187,7 +182,8 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                               child: imageFromBase64String(e.slika!),
                             ),
                             Container(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 55, 15, 15),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -207,7 +203,7 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                                       height: 20,
                                     ),
                                     Text(
-                                      '${formatNumber(e.cijena)} KM',
+                                      'Cijena: ${formatNumber(e.cijena)} KM',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleSmall,
@@ -222,6 +218,9 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                                           Color.fromARGB(255, 33, 103, 243)),
                                   onPressed: () {
                                     _cartProvider?.addToCart(e);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text("Proizvod dodan!"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
                                   },
                                   icon: Icon(
                                     // <-- Icon
@@ -242,7 +241,7 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
           .toList();
     } else {
       list = proizvodData
-          .map((e) =>  Column(
+          .map((e) => Column(
                 children: [
                   InkWell(
                     onTap: () {
@@ -257,14 +256,14 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
-                          
                             Container(
                               height: 200,
                               width: double.infinity,
                               child: imageFromBase64String(e.slika!),
                             ),
                             Container(
-                              padding: const EdgeInsets.fromLTRB(0, 15, 15, 15),
+                              padding:
+                                  const EdgeInsets.fromLTRB(15, 15, 15, 15),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -284,7 +283,7 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                                       height: 20,
                                     ),
                                     Text(
-                                      '${formatNumber(e.cijena)} KM',
+                                      'Cijena: ${formatNumber(e.cijena)} KM',
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleSmall,
@@ -299,6 +298,9 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                                           Color.fromARGB(255, 33, 103, 243)),
                                   onPressed: () {
                                     _cartProvider?.addToCart(e);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text("Proizvod dodan!"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
                                   },
                                   icon: Icon(
                                     // <-- Icon

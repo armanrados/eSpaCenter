@@ -25,7 +25,6 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _initialValue = {
       'korisnikID': widget.termin?.korisnikID.toString(),

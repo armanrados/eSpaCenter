@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -23,7 +20,6 @@ class _RecenzijaDodajScreenState extends State<RecenzijaDodajScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _recenzijaProvider = context.read<RecenzijaProvider>();
   }
@@ -59,7 +55,7 @@ class _RecenzijaDodajScreenState extends State<RecenzijaDodajScreen> {
                         Row(
                           children: [
                             Text('Ocjena:',
-                                style: Theme.of(context).textTheme.headline6),
+                                style: Theme.of(context).textTheme.titleLarge),
                           ],
                         ),
                         SizedBox(
@@ -72,8 +68,8 @@ class _RecenzijaDodajScreenState extends State<RecenzijaDodajScreen> {
                             initialRating: 3,
                             allowHalfRating: false,
                             ratingWidget: RatingWidget(
-                                full: Icon(Icons.star, color: Colors.amber),
-                                half: Icon(Icons.star, color: Colors.amber),
+                                full: Icon(Icons.star, color: Color.fromARGB(255, 253, 190, 0)),
+                                half: Icon(Icons.star, color: Color.fromARGB(255, 253, 190, 0)),
                                 empty: Icon(Icons.star, color: Colors.grey)),
                             onRatingUpdate: (rate) {
                               rating = rate.toInt();
@@ -113,7 +109,7 @@ class _RecenzijaDodajScreenState extends State<RecenzijaDodajScreen> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text(
-                                              "Recenzija uspješno dodana!")));
+                                              "Recenzija uspješno dodana!"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
                                 },
                                 child: Text("Dodaj recenziju",
                                     style: TextStyle(color: Colors.white))),

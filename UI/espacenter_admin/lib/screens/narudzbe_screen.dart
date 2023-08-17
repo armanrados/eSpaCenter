@@ -32,6 +32,8 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
       'includeKorisnik': true,
       'includeNarudzbaProizvodi': true,
       'includeUplata': true,
+      'isCanceled': false,
+      'isShipped' : false
     });
 
     setState(() {
@@ -65,13 +67,14 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
           ),
           ElevatedButton.icon(
               onPressed: () async {
-                // Navigator.of(context).pop();
 
                 var data = await _narudzbaProvider.get(filter: {
                   'brojNarudzbe': _brojNarudzbeController.text,
                   'includeKorisnik': true,
                   'includeNarudzbaProizvodi': true,
                   'includeUplata': true,
+                  'isCanceled': false,
+                  'isShipped' : false
                 });
 
                 setState(() {
@@ -116,13 +119,39 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
                   ),
                 ),
               ),
+              const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Pošalji narudžbu',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
             ],
             rows: result?.result
                     .map((Narudzba e) => DataRow(cells: [
                           DataCell(Text(e.brojNarudzbe.toString())),
                           DataCell(Text(
                               formatDate(e.datumNarudzbe ?? DateTime.now()))),
-                          DataCell(Text(e.ukupnaCijena.toString()))
+                          DataCell(Text(e.ukupnaCijena.toString())),
+                          DataCell(IconButton(
+                            onPressed: () async
+                            {
+                              Map updateNarudzba =
+                              {
+                                  'brojNarudzbe': _brojNarudzbeController.text,
+                                  'includeKorisnik': true,
+                                  'includeNarudzbaProizvodi': true,
+                                  'includeUplata': true,
+                                  'isCanceled': false,
+                                  'isShipped' : true
+                              };
+                                await _narudzbaProvider.update(e.narudzbaID! ,updateNarudzba );
+                                _loadData();
+                            },
+                            
+                            icon: Icon(Icons.local_shipping)
+                          ))
                         ]))
                     .toList() ??
                 []),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../models/korisnik.dart';
@@ -25,7 +23,6 @@ class _RecenzijaDetaljiScreenState extends State<RecenzijaDetaljiScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _recenzijaProvider = context.read<RecenzijaProvider>();
     _korisnikProvider = context.read<KorisnikProvider>();
@@ -64,7 +61,7 @@ class _RecenzijaDetaljiScreenState extends State<RecenzijaDetaljiScreen> {
   Widget RecenzijaDetalji() {
     if (recenzija == null) {
       return Center(
-        child: Text("Ucitavanje"),
+        child: Text("Učitavanje"),
       );
     } else {
       return Padding(
@@ -87,8 +84,8 @@ class _RecenzijaDetaljiScreenState extends State<RecenzijaDetaljiScreen> {
                         initialRating: recenzija!.ocjena!.toDouble(),
                         allowHalfRating: false,
                         ratingWidget: RatingWidget(
-                            full: Icon(Icons.star, color: Colors.amber),
-                            half: Icon(Icons.star, color: Colors.amber),
+                            full: Icon(Icons.star, color: Color.fromARGB(255, 253, 190, 0)),
+                            half: Icon(Icons.star, color: Color.fromARGB(255, 253, 190, 0)),
                             empty: Icon(Icons.star, color: Colors.grey)),
                         onRatingUpdate: (rate) {}),
                     SizedBox(height: 15),

@@ -1,10 +1,7 @@
 import 'package:espacenter_mobile/providers/termin_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-
 import '../models/rezervacija.dart';
 import '../models/termin.dart';
 import '../providers/rezervacija_provider.dart';
@@ -102,10 +99,10 @@ class _RezervacijaScreenState extends State<RezervacijaScreen> {
   
        if (item.termin!.isDeleted!) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Termin je otkazan")));
+              .showSnackBar(const SnackBar(content: Text("Termin je otkazan"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
         } else {
           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text("Rezervacija je otkazana")));
+              .showSnackBar(const SnackBar(content: Text("Rezervacija je otkazana"), backgroundColor: Color.fromARGB(255, 46, 92, 232),));
         }
           loadData();
 

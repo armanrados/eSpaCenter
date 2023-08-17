@@ -5,8 +5,7 @@ import 'package:espacenter_mobile/screens/recenzija_screen.dart';
 import 'package:espacenter_mobile/screens/profile_screen.dart';
 import 'package:espacenter_mobile/screens/termini_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
