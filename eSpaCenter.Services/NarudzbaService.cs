@@ -65,17 +65,6 @@ namespace eSpaCenter.Services
             {
                 entity = entity.Where(x => x.KorisnikID == search.KorisnikID);
             }
-
-            if (search.DatumOd.HasValue)
-            {
-                entity = entity.Where(x => x.DatumNarudzbe.Date >= search.DatumOd.Value);
-            }
-
-            if (search.DatumDo.HasValue)
-            {
-                entity = entity.Where(x => x.DatumNarudzbe.Date <= search.DatumDo.Value);
-            }
-
             if (search.IsShipped.HasValue)
             {
                 entity = entity.Where(x => x.IsShipped == search.IsShipped);

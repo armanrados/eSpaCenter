@@ -9,8 +9,6 @@ namespace eSpaCenter.Models.SearchObjects
     public class RezervacijaSearchObject : BaseSearchObject
     {
         public int? KorisnikID { get; set; }
-        public DateTime? DatumOd { get; set; }
-        public DateTime? DatumDo { get; set; }
         public bool? IsCanceled { get; set; }
         public bool? IsCompleted { get; set; }
         public bool? IncludeTermin { get; set; }

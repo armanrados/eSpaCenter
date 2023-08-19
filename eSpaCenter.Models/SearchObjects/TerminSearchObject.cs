@@ -11,8 +11,7 @@ namespace eSpaCenter.Models.SearchObjects
         public int? KorisnikID { get; set; }
         public bool? IsBooked { get; set; }
         public DateTime? Datum { get; set; }
-        public DateTime? DatumOd { get; set; }
-        public DateTime? DatumDo { get; set; }
+
         public bool? isDeleted { get; set; }
 
 
