@@ -31,44 +31,46 @@ CVC: 123
 ```
 ## Pokretanje aplikacija
 1. Kloniranje repozitorija
-  ```
+```
   https://github.com/armanrados/eSpaCenter
-  ```
+```
 2. Otvoriti klonirani repozitorij u konzoli
 3. Pokretanje dokerizovanog API-ja i DB-a
-  ```
+```
   docker-compose build
   docker-compose up
- 
-4. Pokretanje desktop aplikacije kroz Visual Studio Code
 ```
-    Otvoriti eSpaCenter folder
-  ```
-   Otvoriti UI folder
-  ```
-   Odabrati espacenter_admin folder
-  ```
-   Dohvatanje dependecy-a
-  ```
-  flutter pub get
-  ```
- Pokrenuti desktop aplikaciju sa komandom flutter run -d windows
+4. Pokretanje desktop aplikacije kroz Visual Studio Code
 
-  ```
+- Otvoriti eSpaCenter folder
+
+- Otvoriti UI folder
+
+- Odabrati espacenter_admin folder
+
+- Dohvatanje dependecy-a
+```
+  flutter pub get
+```
+ Pokrenuti desktop aplikaciju sa komandom 
+```
+ flutter run -d windows
+```
+ 
 5. Pokretanje mobile aplikacije kroz Visual Studio Code
 
-  Otvoriti eSpaCenter folder
-  ```
-  Otvoriti UI folder
-  ```
-  Odabrati espacenter_mobile folder
-  ```
-   Dohvatanje dependecy-a
-  ```
+- Otvoriti eSpaCenter folder
+
+- Otvoriti UI folder
+  
+- Odabrati espacenter_mobile folder
+ 
+- Dohvatanje dependecy-a
+```
   flutter pub get
-  ```
-  Pokrenuti mobilni emulator
-  ```
-  Pokenuti mobile aplikaciju bez debugiranja CTRL + F5
+```
+- Pokrenuti mobilni emulator
+
+- Pokenuti mobile aplikaciju bez debugiranja CTRL + F5
 
 
