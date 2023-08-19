@@ -32,7 +32,7 @@ CVC: 123
 ## Pokretanje aplikacija
 1. Kloniranje repozitorija
 ```
-  https://github.com/armanrados/eSpaCenter
+  https://github.com/armanrados/eSpaCenter.git
 ```
 2. Otvoriti klonirani repozitorij u konzoli
 3. Pokretanje dokerizovanog API-ja i DB-a
