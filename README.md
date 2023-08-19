@@ -71,6 +71,6 @@ CVC: 123
 ```
 - Pokrenuti mobilni emulator
 
-- Pokenuti mobile aplikaciju bez debugiranja CTRL + F5
+- Pokrenuti mobile aplikaciju bez debugiranja CTRL + F5
 
 
