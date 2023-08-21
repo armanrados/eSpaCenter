@@ -25,11 +25,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
   Usluga? _selectedItem;
   TextEditingController dateController = TextEditingController();
   DateTime date = DateTime.now();
-  CalendarFormat _calendarFormat =
-      CalendarFormat.month; 
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
-  Map<int, int?> _selectedItems = {};
+
   @override
   void initState() {
     // TODO: implement initState
@@ -45,15 +41,16 @@ class _TerminiScreenState extends State<TerminiScreen> {
     var tmpData = await _terminProvider
         ?.get({'isBooked': false, 'includeKorisnik': true, 'isDeleted': false});
     setState(() {
-      data = tmpData!;
       usluga = tmpUsluga!;
-      _selectedItems = {for (var item in data) item.terminID!: usluga[0].uslugaID};
+      data = tmpData!
+        ..forEach((termin) {
+          termin.selectedUsluga = tmpUsluga[0];
+        });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("Termini"),
@@ -84,8 +81,8 @@ class _TerminiScreenState extends State<TerminiScreen> {
                           DateTime? pickedDate = await showDatePicker(
                             context: context,
                             initialDate: date,
-                            firstDate: DateTime.now().subtract(Duration(
-                                days: 365)), 
+                            firstDate:
+                                DateTime.now().subtract(Duration(days: 365)),
                             lastDate: DateTime(2101),
                             selectableDayPredicate: (DateTime day) {
                               return day.isAfter(
@@ -136,112 +133,115 @@ class _TerminiScreenState extends State<TerminiScreen> {
       ];
     }
 
-  final today = DateTime.now();
+    final today = DateTime.now();
     List<Widget> list = data
-    .where((termin) =>
-          termin.datumTermina!.isAfter(today) && !termin.isDeleted!)
+        .where((termin) =>
+            termin.datumTermina!.isAfter(today) && !termin.isDeleted!)
         .map((e) {
-        
           return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
-                  child: Card(
-                    elevation: 6,
-                    color: (e.isBooked! || (e.rezervacija?.isCanceled == true))
-                        ? Color.fromARGB(255, 251, 22, 5)
-                        : Color.fromARGB(255, 0, 246, 9),
-                    child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "Termin kod ${e.korisnik!.ime} ${e.korisnik!.prezime}",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    "${formatDate(e.datumTermina!)}",
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+                child: Card(
+                  elevation: 6,
+                  color: (e.isBooked! || (e.rezervacija?.isCanceled == true))
+                      ? Color.fromARGB(255, 251, 22, 5)
+                      : Color.fromARGB(255, 0, 246, 9),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(e.vrijemeTermina!),
-                               DropdownButton<int>(
-                            underline: SizedBox(),
-                            value: _selectedItems[e.terminID]!,
-                            items: usluga
-                                .map((uslugaItem) => DropdownMenuItem<int>(
-                                      child: Text(uslugaItem.naziv!),
-                                      value: uslugaItem.uslugaID,
-                                    ))
-                                .toList(),
-                            onChanged: e.isBooked!
-                                ? null
-                                : (val) {
-                                    setState(() {
-                                      _selectedItems[e.terminID!] = val;
-                                    });
-                                  },
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 23, 121, 251),
-                            ),
-                                onPressed: e.isBooked!
-                                    ? null
-                                    : () async {
-                                        Map item = {
-                                          "korisnikID": Authorization.korisnik!.korisnikID,
-                                          "terminID": e.terminID,
-                                          "uslugaID": _selectedItems[e.terminID]!,
-                                          "isCanceled": false,
-                                          "isCompleted": false,
-                                        };
-
-                                        await _rezervacijaProvider!.insert(item);
-                                        loadData();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              "Rezervacija termina uspješna",
-                                            ),
-                                            backgroundColor: Color.fromARGB(255, 46, 92, 232),
-                                          ),
-                                        );
-                                      },
-                                child: Text("Rezerviši"),
+                              Expanded(
+                                child: Text(
+                                  "Termin kod ${e.korisnik!.ime} ${e.korisnik!.prezime}",
+                                ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "${formatDate(e.datumTermina!)}",
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(e.vrijemeTermina!),
+                            DropdownButton<Usluga>(
+                              underline: SizedBox(),
+                              value: e.selectedUsluga,
+                              items: usluga
+                                  .map((uslugaItem) => DropdownMenuItem(
+                                        child: Text(uslugaItem.naziv!),
+                                        value: uslugaItem,
+                                      ))
+                                  .toList(),
+                              onChanged: e.isBooked!
+                                  ? null
+                                  : (val) {
+                                      setState(() {
+                                        e.selectedUsluga = val;
+                                      });
+                                    },
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 23, 121, 251),
+                              ),
+                              onPressed: e.isBooked!
+                                  ? null
+                                  : () async {
+                                      Map item = {
+                                        "korisnikID":
+                                            Authorization.korisnik!.korisnikID,
+                                        "terminID": e.terminID,
+                                        "uslugaID": e.selectedUsluga!.uslugaID!,
+                                        "isCanceled": false,
+                                        "isCompleted": false,
+                                      };
+
+                                      await _rezervacijaProvider!.insert(item);
+                                      loadData();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Rezervacija termina uspješna",
+                                          ),
+                                          backgroundColor:
+                                              Color.fromARGB(255, 46, 92, 232),
+                                        ),
+                                      );
+                                    },
+                              child: Text("Rezerviši"),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-              ],
-            );})
+              ),
+              SizedBox(height: 10),
+            ],
+          );
+        })
         .cast<Widget>()
         .toList();
 

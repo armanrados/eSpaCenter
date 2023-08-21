@@ -111,32 +111,6 @@ namespace eSpaCenter.Services
 
             return _mapper.Map<Models.Korisnik>(entity);
         }
-        public async Task<Models.Korisnik> AddUloga(int id, KorisnikUpdateRequest request)
-        {
-            var entity = await _db.Korisniks.Include("KorisnikUlogas.Uloga").FirstOrDefaultAsync(x => x.KorisnikID == id);
-            var uloga = await _db.Ulogas.FirstOrDefaultAsync(x => x.Naziv.ToLower() == request.Uloga);
-
-            Database.KorisnikUloga nova = new Database.KorisnikUloga()
-            {
-                DatumIzmjene = DateTime.Now,
-                KorisnikID = id,
-                UlogaID = uloga.UlogaID
-            };
-           await _db.KorisnikUlogas.AddAsync(nova);
-           await _db.SaveChangesAsync();
-
-            return _mapper.Map<Models.Korisnik>(entity);
-        }
-        public async Task<Models.Korisnik> DeleteUloga(int id, KorisnikUpdateRequest request)
-        {
-            var entity = await _db.Korisniks.Include("KorisnikUlogas.Uloga").FirstOrDefaultAsync(x => x.KorisnikID == id);
-            var uloga = await _db.Ulogas.FirstOrDefaultAsync(x => x.Naziv.ToLower() == request.Uloga);
-            var korisnikUloga = await _db.KorisnikUlogas.FirstOrDefaultAsync(x => x.KorisnikID == entity.KorisnikID && x.UlogaID == uloga.UlogaID);
-
-            _db.KorisnikUlogas.Remove(korisnikUloga);
-            await _db.SaveChangesAsync();
-
-            return _mapper.Map<Models.Korisnik>(entity);
-        }
+    
     }
 }

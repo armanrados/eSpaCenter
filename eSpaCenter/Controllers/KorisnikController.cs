@@ -17,18 +17,7 @@ namespace eSpaCenter.Controllers
         {
             return base.Insert(request);
         }
-        [HttpPut("{id}/AddUloga")]
-        [Authorize(Roles = "Administrator")]
-        public Task<Korisnik> AddUloga(int id, [FromBody] KorisnikUpdateRequest request)
-        {
-            return ((IKorisnikService)_service).AddUloga(id, request);
-        }
-        [HttpPut("{id}/DeleteUloga")]
-        [Authorize(Roles = "Administrator")]
-        public Task<Korisnik> DeleteUloga(int id, [FromBody] KorisnikUpdateRequest request)
-        {
-            return ((IKorisnikService)_service).DeleteUloga(id, request);
-        }
+       
 
         [HttpGet("Authenticate")]
         [AllowAnonymous]

@@ -79,7 +79,7 @@ class _RecenzijaDodajScreenState extends State<RecenzijaDodajScreen> {
                         ),
                         Row(
                           children: [
-                            Text('Sadrzaj recenzije:',
+                            Text('Sadržaj recenzije:',
                                 style: Theme.of(context).textTheme.titleLarge),
                           ],
                         ),
