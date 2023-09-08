@@ -73,4 +73,5 @@ CVC: 123
 
 - Pokrenuti mobile aplikaciju bez debugiranja CTRL + F5
 
-
+6. Pokretanje RabbitMQ kroz Visual Studio
+- Odabrati eSpaCenter.Consumers kao startup project i pokrenuti ga
