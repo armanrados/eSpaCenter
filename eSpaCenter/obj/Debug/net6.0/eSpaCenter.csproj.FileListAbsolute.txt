@@ -209,3 +209,6 @@ C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\runtimes\osx-ar
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\runtimes\osx-x64\native\libMatrixFactorizationNative.dylib
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\runtimes\win-x64\native\MatrixFactorizationNative.dll
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\runtimes\win-x86\native\MatrixFactorizationNative.dll
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\RabbitMQ.Client.dll
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\System.Threading.Channels.dll
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter\bin\Debug\net6.0\EasyNetQ.dll

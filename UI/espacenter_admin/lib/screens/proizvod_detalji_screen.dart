@@ -80,13 +80,24 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
                       var request = Map.from(_formKey.currentState!.value);
+                      if (!_validateNaziv(request['naziv'])) {
+                        _showNazivWarning();
+                        return;
+                      }
+                      if (!_validateCijena(request['cijena'])) {
+                        _showCijenaWarning();
+                        return;
+                      }
+                      if (!_validateOpis(request['opis'])) {
+                        _showOpisWarning();
+                        return;
+                      }
                       if (!_imageSelected) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: Text("Upozorenje"),
-                            content:
-                                Text("Slika je obavezna!"),
+                            content: Text("Slika je obavezna!"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -95,7 +106,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                             ],
                           ),
                         );
-                        return; 
+                        return;
                       }
                       if (_formKey.currentState?.fields['vrstaproizvodaId']
                               ?.value ==
@@ -104,8 +115,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: Text("Upozorenje"),
-                            content: Text(
-                                "Vrsta proizvoda je obaveza!"),
+                            content: Text("Vrsta proizvoda je obavezna!"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -114,7 +124,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                             ],
                           ),
                         );
-                        return; 
+                        return;
                       }
                       request['slika'] = _base64Image;
 
@@ -234,6 +244,80 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
           ],
         )
       ]),
+    );
+  }
+
+  bool _validateNaziv(String? naziv) {
+    return naziv != null && naziv.isNotEmpty;
+  }
+
+  bool _validateCijena(String? cijena) {
+    if (cijena == null || cijena.isEmpty) {
+      return false; // Empty cijena is not allowed.
+    }
+    try {
+      // Attempt to parse cijena as a double or int
+      double.parse(cijena);
+      return true; // Successfully parsed as double
+    } catch (e) {
+      try {
+        int.parse(cijena);
+        return true; // Successfully parsed as int
+      } catch (e) {
+        return false; // Not a valid double or int
+      }
+    }
+  }
+
+  bool _validateOpis(String? opis) {
+    return opis != null && opis.isNotEmpty;
+  }
+
+  void _showNazivWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Naziv je obavezan!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showCijenaWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Cijena je obavezna!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showOpisWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Opis je obavezan!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
     );
   }
 

@@ -14,7 +14,12 @@ namespace eSpaCenter.Services
 {
     public class RezervacijaService : BaseCRUDService<Models.Rezervacija,Database.Rezervacija,RezervacijaSearchObject,RezervacijaInsertUpdateRequest,RezervacijaInsertUpdateRequest>, IRezervacijaService
     {
-        public RezervacijaService(eSpaCenterContext db, IMapper mapper) : base(db, mapper) { }
+        private readonly IMessageProducer _messageProducer;
+
+        public RezervacijaService(eSpaCenterContext db, IMapper mapper, IMessageProducer messageProducer) : base(db, mapper) 
+        {
+            _messageProducer = messageProducer;
+        }
 
         public override async Task<Models.Rezervacija> Insert(RezervacijaInsertUpdateRequest insert)
         {
@@ -23,6 +28,7 @@ namespace eSpaCenter.Services
             termin.IsBooked = true;
             entity.DatumRezervacije = DateTime.Now;
             await _db.SaveChangesAsync();
+            _messageProducer.SendingMessage<Models.Rezervacija>(entity);
             return entity;
 
         }

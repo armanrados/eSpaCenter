@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-
 class GalerijaDetaljiScreen extends StatefulWidget {
   Galerija? galerija;
   GalerijaDetaljiScreen({Key? key, this.galerija}) : super(key: key);
@@ -88,6 +87,14 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                       var request = Map.from(_formKey.currentState!.value);
 
                       request['slikaByte'] = _base64Image;
+                      if (!_validateOpis(request['opis'])) {
+                        _showOpisWarning();
+                        return;
+                      }
+                      if (!_validateKorisnikID(request['korisnikID'])) {
+                        _showKorisnikIDWarning();
+                        return;
+                      }
 
                       try {
                         if (widget.galerija == null) {
@@ -171,6 +178,58 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
           ],
         )
       ]),
+    );
+  }
+
+  bool _validateOpis(String? opis) {
+    return opis != null && opis.isNotEmpty;
+  }
+
+  bool _validateKorisnikID(String? korisnikID) {
+    if (korisnikID == null || korisnikID.isEmpty) {
+      return false; // Empty ID is not allowed.
+    }
+
+    // Use a regular expression to check if it's a non-negative integer.
+    final idPattern = r'^\d+$';
+    if (!RegExp(idPattern).hasMatch(korisnikID)) {
+      return false; // Not a non-negative integer.
+    }
+
+    // Convert the string to an integer and check if it's non-negative.
+    final id = int.tryParse(korisnikID);
+    return id != null && id >= 0;
+  }
+
+  void _showOpisWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Opis je obavezan!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showKorisnikIDWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Unesite validan ID."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
     );
   }
 

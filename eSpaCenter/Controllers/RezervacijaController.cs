@@ -6,6 +6,10 @@ namespace eSpaCenter.Controllers
 {
     public class RezervacijaController : BaseCRUDController<Models.Rezervacija, RezervacijaSearchObject, RezervacijaInsertUpdateRequest, RezervacijaInsertUpdateRequest>
     {
-        public RezervacijaController(IRezervacijaService service) : base(service) { }
+        private readonly IMessageProducer _messageProducer;
+        public RezervacijaController(IRezervacijaService service, IMessageProducer messageProducer) : base(service) 
+        {
+            _messageProducer = messageProducer;
+        }
     }
 }

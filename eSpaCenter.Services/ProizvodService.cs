@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EasyNetQ;
 
 namespace eSpaCenter.Services
 {
@@ -50,6 +51,9 @@ namespace eSpaCenter.Services
             entity.Sifra = Guid.NewGuid().ToString();
 
         }
+     
+
+
         static object isLocked = new object();
         static MLContext mlContext = null;
         static ITransformer model = null;

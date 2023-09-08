@@ -67,7 +67,7 @@
           "Azure.Core": "1.24.0",
           "Microsoft.Identity.Client": "4.45.0",
           "Microsoft.Identity.Client.Extensions.Msal": "2.19.3",
-          "System.Memory": "4.5.4",
+          "System.Memory": "4.5.5",
           "System.Security.Cryptography.ProtectedData": "5.0.0",
           "System.Text.Json": "7.0.0",
           "System.Threading.Tasks.Extensions": "4.5.4"
@@ -76,6 +76,17 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.6.0.0",
             "fileVersion": "1.600.22.20503"
+          }
+        }
+      },
+      "EasyNetQ/7.5.5": {
+        "dependencies": {
+          "RabbitMQ.Client": "6.5.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/EasyNetQ.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.5.5.0"
           }
         }
       },
@@ -439,9 +450,9 @@
           "Newtonsoft.Json": "13.0.1",
           "System.CodeDom": "4.5.0",
           "System.Collections.Immutable": "1.5.0",
-          "System.Memory": "4.5.4",
+          "System.Memory": "4.5.5",
           "System.Reflection.Emit.Lightweight": "4.3.0",
-          "System.Threading.Channels": "4.7.1"
+          "System.Threading.Channels": "7.0.0"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.ML.Core.dll": {
@@ -522,7 +533,7 @@
       "Microsoft.ML.DataView/2.0.1": {
         "dependencies": {
           "System.Collections.Immutable": "1.5.0",
-          "System.Memory": "4.5.4"
+          "System.Memory": "4.5.5"
         },
         "runtime": {
           "lib/netstandard2.0/Microsoft.ML.DataView.dll": {
@@ -642,6 +653,18 @@
           }
         }
       },
+      "RabbitMQ.Client/6.5.0": {
+        "dependencies": {
+          "System.Memory": "4.5.5",
+          "System.Threading.Channels": "7.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/RabbitMQ.Client.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.5.0.0"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.2.3": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "3.0.0",
@@ -757,7 +780,7 @@
           "System.Threading.Tasks": "4.3.0"
         }
       },
-      "System.Memory/4.5.4": {},
+      "System.Memory/4.5.5": {},
       "System.Memory.Data/1.0.2": {
         "dependencies": {
           "System.Text.Encodings.Web": "7.0.0",
@@ -920,7 +943,14 @@
           }
         }
       },
-      "System.Threading.Channels/4.7.1": {},
+      "System.Threading.Channels/7.0.0": {
+        "runtime": {
+          "lib/net6.0/System.Threading.Channels.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
       "System.Threading.Tasks/4.3.0": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "5.0.0",
@@ -961,10 +991,12 @@
       "eSpaCenter.Services/1.0.0": {
         "dependencies": {
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
+          "EasyNetQ": "7.5.5",
           "Microsoft.EntityFrameworkCore": "7.0.5",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.5",
           "Microsoft.ML": "2.0.1",
           "Microsoft.ML.Recommender": "0.20.1",
+          "RabbitMQ.Client": "6.5.0",
           "eSpaCenter.Models": "1.0.0"
         },
         "runtime": {
@@ -1006,6 +1038,13 @@
       "sha512": "sha512-EycyMsb6rD2PK9P0SyibFfEhvWWttdrYhyPF4f41uzdB/44yQlV+2Wehxyg489Rj6gbPvSPgbKq0xsHJBhipZA==",
       "path": "azure.identity/1.6.0",
       "hashPath": "azure.identity.1.6.0.nupkg.sha512"
+    },
+    "EasyNetQ/7.5.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Wzv7HHAPj9j/7x3iR98/VEbWH7PZzMCKzhV2iJmuFBVKonB8vTLAw3HrDUBgvTBvuGSjvePvLHgnoAXRr3dr9g==",
+      "path": "easynetq/7.5.5",
+      "hashPath": "easynetq.7.5.5.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
@@ -1315,6 +1354,13 @@
       "path": "newtonsoft.json/13.0.1",
       "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
     },
+    "RabbitMQ.Client/6.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9hY5HiWPtCla1/l0WmXmLnqoX7iKE3neBQUWnetIJrRpOvTbO//XQfQDh++xgHCshL40Kv/6bR0HDkmJz46twg==",
+      "path": "rabbitmq.client/6.5.0",
+      "hashPath": "rabbitmq.client.6.5.0.nupkg.sha512"
+    },
     "Swashbuckle.AspNetCore/6.2.3": {
       "type": "package",
       "serviceable": true,
@@ -1413,12 +1459,12 @@
       "path": "system.io/4.3.0",
       "hashPath": "system.io.4.3.0.nupkg.sha512"
     },
-    "System.Memory/4.5.4": {
+    "System.Memory/4.5.5": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-1MbJTHS1lZ4bS4FmsJjnuGJOu88ZzTT2rLvrhW7Ygic+pC0NWA+3hgAen0HRdsocuQXCkUTdFn9yHJJhsijDXw==",
-      "path": "system.memory/4.5.4",
-      "hashPath": "system.memory.4.5.4.nupkg.sha512"
+      "sha512": "sha512-XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw==",
+      "path": "system.memory/4.5.5",
+      "hashPath": "system.memory.4.5.5.nupkg.sha512"
     },
     "System.Memory.Data/1.0.2": {
       "type": "package",
@@ -1553,12 +1599,12 @@
       "path": "system.text.json/7.0.0",
       "hashPath": "system.text.json.7.0.0.nupkg.sha512"
     },
-    "System.Threading.Channels/4.7.1": {
+    "System.Threading.Channels/7.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6akRtHK/wab3246t4p5v3HQrtQk8LboOt5T4dtpNgsp3zvDeM4/Gx8V12t0h+c/W9/enUrilk8n6EQqdQorZAA==",
-      "path": "system.threading.channels/4.7.1",
-      "hashPath": "system.threading.channels.4.7.1.nupkg.sha512"
+      "sha512": "sha512-qmeeYNROMsONF6ndEZcIQ+VxR4Q/TX/7uIVLJqtwIWL7dDWeh0l1UIqgo4wYyjG//5lUNhwkLDSFl+pAWO6oiA==",
+      "path": "system.threading.channels/7.0.0",
+      "hashPath": "system.threading.channels.7.0.0.nupkg.sha512"
     },
     "System.Threading.Tasks/4.3.0": {
       "type": "package",

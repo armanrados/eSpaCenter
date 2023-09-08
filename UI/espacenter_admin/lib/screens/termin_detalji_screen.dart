@@ -64,6 +64,10 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                       _formKey.currentState?.saveAndValidate();
 
                       var request = Map.from(_formKey.currentState!.value);
+                      if (!_validateKorisnikID(request['korisnikID'])) {
+                        _showKorisnikIDWarning();
+                        return;
+                      }
                       if (!_validateDateFormat(request['datumTermina'])) {
                         _showDateFormatWarning();
                         return;
@@ -73,6 +77,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                         _showTimeFormatWarning();
                         return;
                       }
+
                       try {
                         if (widget.termin == null) {
                           await _terminProvider.insert(request);
@@ -153,6 +158,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
           )
         ]));
   }
+
   bool _validateDateFormat(String? date) {
     final datePattern = r'^\d{4}-\d{2}-\d{2}$';
     return RegExp(datePattern).hasMatch(date ?? '');
@@ -161,6 +167,22 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
   bool _validateTimeFormat(String? time) {
     final timePattern = r'^\d{2}:\d{2}$';
     return RegExp(timePattern).hasMatch(time ?? '');
+  }
+
+  bool _validateKorisnikID(String? korisnikID) {
+    if (korisnikID == null || korisnikID.isEmpty) {
+      return false; // Empty ID is not allowed.
+    }
+
+    // Use a regular expression to check if it's a non-negative integer.
+    final idPattern = r'^\d+$';
+    if (!RegExp(idPattern).hasMatch(korisnikID)) {
+      return false; // Not a non-negative integer.
+    }
+
+    // Convert the string to an integer and check if it's non-negative.
+    final id = int.tryParse(korisnikID);
+    return id != null && id >= 0;
   }
 
   void _showDateFormatWarning() {
@@ -194,10 +216,25 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
       ),
     );
   }
-    String _formatDateString(String dateTimeString) {
+
+  void _showKorisnikIDWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Unesite validan ID."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDateString(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
     return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}';
   }
-
 }
-

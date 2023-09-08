@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EasyNetQ;
 using eSpaCenter.Models.Requests;
 using eSpaCenter.Models.SearchObjects;
 using eSpaCenter.Services.Database;
@@ -20,6 +21,7 @@ namespace eSpaCenter.Services
             entity.DatumKreiranja = DateTime.Now;
             
         }
+     
 
         public override IQueryable<Termin> AddInclude(IQueryable<Termin> entity, TerminSearchObject search)
         {

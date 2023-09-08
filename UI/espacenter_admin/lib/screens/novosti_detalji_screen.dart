@@ -73,8 +73,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
                             title: Text("Upozorenje"),
-                            content:
-                                Text("Slika je obavezna!"),
+                            content: Text("Slika je obavezna!"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -83,11 +82,23 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                             ],
                           ),
                         );
-                        return; 
+                        return;
                       }
                       var request = Map.from(_formKey.currentState!.value);
 
                       request['slika'] = _base64Image;
+                      if (!_validateNaslov(request['naslov'])) {
+                        _showNaslovWarning();
+                        return;
+                      }
+                      if (!_validateSadrzaj(request['sadrzaj'])) {
+                        _showSadrzajWarning();
+                        return;
+                      }
+                      if (!_validateKorisnikID(request['korisnikID'])) {
+                        _showKorisnikIDWarning();
+                        return;
+                      }
 
                       try {
                         if (widget.novosti == null) {
@@ -184,6 +195,78 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
     );
   }
 
+  bool _validateNaslov(String? naslov) {
+    return naslov != null && naslov.isNotEmpty;
+  }
+
+  bool _validateSadrzaj(String? sadrzaj) {
+    return sadrzaj != null && sadrzaj.isNotEmpty;
+  }
+
+  bool _validateKorisnikID(String? korisnikID) {
+    if (korisnikID == null || korisnikID.isEmpty) {
+      return false; // Empty ID is not allowed.
+    }
+
+    // Use a regular expression to check if it's a non-negative integer.
+    final idPattern = r'^\d+$';
+    if (!RegExp(idPattern).hasMatch(korisnikID)) {
+      return false; // Not a non-negative integer.
+    }
+
+    // Convert the string to an integer and check if it's non-negative.
+    final id = int.tryParse(korisnikID);
+    return id != null && id >= 0;
+  }
+
+  void _showNaslovWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Naslov je obavezan!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showSadrzajWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Sadržaj je obavezan!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showKorisnikIDWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Unesite validan ID."),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          ),
+        ],
+      ),
+    );
+  }
+
   File? _image;
   String? _base64Image;
 
@@ -195,7 +278,6 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
       _base64Image = base64Encode(_image!.readAsBytesSync());
       _imageSelected = true;
       setState(() {});
-
     }
   }
 }
