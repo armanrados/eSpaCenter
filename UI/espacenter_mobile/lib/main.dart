@@ -43,7 +43,8 @@ void main() {
       ChangeNotifierProvider(create: (_) => RezervacijaProvider()),
       ChangeNotifierProvider(create: (_) => CartProvider()),
       ChangeNotifierProvider(create: (_) => UplataProvider()),
-      ChangeNotifierProvider(create: (_) => NarudzbaProvider())
+      ChangeNotifierProvider(create: (_) => NarudzbaProvider()),
+    
     ],
     child: MaterialApp(
       theme: ThemeData(primaryColor: Color.fromARGB(255, 255, 253, 253)),
@@ -124,10 +125,10 @@ class MyApp extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(
-              height: 380,
+              height: 280,
             ),
             Padding(
-              padding: EdgeInsets.all(40),
+              padding: EdgeInsets.all(5),
               child: Form(
                 key: _formKey,
                 child: Column(children: [
@@ -135,9 +136,9 @@ class MyApp extends StatelessWidget {
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Korisničko ime ne moze biti prazno polje";
+                          return "Korisničko ime je obavezno!";
                         } else if (value.length < 3) {
-                          return "Korisničko ime ne moze da sadrzi manje od 3 karaktera";
+                          return "Korisničko ime ne može imati manje od 3 slova";
                         }
                         return null;
                       },
@@ -160,7 +161,7 @@ class MyApp extends StatelessWidget {
                         if (value!.isEmpty) {
                           return "Lozinka ne moze biti prazno polje";
                         } else if (value.length < 4) {
-                          return "Lozinka ne moze da sadrzi manje od 4 karaktera";
+                          return "Lozinka ne može imati manje od 4 slova";
                         }
                         return null;
                       },
