@@ -74,7 +74,7 @@ class LoginPage extends StatelessWidget {
   TextEditingController _passwordController = new TextEditingController();
   late ProizvodProvider _proizvodProvider;
   late KorisnikProvider _korisnikProvider;
-
+  int? loggedInUserID;
   @override
   Widget build(BuildContext context) {
     _proizvodProvider = context.read<ProizvodProvider>();
@@ -132,6 +132,7 @@ class LoginPage extends StatelessWidget {
                             Authorization.korisnik?.roleNames
                                     ?.contains("Zaposlenik") ==
                                 true) {
+                                  loggedInUserID = Authorization.korisnik?.korisnikID;
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const TerminiScreen(),

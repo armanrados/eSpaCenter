@@ -10,6 +10,8 @@ namespace eSpaCenter.Models.SearchObjects
     {
         public int? KorisnikID { get; set; }
         public bool? IsCanceled { get; set; }
+        public string? TerminVrijeme { get; set; }
+
         public bool? IsCompleted { get; set; }
         public bool? IncludeTermin { get; set; }
         public bool? IncludeKorisnik { get; set; }

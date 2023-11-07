@@ -18,6 +18,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
   late RezervacijaProvider _rezervacijaProvider;
   SearchResult<Rezervacija>? result;
   TextEditingController _korisnikIDController = new TextEditingController();
+  TextEditingController _vrijemeTerminaController= new TextEditingController();
+
 
   @override
   void didChangeDependencies() {
@@ -28,6 +30,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
 
   Future<void> _loadData() async {
     var data = await _rezervacijaProvider.get(filter: {
+      'terminVrijeme': _vrijemeTerminaController.text,
       'korisnikID': _korisnikIDController.text,
       'includeTermin': true,
       'includeKorisnik': true,
@@ -58,8 +61,8 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
         children: [
           Expanded(
             child: TextField(
-              decoration: InputDecoration(labelText: "ID"),
-              controller: _korisnikIDController,
+              decoration: InputDecoration(labelText: "Vrijeme termina"),
+              controller: _vrijemeTerminaController,
             ),
           ),
           SizedBox(
@@ -69,6 +72,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
               onPressed: () async {
 
                 var data = await _rezervacijaProvider.get(filter: {
+                  'terminVrijeme':_vrijemeTerminaController.text,
                   'korisnikID': _korisnikIDController.text,
                   'includeTermin': true,
                   'includeKorisnik': true,
@@ -100,14 +104,7 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
         width: double.infinity,
         child: DataTable(
           columns: [
-            const DataColumn(
-              label: Expanded(
-                child: Text(
-                  'ID',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
+           
             const DataColumn(
               label: Expanded(
                 child: Text(
@@ -136,7 +133,6 @@ class _RezervacijeScreenState extends State<RezervacijeScreen> {
           rows: filteredReservations
               .map(
                 (Rezervacija e) => DataRow(cells: [
-                  DataCell(Text(e.korisnikID.toString())),
                   DataCell(Text(e.terminRezervisao ?? "")),
                   DataCell(Text(formatDate(e.datumRezervacije ?? DateTime.now()))),
                   DataCell(Text(e.termin?.vrijemeTermina ?? ""))

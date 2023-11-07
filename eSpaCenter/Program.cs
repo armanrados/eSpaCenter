@@ -44,7 +44,8 @@ builder.Services.AddTransient<INarudzbaService, NarudzbaService>();
 builder.Services.AddTransient<IUplataService, UplataService>();
 builder.Services.AddTransient<IGalerijaService, GalerijaService>();
 builder.Services.AddTransient<IVrstaProizvodaService, VrstaProizvodaService>();
-builder.Services.AddScoped<IMessageProducer, MessageProducer>();
+builder.Services.AddTransient<IMessageProducer, MessageProducer>();
+
 
 
 

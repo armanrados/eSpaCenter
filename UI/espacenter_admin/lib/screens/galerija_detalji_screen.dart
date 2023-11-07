@@ -9,6 +9,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:espacenter_admin/utils/util.dart';
+
 
 class GalerijaDetaljiScreen extends StatefulWidget {
   Galerija? galerija;
@@ -33,7 +35,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
     _initialValue = {
       'galerijaID': widget.galerija?.galerijaID,
       'opis': widget.galerija?.opis,
-      'korisnikID': widget.galerija?.korisnikID.toString()
+      'korisnikID': Authorization.korisnik?.korisnikID.toString()
     };
 
     _galerijaProvider = context.read<GalerijaProvider>();
@@ -173,6 +175,7 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                     labelText: "ID Zaposlenika",
                     hintText: "Unesite ID u stilu: 1 "),
                 name: "korisnikID",
+                enabled: false,
               ),
             ),
           ],

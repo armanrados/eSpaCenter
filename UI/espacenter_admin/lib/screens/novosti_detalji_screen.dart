@@ -9,6 +9,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:espacenter_admin/utils/util.dart';
+
 
 class NovostiDetaljiScreen extends StatefulWidget {
   Novosti? novosti;
@@ -34,7 +36,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
       'novostiID': widget.novosti?.novostiID,
       'naslov': widget.novosti?.naslov,
       'sadrzaj': widget.novosti?.sadrzaj,
-      'korisnikID': widget.novosti?.korisnikID.toString()
+      'korisnikID': Authorization.korisnik?.korisnikID.toString()
     };
 
     _novostProvider = context.read<NovostProvider>();
@@ -187,6 +189,7 @@ class _NovostiDetaljiScreenState extends State<NovostiDetaljiScreen> {
                     labelText: "ID Zaposlenika",
                     hintText: "Unesite ID u stilu: 1"),
                 name: "korisnikID",
+                enabled: false,
               ),
             ),
           ],

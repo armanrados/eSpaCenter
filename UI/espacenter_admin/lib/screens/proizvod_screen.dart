@@ -94,14 +94,7 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
           width: double.infinity,
           child: DataTable(
             columns: [
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Šifra',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-              ),
+             
               const DataColumn(
                 label: Expanded(
                   child: Text(
@@ -159,7 +152,6 @@ class _ProizvodScreenState extends State<ProizvodScreen> {
                                   
                               },
                         cells: [
-                          DataCell(Text(e.sifra ?? "")),
                           DataCell(Text(e.naziv ?? "")),
                           DataCell(Text(formatNumber(e.cijena))),
                           DataCell(Text(e.opis ?? "")),

@@ -13,7 +13,7 @@ public class RabbitMQConsumer : IDisposable
     private readonly string _virtualhost = Environment.GetEnvironmentVariable("RABBITMQ_VIRTUALHOST") ?? "/";
     public RabbitMQConsumer()
     {
-     
+
         var factory = new ConnectionFactory()
         {
             HostName = _host,
@@ -37,8 +37,8 @@ public class RabbitMQConsumer : IDisposable
             try
             {
                 var body = eventArgs.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine($"Nova rezervacija je kreirana - {message}");
+                var emailMessage = Encoding.UTF8.GetString(body);
+                Console.WriteLine($"Received email: {emailMessage}");
             }
             catch (Exception ex)
             {

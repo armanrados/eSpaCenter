@@ -294,7 +294,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: Text("Upozorenje"),
-        content: Text("Cijena je obavezna!"),
+        content: Text("Molimo unesite cijenu izraženu u brojevima."),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),

@@ -38,6 +38,10 @@ namespace eSpaCenter.Services
             {
                 filterQuery = filterQuery.Where(x => x.KorisnikID == search.KorisnikID);
             }
+            if (!string.IsNullOrWhiteSpace(search?.VrijemeTermina))
+            {
+                filterQuery = filterQuery.Where(x => x.VrijemeTermina.ToLower().Contains(search.VrijemeTermina.ToLower()));
+            }
             if (search.isDeleted.HasValue)
             {
                 filterQuery = filterQuery.Where(x => x.isDeleted == search.isDeleted);

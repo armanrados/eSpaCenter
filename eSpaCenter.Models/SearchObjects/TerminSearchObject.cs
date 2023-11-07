@@ -13,8 +13,7 @@ namespace eSpaCenter.Models.SearchObjects
         public DateTime? Datum { get; set; }
 
         public bool? isDeleted { get; set; }
-
-
+        public string? VrijemeTermina {  get; set; }
         public bool? IncludeKorisnik { get; set; }
     }
 }

@@ -6,10 +6,12 @@ import 'package:espacenter_admin/screens/termini_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:espacenter_admin/utils/util.dart';
 
 class TerminDetaljiScreen extends StatefulWidget {
   Termin? termin;
-  TerminDetaljiScreen({Key? key, this.termin}) : super(key: key);
+
+  TerminDetaljiScreen({Key? key, required this.termin}) : super(key: key);
 
   @override
   State<TerminDetaljiScreen> createState() => _TerminDetaljiScreenState();
@@ -27,7 +29,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
   void initState() {
     super.initState();
     _initialValue = {
-      'korisnikID': widget.termin?.korisnikID.toString(),
+      'korisnikID': Authorization.korisnik?.korisnikID.toString(),
       'datumTermina': widget.termin?.datumTermina?.toIso8601String(),
       'vrijemeTermina': widget.termin?.vrijemeTermina,
     };
@@ -125,6 +127,7 @@ class _TerminDetaljiScreenState extends State<TerminDetaljiScreen> {
                       labelText: "ID Zaposlenika",
                       hintText: "Unesite ID u stilu: 1"),
                   name: "korisnikID",
+                  enabled: false,
                 ),
               ),
             ],

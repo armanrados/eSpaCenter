@@ -10,7 +10,9 @@ import '../models/termin.dart';
 import '../utils/util.dart';
 
 class TerminiScreen extends StatefulWidget {
-  const TerminiScreen({Key? key}) : super(key: key);
+  const TerminiScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TerminiScreen> createState() => _TerminiScreenState();
@@ -20,6 +22,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
   late TerminProvider _terminProvider;
   SearchResult<Termin>? result;
   TextEditingController _korisnikIDController = new TextEditingController();
+  TextEditingController _vrijemeTerminaController = new TextEditingController();
 
   @override
   void didChangeDependencies() {
@@ -29,15 +32,20 @@ class _TerminiScreenState extends State<TerminiScreen> {
   }
 
   Future<void> _loadData() async {
-    var data = await _terminProvider.get(filter: {
-      'korisnikID': _korisnikIDController.text,
-      'isDeleted': false,
-      'includeKorisnik': true
-    });
+    var loggedInKorisnikID = Authorization.korisnik?.korisnikID;
+    if (loggedInKorisnikID != null) {
+      var data = await _terminProvider.get(filter: {
+        'vrijemeTermina': _vrijemeTerminaController.text,
+        'korisnikID': loggedInKorisnikID
+            .toString(), // Filter by the logged-in Korisnik's ID
+        'isDeleted': false,
+        'includeKorisnik': true
+      });
 
-    setState(() {
-      result = data;
-    });
+      setState(() {
+        result = data;
+      });
+    }
   }
 
   Widget _buildSearch() {
@@ -47,14 +55,15 @@ class _TerminiScreenState extends State<TerminiScreen> {
         children: [
           Expanded(
             child: TextField(
-              decoration: InputDecoration(labelText: "ID Zaposlenika"),
-              controller: _korisnikIDController,
+              decoration: InputDecoration(labelText: "Vrijeme termina"),
+              controller: _vrijemeTerminaController,
             ),
           ),
           SizedBox(width: 8),
           ElevatedButton.icon(
               onPressed: () async {
                 var data = await _terminProvider.get(filter: {
+                  'vrijemeTermina': _vrijemeTerminaController.text,
                   'korisnikID': _korisnikIDController.text,
                   'isDeleted': false,
                   'includeKorisnik': true
@@ -95,14 +104,6 @@ class _TerminiScreenState extends State<TerminiScreen> {
               const DataColumn(
                 label: Expanded(
                   child: Text(
-                    'ID Zaposlenika',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-              ),
-              const DataColumn(
-                label: Expanded(
-                  child: Text(
                     'Zaposlenik',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
@@ -136,34 +137,29 @@ class _TerminiScreenState extends State<TerminiScreen> {
             rows: result?.result
                     .map(
                       (Termin e) => DataRow(
-                         onLongPress: () => {
-                                
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            TerminDetaljiScreen(
-                                          termin: e,
-                                        ),
-                                      ),
-                                    )
-                                  
-                              },
+                        onLongPress: () => {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TerminDetaljiScreen(
+                                termin: e,
+                              ),
+                            ),
+                          )
+                        },
                         cells: [
-                          DataCell(Text(e.korisnikID.toString())),
                           DataCell(Text(e.korisnik?.ime ?? "")),
-                          DataCell(Text(formatDate(e.datumTermina ?? DateTime.now()))),
+                          DataCell(Text(
+                              formatDate(e.datumTermina ?? DateTime.now()))),
                           DataCell(Text(e.vrijemeTermina ?? "")),
                           DataCell(
                             IconButton(
                               onPressed: () async {
                                 e.isDeleted = true;
 
-                                await _terminProvider.update(
-                                    e.terminID!, e);
+                                await _terminProvider.update(e.terminID!, e);
                                 _loadData();
 
-                                setState(() {
-                                });
+                                setState(() {});
                               },
                               icon: Icon(Icons.delete),
                             ),

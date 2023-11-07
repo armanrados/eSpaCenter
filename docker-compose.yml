@@ -44,6 +44,10 @@ services:
       - RABBITMQ_USERNAME=user
       - RABBITMQ_PASSWORD=password
       - RABBITMQ_VIRTUALHOST=/
+      - SMTP_SERVER=smtp.outlook.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=espacenter@outlook.com
+      - SMTP_PASSWORD=mynewpassword321
     ports:
       - 7132:7132
     networks:
