@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:espacenter_admin/screens/narudzba_detalji_screen.dart';
+
 import '../utils/util.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -198,6 +200,14 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                   ),
                 ),
               ),
+               const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Detalji narudžbe',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
             ],
             rows: result?.result
                     .map((Narudzba e) => DataRow(cells: [
@@ -205,7 +215,18 @@ class _HistorijaScreenState extends State<HistorijaScreen> {
                           DataCell(Text(e.brojNarudzbe.toString())),
                           DataCell(Text(
                               formatDate(e.datumNarudzbe ?? DateTime.now()))),
-                          DataCell(Text(e.ukupnaCijena.toString()))
+                          DataCell(Text(e.ukupnaCijena.toString())),
+                           DataCell(IconButton(
+                            onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NarudzbaDetailScreen(narudzba: e),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.list_alt),
+                          ))
                         ]))
                     .toList() ??
                 []),

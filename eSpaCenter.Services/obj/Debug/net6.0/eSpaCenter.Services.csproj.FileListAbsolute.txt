@@ -32,3 +32,8 @@ C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\obj\Debug\net6.0\refint
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\obj\Debug\net6.0\eSpaCenter.Services.pdb
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\obj\Debug\net6.0\eSpaCenter.Services.genruntimeconfig.cache
 C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\obj\Debug\net6.0\ref\eSpaCenter.Services.dll
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\bin\Debug\net6.0\eSpaCenter.Subscriber.deps.json
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\bin\Debug\net6.0\eSpaCenter.Subscriber.runtimeconfig.json
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\bin\Debug\net6.0\eSpaCenter.Subscriber.exe
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\bin\Debug\net6.0\eSpaCenter.Subscriber.dll
+C:\Users\Korisnik\Desktop\eSpaCenter\eSpaCenter.Services\bin\Debug\net6.0\eSpaCenter.Subscriber.pdb

@@ -79,7 +79,13 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                 child: ElevatedButton(
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
-                      var request = Map.from(_formKey.currentState!.value);
+                       if (_imageSelected) {
+                      _base64Image = base64Encode(_image!.readAsBytesSync());
+                    }
+
+                    var request = Map.from(_formKey.currentState!.value);
+                    request['slika'] = _base64Image ?? widget.proizvod?.slika;
+
                       if (!_validateNaziv(request['naziv'])) {
                         _showNazivWarning();
                         return;
@@ -92,22 +98,13 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                         _showOpisWarning();
                         return;
                       }
-                      if (!_imageSelected) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: Text("Upozorenje"),
-                            content: Text("Slika je obavezna!"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("OK"),
-                              )
-                            ],
-                          ),
-                        );
+                     if (!_imageSelected) {
+                      // Check if the image is required for a new Proizvod
+                      if (widget.proizvod == null) {
+                        _showSlikaWarning();
                         return;
                       }
+                    }
                       if (_formKey.currentState?.fields['vrstaproizvodaId']
                               ?.value ==
                           null) {
@@ -126,7 +123,6 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                         );
                         return;
                       }
-                      request['slika'] = _base64Image;
 
                       try {
                         if (widget.proizvod == null) {
@@ -207,10 +203,16 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                   decoration: InputDecoration(
                       label: Text('Slika'), errorText: field.errorText),
                   child: ListTile(
-                    leading: Icon(Icons.photo),
-                    title: Text("Odaberite sliku"),
-                    trailing: Icon(Icons.file_upload),
-                    onTap: getImage,
+                    leading:_base64Image != null
+                            ? Image.memory(
+                                base64Decode(_base64Image!),
+                                width: 50,
+                                height: 50,
+                              )
+                            : Icon(Icons.photo),
+                        title: Text("Odaberite sliku"),
+                        trailing: Icon(Icons.file_upload),
+                        onTap: getImage,
                   ),
                 );
               }),
@@ -240,6 +242,7 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
                           ))
                       .toList() ??
                   [],
+                  initialValue: widget.proizvod?.vrstaProizvodaID?.toString(),
             )),
           ],
         )
@@ -320,18 +323,38 @@ class _ProizvodDetaljiScreenState extends State<ProizvodDetaljiScreen> {
       ),
     );
   }
+    void _showSlikaWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Slika je obavezna!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          )
+        ],
+      ),
+    );
+  }
 
   File? _image;
   String? _base64Image;
 
-  Future getImage() async {
-    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+ Future getImage() async {
+  var result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    if (result != null && result.files.single.path != null) {
-      _image = File(result.files.single.path!);
-      _base64Image = base64Encode(_image!.readAsBytesSync());
+  if (result != null && result.files.single.path != null) {
+    _image = File(result.files.single.path!);
+    String newBase64Image = base64Encode(_image!.readAsBytesSync());
+
+    // Only update if a new image is selected
+    if (newBase64Image != _base64Image) {
+      _base64Image = newBase64Image;
       _imageSelected = true;
       setState(() {});
     }
   }
+}
 }

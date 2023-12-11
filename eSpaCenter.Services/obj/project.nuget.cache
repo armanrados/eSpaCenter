@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wRtGyLAPbVYYcK39QLy0Pj8V8FwQZGlGlEV9WnjeUMeQeBB7g6JGEDkwytIfpvKNQW846xk3BEBKfK5AFcODLQ==",
+  "dgSpecHash": "BRJGoLdrTZTHIAdH/cu2IIu5pZw2BcVx9J82y41c3NT3+Sd3GicvQxh1WSG6hnj9mvVeZOix9OfEBhea+QwCAQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Korisnik\\Desktop\\eSpaCenter\\eSpaCenter.Services\\eSpaCenter.Services.csproj",
   "expectedPackageFiles": [
@@ -46,11 +46,12 @@
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.5\\microsoft.visualstudio.azure.containers.tools.targets.1.19.5.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
-    "C:\\Users\\Korisnik\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
-    "C:\\Users\\Korisnik\\.nuget\\packages\\rabbitmq.client\\6.5.0\\rabbitmq.client.6.5.0.nupkg.sha512",
+    "C:\\Users\\Korisnik\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\Korisnik\\.nuget\\packages\\rabbitmq.client\\6.8.0\\rabbitmq.client.6.8.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\system.buffers\\4.5.1\\system.buffers.4.5.1.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\system.codedom\\4.5.0\\system.codedom.4.5.0.nupkg.sha512",
     "C:\\Users\\Korisnik\\.nuget\\packages\\system.collections.immutable\\1.5.0\\system.collections.immutable.1.5.0.nupkg.sha512",

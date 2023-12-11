@@ -39,7 +39,7 @@ class _TerminiScreenState extends State<TerminiScreen> {
         'korisnikID': loggedInKorisnikID
             .toString(), // Filter by the logged-in Korisnik's ID
         'isDeleted': false,
-        'includeKorisnik': true
+        'includeKorisnik': true,
       });
 
       setState(() {
@@ -62,9 +62,11 @@ class _TerminiScreenState extends State<TerminiScreen> {
           SizedBox(width: 8),
           ElevatedButton.icon(
               onPressed: () async {
+                var loggedInKorisnikID = Authorization.korisnik?.korisnikID;
+
                 var data = await _terminProvider.get(filter: {
                   'vrijemeTermina': _vrijemeTerminaController.text,
-                  'korisnikID': _korisnikIDController.text,
+                  'korisnikID': loggedInKorisnikID.toString(),
                   'isDeleted': false,
                   'includeKorisnik': true
                 });

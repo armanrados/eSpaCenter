@@ -1,21 +1,21 @@
 version: '3'
 services:
-#mssql docker
+  # RabbitMQ Docker
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:management
     container_name: rabbitmq
-    restart: unless-stopped
     environment:
       - RABBITMQ_DEFAULT_USER=user
       - RABBITMQ_DEFAULT_PASS=password
     ports:
       - "5672:5672"
       - "15672:15672"
-    expose:
-      - 5672
     networks:
-      - espacenternet
+      - espacenternet  
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
+  # SQL Server Docker
   espacenter-sql:
     image: "mcr.microsoft.com/mssql/server:2017-latest"
     restart: unless-stopped
@@ -30,8 +30,7 @@ services:
     networks:
       - espacenternet
 
-
-
+  # API Docker
   espacenter-api:
     restart: unless-stopped
     build:
@@ -43,7 +42,6 @@ services:
       - RABBITMQ_PORT=5672
       - RABBITMQ_USERNAME=user
       - RABBITMQ_PASSWORD=password
-      - RABBITMQ_VIRTUALHOST=/
       - SMTP_SERVER=smtp.outlook.com
       - SMTP_PORT=587
       - SMTP_USERNAME=espacenter@outlook.com
@@ -56,8 +54,30 @@ services:
       - espacenter-sql
     depends_on:
       - espacenter-sql
+
+  # RabbitMQ Service Docker
+  rabbitmq-service:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: ./eSpaCenter.Subscriber/Dockerfile
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=password
+      - SMTP_SERVER=smtp.outlook.com
+      - SMTP_PORT=587
+      - SMTP_USERNAME=espacenter@outlook.com
+      - SMTP_PASSWORD=mynewpassword321
+    depends_on:
       - rabbitmq
-      
+    networks:
+      - espacenternet
+
+volumes:
+  rabbitmq_data:
+
 networks:
   espacenternet:
-    driver: bridge   
+    driver: bridge

@@ -1,6 +1,7 @@
 using eSpaCenter.Authentication;
 using eSpaCenter.Services;
 using eSpaCenter.Services.Database;
+using eSpaCenter.Services.RabbitMQ;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -44,7 +45,9 @@ builder.Services.AddTransient<INarudzbaService, NarudzbaService>();
 builder.Services.AddTransient<IUplataService, UplataService>();
 builder.Services.AddTransient<IGalerijaService, GalerijaService>();
 builder.Services.AddTransient<IVrstaProizvodaService, VrstaProizvodaService>();
-builder.Services.AddTransient<IMessageProducer, MessageProducer>();
+builder.Services.AddTransient<IMailProducer, MailProducer>();
+
+
 
 
 

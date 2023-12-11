@@ -3,6 +3,8 @@ import 'package:espacenter_admin/models/narudzba.dart';
 import 'package:espacenter_admin/models/search_result.dart';
 import 'package:espacenter_admin/providers/narudzba_provider.dart';
 import 'package:espacenter_admin/screens/master_screen.dart';
+import 'package:espacenter_admin/screens/narudzba_detalji_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/util.dart';
@@ -127,6 +129,14 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
                   ),
                 ),
               ),
+               const DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Detalji narudžbe',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ),
             ],
             rows: result?.result
                     .map((Narudzba e) => DataRow(cells: [
@@ -151,6 +161,17 @@ class _NarudzbeScreenState extends State<NarudzbeScreen> {
                             },
                             
                             icon: Icon(Icons.local_shipping)
+                          )),
+                            DataCell(IconButton(
+                            onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NarudzbaDetailScreen(narudzba: e),
+                            ),
+                          );
+                        },
+                        icon: Icon(Icons.list_alt),
                           ))
                         ]))
                     .toList() ??

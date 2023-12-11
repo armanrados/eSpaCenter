@@ -16,11 +16,9 @@ namespace eSpaCenter.Services
 {
     public class RezervacijaService : BaseCRUDService<Models.Rezervacija,Database.Rezervacija,RezervacijaSearchObject,RezervacijaInsertUpdateRequest,RezervacijaInsertUpdateRequest>, IRezervacijaService
     {
-        private readonly IMessageProducer _messageProducer;
 
-        public RezervacijaService(eSpaCenterContext db, IMapper mapper, IMessageProducer messageProducer) : base(db, mapper)
+        public RezervacijaService(eSpaCenterContext db, IMapper mapper) : base(db, mapper)
         {
-            _messageProducer = messageProducer;
         }
 
         public override async Task<Models.Rezervacija> Insert(RezervacijaInsertUpdateRequest insert)
@@ -30,41 +28,11 @@ namespace eSpaCenter.Services
             termin.IsBooked = true;
             entity.DatumRezervacije = DateTime.Now;
             await _db.SaveChangesAsync();
-            SendEmail(entity.Korisnik.Email, "Potvrda rezervacije", "Uspješno ste rezervisali termni.");
-
-            _messageProducer.SendingMessage<Models.Rezervacija>(entity);
+         
             return entity;
         }
 
-        public void SendEmail(string to, string subject, string body)
-        {
-            try
-            {
-                var smtpServer = Environment.GetEnvironmentVariable("SMTP_SERVER");
-                var smtpPort = int.Parse(Environment.GetEnvironmentVariable("SMTP_PORT"));
-                var smtpUsername = Environment.GetEnvironmentVariable("SMTP_USERNAME");
-                var smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-
-                var smtpClient = new SmtpClient(smtpServer);
-                smtpClient.Port = smtpPort;
-                smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
-                smtpClient.EnableSsl = true; // Enable SSL for secure email sending.
-
-                var mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress(smtpUsername); // Use the SMTP username as the sender
-                mailMessage.To.Add(to);
-                mailMessage.Subject = subject;
-                mailMessage.Body = body;
-                mailMessage.IsBodyHtml = true; // You can set this to true if you're sending HTML emails.
-
-                smtpClient.Send(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (e.g., log, retry, or throw)
-                Console.WriteLine($"Error sending email: {ex.Message}");
-            }
-        }
+      
 
         public override IQueryable<Rezervacija> AddInclude(IQueryable<Rezervacija> entity, RezervacijaSearchObject search)
         {

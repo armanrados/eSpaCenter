@@ -21,11 +21,12 @@
     </PackageReference>
     <PackageReference Include="Microsoft.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.Recommender" Version="0.20.1" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eSpaCenter.Models\eSpaCenter.Models.csproj" />
+    <ProjectReference Include="..\eSpaCenter.Subscriber\eSpaCenter.Subscriber.csproj" />
   </ItemGroup>
 
   <ItemGroup>

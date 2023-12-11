@@ -69,26 +69,19 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                     onPressed: () async {
                       _formKey.currentState?.saveAndValidate();
 
-                      if (!_imageSelected) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: Text("Upozorenje"),
-                            content: Text("Slika je obavezna!"),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text("OK"),
-                              )
-                            ],
-                          ),
-                        );
+                           if (_imageSelected) {
+                      _base64Image = base64Encode(_image!.readAsBytesSync());
+                    }
+
+                    var request = Map.from(_formKey.currentState!.value);
+                    request['slikaByte'] = _base64Image ?? widget.galerija?.slikaByte;
+                     if (!_imageSelected) {
+                      // Check if the image is required for a new Proizvod
+                      if (widget.galerija == null) {
+                        _showSlikaWarning();
                         return;
                       }
-
-                      var request = Map.from(_formKey.currentState!.value);
-
-                      request['slikaByte'] = _base64Image;
+                    }
                       if (!_validateOpis(request['opis'])) {
                         _showOpisWarning();
                         return;
@@ -147,10 +140,16 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
                   decoration: InputDecoration(
                       label: Text('Slika'), errorText: field.errorText),
                   child: ListTile(
-                    leading: Icon(Icons.photo),
-                    title: Text("Odaberite sliku"),
-                    trailing: Icon(Icons.file_upload),
-                    onTap: getImage,
+                    leading:  _base64Image != null
+                            ? Image.memory(
+                                base64Decode(_base64Image!),
+                                width: 50,
+                                height: 50,
+                              )
+                            : Icon(Icons.photo),
+                        title: Text("Odaberite sliku"),
+                        trailing: Icon(Icons.file_upload),
+                        onTap: getImage,
                   ),
                 );
               }),
@@ -235,18 +234,38 @@ class _GalerijaDetaljiScreenState extends State<GalerijaDetaljiScreen> {
       ),
     );
   }
+    void _showSlikaWarning() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text("Upozorenje"),
+        content: Text("Slika je obavezna!"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("OK"),
+          )
+        ],
+      ),
+    );
+  }
 
   File? _image;
   String? _base64Image;
 
   Future getImage() async {
-    var result = await FilePicker.platform.pickFiles(type: FileType.image);
+  var result = await FilePicker.platform.pickFiles(type: FileType.image);
 
-    if (result != null && result.files.single.path != null) {
-      _image = File(result.files.single.path!);
-      _base64Image = base64Encode(_image!.readAsBytesSync());
+  if (result != null && result.files.single.path != null) {
+    _image = File(result.files.single.path!);
+    String newBase64Image = base64Encode(_image!.readAsBytesSync());
+
+    // Only update if a new image is selected
+    if (newBase64Image != _base64Image) {
+      _base64Image = newBase64Image;
       _imageSelected = true;
       setState(() {});
     }
   }
+}
 }
