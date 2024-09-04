@@ -1,12 +1,12 @@
 # eSpaCenter
 
-## Kredencijali za prijavu - Desktop app
+## Credentials for Login - Desktop app
 - Administrator Login
 ```
 Username: admin
 Password: admin
 ```
-- Zaposlenici Login
+- Employees Login
 ```
 Username: zaposlenik
 Password: zaposlenik
@@ -14,8 +14,8 @@ Password: zaposlenik
 Username: zaposlenik2
 Password: zaposlenik2
 ```
-## Kredencijali za prijavu - Mobile app
-- Korisnici Login
+## Credentials for Login - Mobile app
+- Users Login
 ```
 Username: user
 Password: user
@@ -23,49 +23,49 @@ Password: user
 Username: user2
 Password: user2
 ```
-- Broj kartice za plaćanje koristeći stripe
+- Credit card data for stripe
 ```
 4111 1111 1111 1111
 CVC: 123  
 
 ```
-## Pokretanje aplikacija
-1. Kloniranje repozitorija
+## Starting the app
+1. Clone repository
 ```
   https://github.com/armanrados/eSpaCenter.git
 ```
-2. Otvoriti klonirani repozitorij u konzoli
-3. Pokretanje dokerizovanog API-ja i DB-a
+2. Open the repository in console
+3. Runing the docker
 ```
   docker-compose build
   docker-compose up
 ```
-4. Pokretanje desktop aplikacije kroz Visual Studio Code
+4. Running the app with Visual Studio Code
 
-- Otvoriti eSpaCenter folder
+- Open eSpaCenter folder
 
-- Otvoriti UI folder
+- Open UI folder
 
-- Odabrati espacenter_admin folder
+- Choose espacenter_admin folder
 
-- Dohvatanje dependecy-a
+- Fetching dependecy
 ```
   flutter pub get
 ```
- Pokrenuti desktop aplikaciju sa komandom 
+ Running the desktop app with a command
 ```
  flutter run -d windows
 ```
  
-5. Pokretanje mobile aplikacije kroz Visual Studio Code
+5.Running mobile app with Visual Studio Code
 
-- Otvoriti eSpaCenter folder
+- Open eSpaCenter folder
 
-- Otvoriti UI folder
+- Open UI folder
   
-- Odabrati espacenter_mobile folder
+- Choose espacenter_mobile folder
  
-- Dohvatanje dependecy-a
+- Fetch dependecy
 ```
   flutter pub get
 ```
