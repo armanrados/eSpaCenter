@@ -69,9 +69,9 @@ CVC: 123
 ```
   flutter pub get
 ```
-- Pokrenuti mobilni emulator
+- Starting mobile emulator
 
-- Pokrenuti mobile aplikaciju bez debugiranja CTRL + F5
+- Run mobile app without debugging CTRL + F5
 
-6. Pokretanje RabbitMQ kroz Visual Studio
-- Odabrati eSpaCenter.Consumers kao startup project i pokrenuti ga
+6. Run RabbitMQ with Visual Studio
+- Choose eSpaCenter.Consumers as a Startup project and run
